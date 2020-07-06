@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(),
+      theme: ThemeData(fontFamily: 'NanumGothic'),
       home: DashBoard(),
     );
   }
@@ -37,13 +37,25 @@ class _DashBoardState extends State<DashBoard> {
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              centerTitle: false,
+              actions: <Widget>[
+                new IconButton(
+                  icon: new Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                  tooltip: 'more',
+                  onPressed: () => {},
+                ),
+              ],
               elevation: 0.0,
               title: Text(
                 "대시보드",
                 style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27),
               ),
               floating: true,
               backgroundColor: Colors.white,
@@ -77,54 +89,39 @@ class _DashBoardState extends State<DashBoard> {
           new BottomNavigationBarItem(
             icon: new Image.asset(
               'icons/bar_chart.png',
-              height: 25.0,
+              height: 24.0,
               color: _selectedIndex == 0 ? Colors.red : Colors.grey[600],
             ),
-            title: Text(
-              "Dash Board",
-              style: TextStyle(
-                  color: _selectedIndex == 0 ? Colors.red : Colors.grey[600]),
-            ),
+            title: Text("Dash Board"),
           ),
           new BottomNavigationBarItem(
             icon: new Image.asset(
               'icons/addchart.png',
-              height: 25.0,
+              height: 24.0,
               color: _selectedIndex == 1 ? Colors.red : Colors.grey[600],
             ),
-            title: Text(
-              "Stock List",
-              style: TextStyle(
-                  color: _selectedIndex == 1 ? Colors.red : Colors.grey[600]),
-            ),
+            title: Text("Stock List"),
           ),
           new BottomNavigationBarItem(
             icon: new Image.asset(
               'icons/calendar.png',
-              height: 25.0,
+              height: 24.0,
               color: _selectedIndex == 2 ? Colors.red : Colors.grey[600],
             ),
-            title: Text(
-              "Calendar",
-              style: TextStyle(
-                  color: _selectedIndex == 2 ? Colors.red : Colors.grey[600]),
-            ),
+            title: Text("Calendar"),
           ),
           new BottomNavigationBarItem(
             icon: new Image.asset(
               'icons/person.png',
-              height: 25.0,
+              height: 24.0,
               color: _selectedIndex == 3 ? Colors.red : Colors.grey[600],
             ),
-            title: Text(
-              "Profile",
-              style: TextStyle(
-                  color: _selectedIndex == 3 ? Colors.red : Colors.grey[600]),
-            ),
+            title: Text("Profile"),
           ),
         ],
         currentIndex: _selectedIndex,
-        showUnselectedLabels: true,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         selectedItemColor: Colors.red,
         onTap: _onItemTapped,
       ),
