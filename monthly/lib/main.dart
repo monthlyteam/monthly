@@ -23,7 +23,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.teal,
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
     );
   }
 }
