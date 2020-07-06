@@ -21,9 +21,9 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
+        backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.yellow,
     );
   }
 }
