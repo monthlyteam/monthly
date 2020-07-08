@@ -33,29 +33,45 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              titleSpacing: 0.0,
               centerTitle: false,
               actions: <Widget>[
-                new IconButton(
-                  icon: new Icon(
+                PopupMenuButton<String>(
+                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  onSelected: (String sel) {
+                    setState(() {
+                      print(sel);
+                    });
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: "detail",
+                      child: Text('detail'),
+                    ),
+                  ],
+                  icon: Icon(
                     Icons.more_vert,
                     color: Colors.black,
-                    size: 24,
+                    size: 24.0,
                   ),
-                  tooltip: 'more',
-                  onPressed: () => {},
                 ),
               ],
               elevation: 0.0,
-              title: Text(
-                "대시보드",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 27),
+              title: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Text(
+                  "대시보드",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 27),
+                ),
               ),
               floating: true,
               backgroundColor: Colors.white,
@@ -85,6 +101,7 @@ class _DashBoardState extends State<DashBoard> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         items: [
           new BottomNavigationBarItem(
             icon: new Image.asset(
@@ -119,10 +136,13 @@ class _DashBoardState extends State<DashBoard> {
             title: Text("Profile"),
           ),
         ],
+        elevation: 0.0,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: Colors.red,
+        selectedFontSize: 0.0,
+        unselectedFontSize: 0.0,
         onTap: _onItemTapped,
       ),
     );
