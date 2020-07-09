@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:monthly/constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -59,7 +60,7 @@ class _DashBoardState extends State<DashBoard> {
                   ],
                   icon: Icon(
                     Icons.more_vert,
-                    color: Colors.black,
+                    color: kTextColor,
                     size: 24.0,
                   ),
                 ),
@@ -70,7 +71,7 @@ class _DashBoardState extends State<DashBoard> {
                 child: Text(
                   "대시보드",
                   style: TextStyle(
-                      color: Colors.black,
+                      color: kTextColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 27),
                 ),
@@ -169,7 +170,7 @@ class _DashBoardState extends State<DashBoard> {
                           ),
                         ),
                         decoration: new BoxDecoration(
-                          color: const Color(0xff19a2b5),
+                          color: kMainColor,
                           borderRadius: BorderRadius.all(
                             Radius.circular(10.0),
                           ),
