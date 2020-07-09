@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(MyApp());
@@ -104,39 +105,38 @@ class _DashBoardState extends State<DashBoard> {
         backgroundColor: Colors.white,
         items: [
           new BottomNavigationBarItem(
-            icon: new Image.asset(
-              'icons/bar_chart.png',
+            icon: new SvgPicture.asset(
+              'icons/bar_chart.svg',
               height: 24.0,
               color: _selectedIndex == 0 ? Colors.red : Colors.grey[600],
             ),
             title: Text("Dash Board"),
           ),
           new BottomNavigationBarItem(
-            icon: new Image.asset(
-              'icons/addchart.png',
+            icon: new SvgPicture.asset(
+              'icons/addchart.svg',
               height: 24.0,
               color: _selectedIndex == 1 ? Colors.red : Colors.grey[600],
             ),
             title: Text("Stock List"),
           ),
           new BottomNavigationBarItem(
-            icon: new Image.asset(
-              'icons/calendar.png',
+            icon: new SvgPicture.asset(
+              'icons/calendar.svg',
               height: 24.0,
               color: _selectedIndex == 2 ? Colors.red : Colors.grey[600],
             ),
             title: Text("Calendar"),
           ),
           new BottomNavigationBarItem(
-            icon: new Image.asset(
-              'icons/person.png',
+            icon: new SvgPicture.asset(
+              'icons/person.svg',
               height: 24.0,
               color: _selectedIndex == 3 ? Colors.red : Colors.grey[600],
             ),
             title: Text("Profile"),
           ),
         ],
-        elevation: 0.0,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         showSelectedLabels: false,
