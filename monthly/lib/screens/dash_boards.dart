@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:monthly/constants.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class DashBoards extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _DashBoardsState extends State<DashBoards> {
             centerTitle: false,
             actions: <Widget>[
               PopupMenuButton<String>(
+                offset: Offset(0.0, 50.0),
                 padding: EdgeInsets.symmetric(horizontal: 25.0),
                 onSelected: (String sel) {
                   setState(() {
@@ -55,6 +57,7 @@ class _DashBoardsState extends State<DashBoards> {
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       child: Padding(
@@ -145,6 +148,16 @@ class _DashBoardsState extends State<DashBoards> {
                           Radius.circular(10.0),
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    Text(
+                      "월 차트",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: kTextColor,
+                          fontSize: 17),
                     ),
                     Text("lala", style: TextStyle(fontSize: 200.0)),
                     Text("lala", style: TextStyle(fontSize: 200.0)),
