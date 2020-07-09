@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -79,22 +80,116 @@ class _DashBoardState extends State<DashBoard> {
             ),
             SliverList(
               delegate: SliverChildListDelegate([
-                Column(
-                  children: <Widget>[
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                    Text("lala", style: TextStyle(fontSize: 200.0)),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 25.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                "월 평균 배당금",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 20.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                "￦ 4,830",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 50.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Text(
+                                " 매월 배당금으로 초밥 한조각!",
+                                style: TextStyle(
+                                    fontSize: 15.0, color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                        height: 180.0,
+                        decoration: new BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          image: DecorationImage(
+                            colorFilter: new ColorFilter.mode(
+                                Colors.black.withOpacity(0.3),
+                                BlendMode.darken),
+                            fit: BoxFit.fitWidth,
+                            image: NetworkImage(
+                                'https://images.unsplash.com/photo-1562436260-126d541901e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Container(
+                        height: 50.0,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    "7",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                        fontSize: 20.0),
+                                  ),
+                                  Text(
+                                    "월 배당금",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15.0),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "￦ 4,830",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                    fontSize: 20.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                        decoration: new BoxDecoration(
+                          color: const Color(0xff19a2b5),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                      Text("lala", style: TextStyle(fontSize: 200.0)),
+                    ],
+                  ),
                 ),
               ]),
             ),
