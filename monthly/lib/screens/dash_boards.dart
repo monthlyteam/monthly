@@ -8,6 +8,58 @@ class DashBoards extends StatefulWidget {
 }
 
 class _DashBoardsState extends State<DashBoards> {
+  int barTouchedIndex = 6;
+  BarChartGroupData makeGroupData(
+    int x,
+    double y, {
+    bool isTouched = false,
+    Color barColor = const Color(0xfff2d49b),
+    double width = 10.0,
+  }) {
+    List<int> showTooltips = [isTouched ? 0 : 1];
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          y: y,
+          color: isTouched ? Color(0xff84BFA4) : barColor,
+          width: isTouched ? width + 2 : width,
+        ),
+      ],
+      showingTooltipIndicators: showTooltips,
+    );
+  }
+
+  List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
+        switch (i) {
+          case 0:
+            return makeGroupData(0, 20.32, isTouched: i == barTouchedIndex);
+          case 1:
+            return makeGroupData(1, 14.54, isTouched: i == barTouchedIndex);
+          case 2:
+            return makeGroupData(2, 16.62, isTouched: i == barTouchedIndex);
+          case 3:
+            return makeGroupData(3, 10.34, isTouched: i == barTouchedIndex);
+          case 4:
+            return makeGroupData(4, 12.62, isTouched: i == barTouchedIndex);
+          case 5:
+            return makeGroupData(5, 13.22, isTouched: i == barTouchedIndex);
+          case 6:
+            return makeGroupData(6, 9.66, isTouched: i == barTouchedIndex);
+          case 7:
+            return makeGroupData(7, 10.32, isTouched: i == barTouchedIndex);
+          case 8:
+            return makeGroupData(8, 12.54, isTouched: i == barTouchedIndex);
+          case 9:
+            return makeGroupData(9, 13.74, isTouched: i == barTouchedIndex);
+          case 10:
+            return makeGroupData(10, 11.66, isTouched: i == barTouchedIndex);
+          case 11:
+            return makeGroupData(11, 16.54, isTouched: i == barTouchedIndex);
+          default:
+            return null;
+        }
+      });
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -158,6 +210,104 @@ class _DashBoardsState extends State<DashBoards> {
                           fontWeight: FontWeight.bold,
                           color: kTextColor,
                           fontSize: 17),
+                    ),
+                    AspectRatio(
+                      aspectRatio: 1.7,
+                      child: Card(
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: BarChart(
+                            BarChartData(
+                                alignment: BarChartAlignment.spaceAround,
+                                maxY: 30,
+                                barTouchData: BarTouchData(
+                                  touchTooltipData: BarTouchTooltipData(
+                                    tooltipBgColor: Color(0xff84BFA4),
+                                    tooltipPadding: const EdgeInsets.only(
+                                        top: 4.0, left: 4.0, right: 4.0),
+                                    tooltipBottomMargin: 4,
+                                    getTooltipItem: (
+                                      BarChartGroupData group,
+                                      int groupIndex,
+                                      BarChartRodData rod,
+                                      int rodIndex,
+                                    ) {
+                                      return BarTooltipItem(
+                                        ((rod.y) / 2).toString() + '0',
+                                        TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15.0),
+                                      );
+                                    },
+                                  ),
+                                  touchCallback: (barTouchResponse) {
+                                    setState(() {
+                                      if (barTouchResponse.spot != null &&
+                                          barTouchResponse.touchInput
+                                              is! FlPanEnd &&
+                                          barTouchResponse.touchInput
+                                              is! FlLongPressEnd) {
+                                        barTouchedIndex = barTouchResponse
+                                            .spot.touchedBarGroupIndex;
+                                      }
+                                    });
+                                  },
+                                ),
+                                titlesData: FlTitlesData(
+                                  show: true,
+                                  bottomTitles: SideTitles(
+                                    showTitles: true,
+                                    textStyle: TextStyle(
+                                        color: const Color(0xff2C2C2C),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                    margin: 10,
+                                    getTitles: (double value) {
+                                      return '${(value).toInt() + 1}';
+                                    },
+                                  ),
+                                  leftTitles: SideTitles(
+                                    showTitles: true,
+                                    textStyle: TextStyle(
+                                        color: const Color(0xff2c2c2c),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                    margin: 15.0,
+                                    getTitles: (value) {
+                                      if (value == 0) {
+                                        return '0';
+                                      } else if (value == 10) {
+                                        return '5k';
+                                      } else if (value == 20) {
+                                        return '10k';
+                                      } else {
+                                        return '';
+                                      }
+                                    },
+                                  ),
+                                ),
+                                borderData: FlBorderData(
+                                  show: false,
+                                ),
+                                gridData: FlGridData(
+                                  show: true,
+                                  checkToShowHorizontalLine: (value) =>
+                                      value % 10 == 0,
+                                  getDrawingHorizontalLine: (value) {
+                                    return FlLine(
+                                      color: const Color(0xff2a2747),
+                                      strokeWidth: 0.3,
+                                    );
+                                  },
+                                ),
+                                barGroups: showingGroups()),
+                          ),
+                        ),
+                      ),
                     ),
                     Text("lala", style: TextStyle(fontSize: 200.0)),
                     Text("lala", style: TextStyle(fontSize: 200.0)),
