@@ -213,99 +213,94 @@ class _DashBoardsState extends State<DashBoards> {
                     ),
                     AspectRatio(
                       aspectRatio: 1.7,
-                      child: Card(
-                        elevation: 0.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: BarChart(
-                            BarChartData(
-                                alignment: BarChartAlignment.spaceAround,
-                                maxY: 30,
-                                barTouchData: BarTouchData(
-                                  touchTooltipData: BarTouchTooltipData(
-                                    tooltipBgColor: Color(0xff84BFA4),
-                                    tooltipPadding: const EdgeInsets.only(
-                                        top: 4.0, left: 4.0, right: 4.0),
-                                    tooltipBottomMargin: 4,
-                                    getTooltipItem: (
-                                      BarChartGroupData group,
-                                      int groupIndex,
-                                      BarChartRodData rod,
-                                      int rodIndex,
-                                    ) {
-                                      return BarTooltipItem(
-                                        ((rod.y) / 2).toString() + '0',
-                                        TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15.0),
-                                      );
-                                    },
-                                  ),
-                                  touchCallback: (barTouchResponse) {
-                                    setState(() {
-                                      if (barTouchResponse.spot != null &&
-                                          barTouchResponse.touchInput
-                                              is! FlPanEnd &&
-                                          barTouchResponse.touchInput
-                                              is! FlLongPressEnd) {
-                                        barTouchedIndex = barTouchResponse
-                                            .spot.touchedBarGroupIndex;
-                                      }
-                                    });
-                                  },
-                                ),
-                                titlesData: FlTitlesData(
-                                  show: true,
-                                  bottomTitles: SideTitles(
-                                    showTitles: true,
-                                    textStyle: TextStyle(
-                                        color: const Color(0xff2C2C2C),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
-                                    margin: 10,
-                                    getTitles: (double value) {
-                                      return '${(value).toInt() + 1}';
-                                    },
-                                  ),
-                                  leftTitles: SideTitles(
-                                    showTitles: true,
-                                    textStyle: TextStyle(
-                                        color: const Color(0xff2c2c2c),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                    margin: 15.0,
-                                    getTitles: (value) {
-                                      if (value == 0) {
-                                        return '0';
-                                      } else if (value == 10) {
-                                        return '5k';
-                                      } else if (value == 20) {
-                                        return '10k';
-                                      } else {
-                                        return '';
-                                      }
-                                    },
-                                  ),
-                                ),
-                                borderData: FlBorderData(
-                                  show: false,
-                                ),
-                                gridData: FlGridData(
-                                  show: true,
-                                  checkToShowHorizontalLine: (value) =>
-                                      value % 10 == 0,
-                                  getDrawingHorizontalLine: (value) {
-                                    return FlLine(
-                                      color: const Color(0xff2a2747),
-                                      strokeWidth: 0.3,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: BarChart(
+                          BarChartData(
+                              alignment: BarChartAlignment.spaceAround,
+                              maxY: 30,
+                              barTouchData: BarTouchData(
+                                touchTooltipData: BarTouchTooltipData(
+                                  tooltipBgColor: Color(0xff84BFA4),
+                                  tooltipPadding: const EdgeInsets.only(
+                                      top: 4.0, left: 4.0, right: 4.0),
+                                  tooltipBottomMargin: 4,
+                                  getTooltipItem: (
+                                    BarChartGroupData group,
+                                    int groupIndex,
+                                    BarChartRodData rod,
+                                    int rodIndex,
+                                  ) {
+                                    return BarTooltipItem(
+                                      ((rod.y) / 2).toString() + '0',
+                                      TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.0),
                                     );
                                   },
                                 ),
-                                barGroups: showingGroups()),
-                          ),
+                                touchCallback: (barTouchResponse) {
+                                  setState(() {
+                                    if (barTouchResponse.spot != null &&
+                                        barTouchResponse.touchInput
+                                            is! FlPanEnd &&
+                                        barTouchResponse.touchInput
+                                            is! FlLongPressEnd) {
+                                      barTouchedIndex = barTouchResponse
+                                          .spot.touchedBarGroupIndex;
+                                    }
+                                  });
+                                },
+                              ),
+                              titlesData: FlTitlesData(
+                                show: true,
+                                bottomTitles: SideTitles(
+                                  showTitles: true,
+                                  textStyle: TextStyle(
+                                      color: const Color(0xff2C2C2C),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                  margin: 10,
+                                  getTitles: (double value) {
+                                    return '${(value).toInt() + 1}';
+                                  },
+                                ),
+                                leftTitles: SideTitles(
+                                  showTitles: true,
+                                  textStyle: TextStyle(
+                                      color: const Color(0xff2c2c2c),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                  margin: 15.0,
+                                  getTitles: (value) {
+                                    if (value == 0) {
+                                      return '0';
+                                    } else if (value == 10) {
+                                      return '5k';
+                                    } else if (value == 20) {
+                                      return '10k';
+                                    } else {
+                                      return '';
+                                    }
+                                  },
+                                ),
+                              ),
+                              borderData: FlBorderData(
+                                show: false,
+                              ),
+                              gridData: FlGridData(
+                                show: true,
+                                checkToShowHorizontalLine: (value) =>
+                                    value % 10 == 0,
+                                getDrawingHorizontalLine: (value) {
+                                  return FlLine(
+                                    color: const Color(0xff2a2747),
+                                    strokeWidth: 0.3,
+                                  );
+                                },
+                              ),
+                              barGroups: showingGroups()),
                         ),
                       ),
                     ),
