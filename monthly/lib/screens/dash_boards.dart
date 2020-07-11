@@ -9,6 +9,8 @@ class DashBoards extends StatefulWidget {
 
 class _DashBoardsState extends State<DashBoards> {
   int barTouchedIndex = 6;
+  int piTouchedIndex = 0;
+
   BarChartGroupData makeGroupData(
     int x,
     double y, {
@@ -60,6 +62,63 @@ class _DashBoardsState extends State<DashBoards> {
             return null;
         }
       });
+
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == piTouchedIndex;
+      final double fontSize = isTouched ? 25 : 16;
+      final double radius = isTouched ? 70 : 60;
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: const Color(0xff0293ee),
+            value: 40,
+            title: '40%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: const Color(0xfff8b250),
+            value: 30,
+            title: '30%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: const Color(0xff845bef),
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: const Color(0xff13d38e),
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        default:
+          return null;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -223,7 +282,7 @@ class _DashBoardsState extends State<DashBoards> {
                                 touchTooltipData: BarTouchTooltipData(
                                   tooltipBgColor: Color(0xff84BFA4),
                                   tooltipPadding: const EdgeInsets.only(
-                                      top: 4.0, left: 4.0, right: 4.0),
+                                      top: 6.0, left: 6.0, right: 4.0),
                                   tooltipBottomMargin: 4,
                                   getTooltipItem: (
                                     BarChartGroupData group,
@@ -301,6 +360,188 @@ class _DashBoardsState extends State<DashBoards> {
                                 },
                               ),
                               barGroups: showingGroups()),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                    ),
+                    Text(
+                      "종목 비율",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: kTextColor,
+                          fontSize: 17),
+                    ),
+                    AspectRatio(
+                      aspectRatio: 1.1,
+                      child: Card(
+                        elevation: 0.0,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                child: PieChart(
+                                  PieChartData(
+                                      pieTouchData: PieTouchData(
+                                          touchCallback: (pieTouchResponse) {
+                                        setState(() {
+                                          if (pieTouchResponse
+                                                  .touchedSectionIndex !=
+                                              null) {
+                                            piTouchedIndex = pieTouchResponse
+                                                .touchedSectionIndex;
+                                          }
+                                          print(piTouchedIndex);
+                                        });
+                                      }),
+                                      borderData: FlBorderData(
+                                        show: false,
+                                      ),
+                                      sectionsSpace: 0.0,
+                                      centerSpaceRadius: 40.0,
+                                      sections: showingSections()),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  direction: Axis.horizontal,
+                                  spacing: 10.0,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: piTouchedIndex == 0
+                                                  ? 0.0
+                                                  : 2.0),
+                                          width:
+                                              piTouchedIndex == 0 ? 14.0 : 10.0,
+                                          height:
+                                              piTouchedIndex == 0 ? 14.0 : 10.0,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xff0293ee),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          '005930 삼성전자',
+                                          style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontWeight: piTouchedIndex == 0
+                                                  ? FontWeight.bold
+                                                  : FontWeight.w400,
+                                              color: Color(0xff2c2c2c)),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: piTouchedIndex == 1
+                                                  ? 0.0
+                                                  : 2.0),
+                                          width:
+                                              piTouchedIndex == 1 ? 14.0 : 10.0,
+                                          height:
+                                              piTouchedIndex == 1 ? 14.0 : 10.0,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xfff8b250),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          'SBUX Starbucks',
+                                          style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontWeight: piTouchedIndex == 1
+                                                  ? FontWeight.bold
+                                                  : FontWeight.w400,
+                                              color: Color(0xff2c2c2c)),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: piTouchedIndex == 2
+                                                  ? 0.0
+                                                  : 2.0),
+                                          width:
+                                              piTouchedIndex == 2 ? 14.0 : 10.0,
+                                          height:
+                                              piTouchedIndex == 2 ? 14.0 : 10.0,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xff845bef),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          'AAPL Appdddle',
+                                          style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontWeight: piTouchedIndex == 2
+                                                  ? FontWeight.bold
+                                                  : FontWeight.w400,
+                                              color: Color(0xff2c2c2c)),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: piTouchedIndex == 3
+                                                  ? 0.0
+                                                  : 2.0),
+                                          width:
+                                              piTouchedIndex == 3 ? 14.0 : 10.0,
+                                          height:
+                                              piTouchedIndex == 3 ? 14.0 : 10.0,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color(0xff13d38e),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 4,
+                                        ),
+                                        Text(
+                                          'T AT&T',
+                                          style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontWeight: piTouchedIndex == 3
+                                                  ? FontWeight.bold
+                                                  : FontWeight.w400,
+                                              color: Color(0xff2c2c2c)),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
