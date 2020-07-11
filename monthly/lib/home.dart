@@ -13,30 +13,49 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  List<Widget> _screenList = [];
 
-  @override
-  void initState() {
-    _screenList = [
-      DashBoards(),
-      StockList(),
-      Calender(),
-      Profile(),
-    ];
-    super.initState();
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  final _dashBoards = GlobalKey<NavigatorState>();
+  final _stockList = GlobalKey<NavigatorState>();
+  final _calender = GlobalKey<NavigatorState>();
+  final _profile = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _screenList[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: <Widget>[
+          Navigator(
+            key: _dashBoards,
+            onGenerateRoute: (route) => MaterialPageRoute(
+              settings: route,
+              builder: (context) => DashBoards(),
+            ),
+          ),
+          Navigator(
+            key: _stockList,
+            onGenerateRoute: (route) => MaterialPageRoute(
+              settings: route,
+              builder: (context) => StockList(),
+            ),
+          ),
+          Navigator(
+            key: _calender,
+            onGenerateRoute: (route) => MaterialPageRoute(
+              settings: route,
+              builder: (context) => Calender(),
+            ),
+          ),
+          Navigator(
+            key: _profile,
+            onGenerateRoute: (route) => MaterialPageRoute(
+              settings: route,
+              builder: (context) => Profile(),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         items: [
@@ -79,8 +98,34 @@ class _HomeState extends State<Home> {
         showUnselectedLabels: false,
         selectedFontSize: 0.0,
         unselectedFontSize: 0.0,
-        onTap: _onItemTapped,
+        onTap: (val) => _onTap(val, context),
       ),
     );
+  }
+
+  void _onTap(int val, BuildContext context) {
+    if (_selectedIndex == val) {
+      switch (val) {
+        case 0:
+          _dashBoards.currentState.popUntil((route) => route.isFirst);
+          break;
+        case 1:
+          _stockList.currentState.popUntil((route) => route.isFirst);
+          break;
+        case 2:
+          _calender.currentState.popUntil((route) => route.isFirst);
+          break;
+        case 3:
+          _profile.currentState.popUntil((route) => route.isFirst);
+          break;
+        default:
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _selectedIndex = val;
+        });
+      }
+    }
   }
 }
