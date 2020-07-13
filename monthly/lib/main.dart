@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('${context.watch<Stock>().test}');
+    print('${context.watch<Stock>().thisMonthDividend}');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Monthly',
