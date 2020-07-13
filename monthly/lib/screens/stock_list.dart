@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
-import '../my_stock.dart';
 import '../stock.dart';
 
 class StockList extends StatelessWidget {
@@ -47,6 +46,7 @@ class StockList extends StatelessWidget {
                   Icons.search,
                   color: kTextColor,
                 ),
+                onPressed: () {},
               ),
               SizedBox(
                 width: 20.0,
@@ -62,109 +62,6 @@ class StockList extends StatelessWidget {
   }
 
   SliverPadding _getSlivers(BuildContext context) {
-    context.watch<Stock>().addStock(
-        newStock: MyStock(
-            ticker: "SBUX",
-            name: "Starbucks",
-            amount: 40.0,
-            avg: 50000.0,
-            color: Color(0xffF25B7F),
-            frequency: "분기",
-            evaPrice: 81532.1,
-            dividend: 82231.5,
-            percent: 40.0,
-            logoURL: "https:\/\/logo.clearbit.com\/starbucks.com"));
-    context.watch<Stock>().addStock(
-        newStock: MyStock(
-            ticker: "005930",
-            name: "삼성전자",
-            amount: 30.0,
-            avg: 50000.0,
-            color: Color(0xff88B14B),
-            frequency: "연",
-            evaPrice: 52300.1,
-            dividend: 45750.2,
-            percent: 30.0,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/samsung.com"));
-    context.watch<Stock>().addStock(
-        newStock: MyStock(
-            ticker: "AAPL",
-            name: "Apple",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffF09797),
-            frequency: "월",
-            evaPrice: 3251500.1,
-            dividend: 41250.2,
-            percent: 15.0,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/apple.com"));
-    context.watch<Stock>().addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            percent: 15.0,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    context.watch<Stock>().addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL:
-                "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
-    context.watch<Stock>().addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL:
-                "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
-
     return SliverPadding(
       padding: EdgeInsets.all(25.0),
       sliver: SliverList(
@@ -214,6 +111,12 @@ class StockList extends StatelessWidget {
                                           height: 54,
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    offset: Offset(0.0, 1.0),
+                                                    color: Colors.grey,
+                                                    blurRadius: 1.0)
+                                              ],
                                               image: DecorationImage(
                                                   fit: BoxFit.contain,
                                                   image: NetworkImage(context
