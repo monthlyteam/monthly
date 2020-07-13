@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Monthly',
-      theme: ThemeData(fontFamily: 'NanumGothic'),
+      theme: ThemeData(
+        fontFamily: 'NanumGothic',
+        canvasColor: Colors.transparent,
+      ),
       home: Home(),
     );
   }
