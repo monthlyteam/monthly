@@ -27,6 +27,36 @@ class _StockListState extends State<StockList> {
                     fontSize: 27),
               ),
             ),
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                offset: Offset(0.0, 50.0),
+                onSelected: (String sel) {
+                  setState(() {
+                    print(sel);
+                  });
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem<String>(
+                    value: "detail",
+                    child: Text('detail'),
+                  ),
+                ],
+                icon: Icon(
+                  Icons.sort,
+                  color: kTextColor,
+                  size: 24.0,
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.search,
+                  color: kTextColor,
+                ),
+              ),
+              SizedBox(
+                width: 20.0,
+              )
+            ],
             floating: true,
             backgroundColor: Colors.white,
           ),
