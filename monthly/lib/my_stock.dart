@@ -8,7 +8,7 @@ class MyStock {
   Color color; //메인 컬러
 
   double evaPrice; //평가금액
-  List<ExDividend> exDividends; //배당락일, 금액
+  List<ExDividend> exDividends = List<ExDividend>(); //배당락일, 금액
   double dividend; //배당금
   double percent; //평가금액/전체 자산
   String frequency; //주기
