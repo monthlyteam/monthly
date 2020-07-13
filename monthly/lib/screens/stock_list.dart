@@ -202,7 +202,7 @@ class StockList extends StatelessWidget {
                               Text(
                                 "￦${context.watch<Stock>().stockList[index].evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                     " / "
-                                        "${context.watch<Stock>().stockList[index].percent}%",
+                                        "${(context.watch<Stock>().stockList[index].percent).toStringAsFixed(1)}%",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,

@@ -42,30 +42,73 @@ class Stock with ChangeNotifier {
             dividend: 82231.5,
             percent: 40.0,
             exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
               ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
+                  datetime: DateTime.parse("2020-05-07T00:00:00.000Z"),
+                  price: 0.41),
+              ExDividend(
+                  datetime: DateTime.parse("2020-02-05T00:00:00.000Z"),
+                  price: 0.41),
+              ExDividend(
+                  datetime: DateTime.parse("2019-11-12T00:00:00.000Z"),
+                  price: 0.41),
+              ExDividend(
+                  datetime: DateTime.parse("2019-08-07T00:00:00.000Z"),
+                  price: 0.36),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/starbucks.com"));
+    /*
     addStock(
         newStock: MyStock(
-            ticker: "005930",
-            name: "삼성전자",
+            ticker: "SPHD",
+            name: "SPHD",
             amount: 30.0,
             avg: 50000.0,
             color: Color(0xff88B14B),
-            frequency: "연",
+            frequency: "월",
             evaPrice: 52300.1,
             dividend: 45750.2,
             percent: 30.0,
             exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
               ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
+                  datetime: DateTime.parse("2020-06-22T00:00:00.000Z"),
+                  price: 0.153),
+              ExDividend(
+                  datetime: DateTime.parse("2020-05-18T00:00:00.000Z"),
+                  price: 0.155),
+              ExDividend(
+                  datetime: DateTime.parse("2020-04-20T00:00:00.000Z"),
+                  price: 0.156),
+              ExDividend(
+                  datetime: DateTime.parse("2020-03-23T00:00:00.000Z"),
+                  price: 0.157),
+              ExDividend(
+                  datetime: DateTime.parse("2020-02-24T00:00:00.000Z"),
+                  price: 0.158),
+              ExDividend(
+                  datetime: DateTime.parse("2020-01-21T00:00:00.000Z"),
+                  price: 0.156),
+              ExDividend(
+                  datetime: DateTime.parse("2019-12-23T00:00:00.000Z"),
+                  price: 0.155),
+              ExDividend(
+                  datetime: DateTime.parse("2019-11-18T00:00:00.000Z"),
+                  price: 0.155),
+              ExDividend(
+                  datetime: DateTime.parse("2019-10-21T00:00:00.000Z"),
+                  price: 0.152),
+              ExDividend(
+                  datetime: DateTime.parse("2019-09-23T00:00:00.000Z"),
+                  price: 0.152),
+              ExDividend(
+                  datetime: DateTime.parse("2019-08-19T00:00:00.000Z"),
+                  price: 0.153),
+              ExDividend(
+                  datetime: DateTime.parse("2019-07-22T00:00:00.000Z"),
+                  price: 0.150),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/samsung.com"));
+
+     */
     addStock(
         newStock: MyStock(
             ticker: "AAPL",
@@ -73,15 +116,23 @@ class Stock with ChangeNotifier {
             amount: 15.0,
             avg: 50000.0,
             color: Color(0xffF09797),
-            frequency: "월",
+            frequency: "분기",
             evaPrice: 3251500.1,
             dividend: 41250.2,
             percent: 15.0,
             exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
               ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
+                  datetime: DateTime.parse("2020-05-08T00:00:00.000Z"),
+                  price: 0.82),
+              ExDividend(
+                  datetime: DateTime.parse("2020-02-07T00:00:00.000Z"),
+                  price: 0.77),
+              ExDividend(
+                  datetime: DateTime.parse("2019-11-07T00:00:00.000Z"),
+                  price: 0.77),
+              ExDividend(
+                  datetime: DateTime.parse("2019-08-09T00:00:00.000Z"),
+                  price: 0.7),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/apple.com"));
     addStock(
@@ -96,116 +147,45 @@ class Stock with ChangeNotifier {
             dividend: 9250.2,
             percent: 15.0,
             exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
               ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
+                  datetime: DateTime.parse("2020-07-09T00:00:00.000Z"),
+                  price: 0.52),
+              ExDividend(
+                  datetime: DateTime.parse("2020-04-08T00:00:00.000Z"),
+                  price: 0.52),
+              ExDividend(
+                  datetime: DateTime.parse("2020-01-09T00:00:00.000Z"),
+                  price: 0.52),
+              ExDividend(
+                  datetime: DateTime.parse("2019-10-09T00:00:00.000Z"),
+                  price: 0.51),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/att.com"));
     addStock(
         newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
+            ticker: "MSFT",
+            name: "MicroSoft",
+            amount: 20.0,
             avg: 50000.0,
             color: Color(0xffE8B447),
             frequency: "분기",
             evaPrice: 417320.1,
             dividend: 9250.2,
             exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
               ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
+                  datetime: DateTime.parse("2020-05-20T00:00:00.000Z"),
+                  price: 0.51),
+              ExDividend(
+                  datetime: DateTime.parse("2020-02-19T00:00:00.000Z"),
+                  price: 0.51),
+              ExDividend(
+                  datetime: DateTime.parse("2019-11-20T00:00:00.000Z"),
+                  price: 0.51),
+              ExDividend(
+                  datetime: DateTime.parse("2019-08-14T00:00:00.000Z"),
+                  price: 0.46),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    addStock(
-        newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
-            amount: 15.0,
-            avg: 50000.0,
-            color: Color(0xffE8B447),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            exDividends: [
-              ExDividend(datetime: DateTime.now(), price: 4600.0),
-              ExDividend(
-                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
-                  price: 4500.0)
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-//    _calcMonthlyDividends();
-//    _calcStockPercent();
   }
 
   void addStock({MyStock newStock}) {
@@ -236,9 +216,13 @@ class Stock with ChangeNotifier {
     _stockList.forEach((item) {
       item.exDividends.forEach((element) {
         month = element.datetime.month;
-        _monthlyDividends[month - 1] += element.price;
+        _monthlyDividends[month - 1] += element.price * item.amount * 1200;
       });
     });
+    _monthlyDividends.forEach((element) {
+      print(element);
+    });
+    print("-------------");
   }
 
   void _calcStockPercent() {
@@ -248,7 +232,7 @@ class Stock with ChangeNotifier {
     });
 
     _stockList.forEach((item) {
-      item.percent = (item.evaPrice / sumEvaPrice) * 100;
+      item.percent = ((item.evaPrice / sumEvaPrice) * 100);
     });
   }
 }

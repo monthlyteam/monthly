@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:monthly/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -11,7 +13,7 @@ class DashBoards extends StatefulWidget {
 }
 
 class _DashBoardsState extends State<DashBoards> {
-  int barTouchedIndex = 6;
+  int barTouchedIndex = DateTime.now().month - 1;
   int piTouchedIndex = 0;
 
   BarChartGroupData makeGroupData(
@@ -36,11 +38,12 @@ class _DashBoardsState extends State<DashBoards> {
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
+        print(context.watch<Stock>().monthlyDividends.reduce(max));
         switch (i) {
           case 0:
             return makeGroupData(0, 20.32, isTouched: i == barTouchedIndex);
           case 1:
-            return makeGroupData(1, 14.54, isTouched: i == barTouchedIndex);
+            return makeGroupData(1, 0, isTouched: i == barTouchedIndex);
           case 2:
             return makeGroupData(2, 16.62, isTouched: i == barTouchedIndex);
           case 3:
@@ -294,7 +297,7 @@ class _DashBoardsState extends State<DashBoards> {
                                     int rodIndex,
                                   ) {
                                     return BarTooltipItem(
-                                      ((rod.y) / 2).toString() + '0',
+                                      "${context.read<Stock>().monthlyDividends[barTouchedIndex].round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                       TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
