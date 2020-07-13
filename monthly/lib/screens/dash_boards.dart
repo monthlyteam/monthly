@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:monthly/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
+
+import '../stock.dart';
 
 class DashBoards extends StatefulWidget {
   @override
@@ -186,7 +189,7 @@ class _DashBoardsState extends State<DashBoards> {
                               ),
                             ),
                             Text(
-                              "￦ 4,830",
+                              "￦ ${context.watch<Stock>().avgDividend}",
                               style: TextStyle(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 50.0,
@@ -230,7 +233,7 @@ class _DashBoardsState extends State<DashBoards> {
                             Row(
                               children: <Widget>[
                                 Text(
-                                  "7",
+                                  "${DateTime.now().month}",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       color: Colors.white,
@@ -244,7 +247,7 @@ class _DashBoardsState extends State<DashBoards> {
                               ],
                             ),
                             Text(
-                              "￦ 4,830",
+                              "￦ ${context.watch<Stock>().thisMonthDividend}",
                               style: TextStyle(
                                   fontWeight: FontWeight.w800,
                                   color: Colors.white,

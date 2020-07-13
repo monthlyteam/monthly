@@ -8,13 +8,21 @@ class Stock with ChangeNotifier {
   //getter
   List<MyStock> get stockList => _stockList;
   List<double> get monthlyDividends => _monthlyDividends;
-  double get avgDividend {
-    return _monthlyDividends.reduce((a, b) => a + b) / 12.0;
+  String get avgDividend {
+    return (_monthlyDividends.reduce((a, b) => a + b) / 12.0)
+        .round()
+        .toString()
+        .replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match m) => '${m[1]},');
   }
 
-  double get thisMonthDividend {
+  String get thisMonthDividend {
     int thisMonth = DateTime.now().month;
-    return _monthlyDividends[thisMonth - 1];
+    return (_monthlyDividends[thisMonth - 1])
+        .round()
+        .toString()
+        .replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match m) => '${m[1]},');
   }
 
   Stock() {
