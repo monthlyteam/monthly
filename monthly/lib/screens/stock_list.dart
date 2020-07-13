@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../my_stock.dart';
+import '../stock.dart';
 
-class StockList extends StatefulWidget {
-  @override
-  _StockListState createState() => _StockListState();
-}
-
-class _StockListState extends State<StockList> {
+class StockList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,9 +28,7 @@ class _StockListState extends State<StockList> {
               PopupMenuButton<String>(
                 offset: Offset(0.0, 50.0),
                 onSelected: (String sel) {
-                  setState(() {
-                    print(sel);
-                  });
+                  print(sel);
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   const PopupMenuItem<String>(
@@ -67,109 +62,109 @@ class _StockListState extends State<StockList> {
   }
 
   SliverPadding _getSlivers(BuildContext context) {
-    List<MyStock> myStocks = List<MyStock>();
-    myStocks.add(MyStock(
-        ticker: "SBUX",
-        name: "Starbucks",
-        amount: 40.0,
-        avg: 50000.0,
-        color: Color(0xffF25B7F),
-        frequency: "분기",
-        evaPrice: 81532.1,
-        dividend: 82231.5,
-        percent: 40.0,
-        logoURL: "https:\/\/logo.clearbit.com\/starbucks.com"));
-    myStocks.add(MyStock(
-        ticker: "005930",
-        name: "삼성전자",
-        amount: 30.0,
-        avg: 50000.0,
-        color: Color(0xff88B14B),
-        frequency: "연",
-        evaPrice: 52300.1,
-        dividend: 45750.2,
-        percent: 30.0,
-        logoURL: "https:\/\/logo.clearbit.com\/samsung.com"));
-    myStocks.add(MyStock(
-        ticker: "AAPL",
-        name: "Apple",
-        amount: 15.0,
-        avg: 50000.0,
-        color: Color(0xffF09797),
-        frequency: "월",
-        evaPrice: 3251500.1,
-        dividend: 41250.2,
-        percent: 15.0,
-        logoURL: "https:\/\/logo.clearbit.com\/apple.com"));
-    myStocks.add(MyStock(
-        ticker: "T",
-        name: "AT&T",
-        amount: 15.0,
-        avg: 50000.0,
-        color: Color(0xffE8B447),
-        frequency: "분기",
-        evaPrice: 417320.1,
-        dividend: 9250.2,
-        percent: 15.0,
-        logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    myStocks.add(MyStock(
-        ticker: "T",
-        name: "AT&T",
-        amount: 15.0,
-        avg: 50000.0,
-        color: Color(0xffE8B447),
-        frequency: "분기",
-        evaPrice: 417320.1,
-        dividend: 9250.2,
-        logoURL:
-            "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
-    myStocks.add(MyStock(
-        ticker: "T",
-        name: "AT&T",
-        amount: 15.0,
-        avg: 50000.0,
-        color: Color(0xffE8B447),
-        frequency: "분기",
-        evaPrice: 417320.1,
-        dividend: 9250.2,
-        logoURL:
-            "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
-    myStocks.add(MyStock(
-        ticker: "T",
-        name: "AT&T",
-        amount: 15.0,
-        avg: 50000.0,
-        color: Color(0xffE8B447),
-        frequency: "분기",
-        evaPrice: 417320.1,
-        dividend: 9250.2,
-        logoURL:
-            "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
-    myStocks.add(MyStock(
-        ticker: "T",
-        name: "AT&T",
-        amount: 15.0,
-        avg: 50000.0,
-        color: Color(0xffE8B447),
-        frequency: "분기",
-        evaPrice: 417320.1,
-        dividend: 9250.2,
-        logoURL:
-            "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
-    myStocks.add(MyStock(
-        ticker: "T",
-        name: "AT&T",
-        amount: 15.0,
-        avg: 50000.0,
-        color: Color(0xffE8B447),
-        frequency: "분기",
-        evaPrice: 417320.1,
-        dividend: 9250.2,
-        logoURL:
-            "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
+    context.watch<Stock>().addStock(
+        newStock: MyStock(
+            ticker: "SBUX",
+            name: "Starbucks",
+            amount: 40.0,
+            avg: 50000.0,
+            color: Color(0xffF25B7F),
+            frequency: "분기",
+            evaPrice: 81532.1,
+            dividend: 82231.5,
+            percent: 40.0,
+            logoURL: "https:\/\/logo.clearbit.com\/starbucks.com"));
+    context.watch<Stock>().addStock(
+        newStock: MyStock(
+            ticker: "005930",
+            name: "삼성전자",
+            amount: 30.0,
+            avg: 50000.0,
+            color: Color(0xff88B14B),
+            frequency: "연",
+            evaPrice: 52300.1,
+            dividend: 45750.2,
+            percent: 30.0,
+            exDividends: [
+              ExDividend(datetime: DateTime.now(), price: 4600.0),
+              ExDividend(
+                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
+                  price: 4500.0)
+            ],
+            logoURL: "https:\/\/logo.clearbit.com\/samsung.com"));
+    context.watch<Stock>().addStock(
+        newStock: MyStock(
+            ticker: "AAPL",
+            name: "Apple",
+            amount: 15.0,
+            avg: 50000.0,
+            color: Color(0xffF09797),
+            frequency: "월",
+            evaPrice: 3251500.1,
+            dividend: 41250.2,
+            percent: 15.0,
+            exDividends: [
+              ExDividend(datetime: DateTime.now(), price: 4600.0),
+              ExDividend(
+                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
+                  price: 4500.0)
+            ],
+            logoURL: "https:\/\/logo.clearbit.com\/apple.com"));
+    context.watch<Stock>().addStock(
+        newStock: MyStock(
+            ticker: "T",
+            name: "AT&T",
+            amount: 15.0,
+            avg: 50000.0,
+            color: Color(0xffE8B447),
+            frequency: "분기",
+            evaPrice: 417320.1,
+            dividend: 9250.2,
+            percent: 15.0,
+            exDividends: [
+              ExDividend(datetime: DateTime.now(), price: 4600.0),
+              ExDividend(
+                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
+                  price: 4500.0)
+            ],
+            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
+    context.watch<Stock>().addStock(
+        newStock: MyStock(
+            ticker: "T",
+            name: "AT&T",
+            amount: 15.0,
+            avg: 50000.0,
+            color: Color(0xffE8B447),
+            frequency: "분기",
+            evaPrice: 417320.1,
+            dividend: 9250.2,
+            exDividends: [
+              ExDividend(datetime: DateTime.now(), price: 4600.0),
+              ExDividend(
+                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
+                  price: 4500.0)
+            ],
+            logoURL:
+                "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
+    context.watch<Stock>().addStock(
+        newStock: MyStock(
+            ticker: "T",
+            name: "AT&T",
+            amount: 15.0,
+            avg: 50000.0,
+            color: Color(0xffE8B447),
+            frequency: "분기",
+            evaPrice: 417320.1,
+            dividend: 9250.2,
+            exDividends: [
+              ExDividend(datetime: DateTime.now(), price: 4600.0),
+              ExDividend(
+                  datetime: DateTime.parse("1969-07-20 20:18:04Z"),
+                  price: 4500.0)
+            ],
+            logoURL:
+                "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
 
-    myStocks.sort((a, b) => a.amount.compareTo(b.amount));
-    myStocks.sort((a, b) => a.ticker.compareTo(b.ticker));
     return SliverPadding(
       padding: EdgeInsets.all(25.0),
       sliver: SliverList(
@@ -221,9 +216,10 @@ class _StockListState extends State<StockList> {
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
                                                   fit: BoxFit.contain,
-                                                  image: NetworkImage(
-                                                      myStocks[index]
-                                                          .logoURL))),
+                                                  image: NetworkImage(context
+                                                      .watch<Stock>()
+                                                      .stockList[index]
+                                                      .logoURL))),
                                         ),
                                         SizedBox(
                                           width: 5.0,
@@ -245,7 +241,7 @@ class _StockListState extends State<StockList> {
               child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  color: myStocks[index].color,
+                  color: context.watch<Stock>().stockList[index].color,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
@@ -262,9 +258,9 @@ class _StockListState extends State<StockList> {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "${myStocks[index].ticker}" +
+                                "${context.watch<Stock>().stockList[index].ticker}" +
                                     " " +
-                                    "${myStocks[index].name}",
+                                    "${context.watch<Stock>().stockList[index].name}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -279,9 +275,9 @@ class _StockListState extends State<StockList> {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${myStocks[index].dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                "￦${context.watch<Stock>().stockList[index].dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                     " "
-                                        "${myStocks[index].frequency}",
+                                        "${context.watch<Stock>().stockList[index].frequency}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -301,9 +297,9 @@ class _StockListState extends State<StockList> {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${myStocks[index].evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                "￦${context.watch<Stock>().stockList[index].evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                     " / "
-                                        "${myStocks[index].percent}%",
+                                        "${context.watch<Stock>().stockList[index].percent}%",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -318,7 +314,7 @@ class _StockListState extends State<StockList> {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "${myStocks[index].amount} 주",
+                                "${context.watch<Stock>().stockList[index].amount} 주",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -332,7 +328,7 @@ class _StockListState extends State<StockList> {
                   )),
             );
           },
-          childCount: myStocks.length,
+          childCount: context.watch<Stock>().stockList.length,
         ),
       ),
     );

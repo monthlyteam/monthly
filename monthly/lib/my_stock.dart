@@ -30,4 +30,5 @@ class MyStock {
 class ExDividend {
   DateTime datetime; //배당락일
   double price; //배당금
+  ExDividend({this.datetime, this.price});
 }

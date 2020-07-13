@@ -21,12 +21,14 @@ class Stock with ChangeNotifier {
     init();
   }
 
-  void init() async {}
+  void init() async {
+    _stockList = [];
+  }
 
   void addStock({MyStock newStock}) {
     _stockList.add(newStock);
-    _calcMonthlyDividends();
-    _calcStockPercent();
+//    _calcMonthlyDividends();
+//    _calcStockPercent();
     notifyListeners();
   }
 
