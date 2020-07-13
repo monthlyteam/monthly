@@ -48,8 +48,7 @@ class _StockListState extends State<StockList> {
         evaPrice: 81532.1,
         dividend: 82231.5,
         percent: 40.0,
-        logoURL:
-            "https://seeklogo.com/images/S/Starbucks_Coffee-logo-DECE0A6E4B-seeklogo.com.png"));
+        logoURL: "https:\/\/logo.clearbit.com\/starbucks.com"));
     myStocks.add(MyStock(
         ticker: "005930",
         name: "삼성전자",
@@ -60,8 +59,7 @@ class _StockListState extends State<StockList> {
         evaPrice: 52300.1,
         dividend: 45750.2,
         percent: 30.0,
-        logoURL:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/1024px-Samsung_Logo.svg.png"));
+        logoURL: "https:\/\/logo.clearbit.com\/samsung.com"));
     myStocks.add(MyStock(
         ticker: "AAPL",
         name: "Apple",
@@ -72,8 +70,7 @@ class _StockListState extends State<StockList> {
         evaPrice: 3251500.1,
         dividend: 41250.2,
         percent: 15.0,
-        logoURL:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Apple_logo_grey.svg/1200px-Apple_logo_grey.svg.png"));
+        logoURL: "https:\/\/logo.clearbit.com\/apple.com"));
     myStocks.add(MyStock(
         ticker: "T",
         name: "AT&T",
@@ -84,8 +81,7 @@ class _StockListState extends State<StockList> {
         evaPrice: 417320.1,
         dividend: 9250.2,
         percent: 15.0,
-        logoURL:
-            "https://www.att.com/ecms/dam/att/consumer/global/logos/att_globe_500x500.jpg"));
+        logoURL: "https:\/\/logo.clearbit.com\/att.com"));
     myStocks.add(MyStock(
         ticker: "T",
         name: "AT&T",
@@ -193,7 +189,6 @@ class _StockListState extends State<StockList> {
                                           height: 54,
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
-                                              border: Border.all(width: 0.5),
                                               image: DecorationImage(
                                                   fit: BoxFit.contain,
                                                   image: NetworkImage(
