@@ -167,7 +167,7 @@ class Stock with ChangeNotifier {
             name: "MicroSoft",
             amount: 20.0,
             avg: 50000.0,
-            color: Color(0xffE8B447),
+            color: Color(0xff88B14B),
             frequency: "분기",
             evaPrice: 417320.1,
             dividend: 9250.2,
