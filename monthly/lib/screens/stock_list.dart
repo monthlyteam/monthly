@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:monthly/my_stock.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../stock.dart';
@@ -72,6 +74,7 @@ class StockList extends StatelessWidget {
                 showModalBottomSheet(
                     context: context,
                     builder: (context) {
+                      MyStock myStock = context.watch<Stock>().stockList[index];
                       return Container(
                         height: 440.0,
                         color: Colors.transparent,
@@ -90,7 +93,7 @@ class StockList extends StatelessWidget {
                                   iconSize: 30,
                                   icon: Icon(
                                     Icons.keyboard_arrow_down,
-                                    color: Color(0xff707070),
+                                    color: Color(0xffededed),
                                   ),
                                   onPressed: () {
                                     Navigator.of(context).pop();
@@ -103,35 +106,79 @@ class StockList extends StatelessWidget {
                                 child: Column(
                                   children: <Widget>[
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Container(
-                                          child: SizedBox(
-                                            width: 54,
-                                          ),
-                                          height: 54,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    offset: Offset(0.0, 1.0),
-                                                    color: Colors.grey,
-                                                    blurRadius: 1.0)
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
+                                              child: SizedBox(
+                                                width: 54,
+                                              ),
+                                              height: 54,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        offset:
+                                                            Offset(0.0, 1.0),
+                                                        color: Colors.grey,
+                                                        blurRadius: 1.0)
+                                                  ],
+                                                  image: DecorationImage(
+                                                      fit: BoxFit.contain,
+                                                      image: NetworkImage(
+                                                          myStock.logoURL))),
+                                            ),
+                                            SizedBox(
+                                              width: 10.0,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "${myStock.ticker}",
+                                                  style: TextStyle(
+                                                      color: Color(0xff2c2c2c),
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontSize: 25.0),
+                                                ),
+                                                Text(
+                                                  "${myStock.name}",
+                                                  style: TextStyle(
+                                                      color: Color(0xff2c2c2c),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16.0),
+                                                )
                                               ],
-                                              image: DecorationImage(
-                                                  fit: BoxFit.contain,
-                                                  image: NetworkImage(context
-                                                      .watch<Stock>()
-                                                      .stockList[index]
-                                                      .logoURL))),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(
-                                          width: 5.0,
-                                        ),
-                                        Column(
-                                          children: <Widget>[],
+                                        Row(
+                                          children: <Widget>[
+                                            IconButton(
+                                              iconSize: 24.0,
+                                              icon: Icon(
+                                                Icons.delete,
+                                                color: kTextColor,
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                            IconButton(
+                                              iconSize: 24.0,
+                                              icon: Icon(
+                                                Icons.create,
+                                                color: kTextColor,
+                                              ),
+                                              onPressed: () {},
+                                            ),
+                                          ],
                                         )
                                       ],
-                                    ),
+                                    ), //Row of top
                                   ],
                                 ),
                               )
