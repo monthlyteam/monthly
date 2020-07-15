@@ -9,6 +9,7 @@ class MyStock {
 
   double evaPrice; //평가금액
   List<ExDividend> exDividends = List<ExDividend>(); //배당락일, 금액
+  double nextDividend;
   double dividend; //배당금
   double percent; //평가금액/전체 자산
   String frequency; //주기
@@ -21,6 +22,7 @@ class MyStock {
       this.color,
       this.evaPrice,
       this.exDividends,
+      this.nextDividend,
       this.dividend,
       this.percent,
       this.frequency,

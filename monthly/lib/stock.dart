@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:monthly/my_stock.dart';
 
 class Stock with ChangeNotifier {
+  final double exrate = 1200;
   List<MyStock> _stockList = List<MyStock>();
   List<double> _monthlyDividends = List.filled(12, 0.0);
 
@@ -41,6 +42,7 @@ class Stock with ChangeNotifier {
             evaPrice: 81532.1,
             dividend: 82231.5,
             percent: 40.0,
+            nextDividend: 0.42,
             exDividends: [
               ExDividend(
                   datetime: DateTime.parse("2020-05-07T00:00:00.000Z"),
@@ -107,19 +109,19 @@ class Stock with ChangeNotifier {
                   price: 0.150),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/samsung.com"));
-
      */
     addStock(
         newStock: MyStock(
             ticker: "AAPL",
             name: "Apple",
-            amount: 15.0,
+            amount: 10.0,
             avg: 50000.0,
             color: Color(0xffF09797),
             frequency: "분기",
-            evaPrice: 3251500.1,
+            evaPrice: 401500.1,
             dividend: 41250.2,
             percent: 15.0,
+            nextDividend: 0.82,
             exDividends: [
               ExDividend(
                   datetime: DateTime.parse("2020-05-08T00:00:00.000Z"),
@@ -139,13 +141,14 @@ class Stock with ChangeNotifier {
         newStock: MyStock(
             ticker: "T",
             name: "AT&T",
-            amount: 15.0,
+            amount: 30.0,
             avg: 50000.0,
             color: Color(0xffE8B447),
             frequency: "분기",
             evaPrice: 417320.1,
             dividend: 9250.2,
             percent: 15.0,
+            nextDividend: 0.52,
             exDividends: [
               ExDividend(
                   datetime: DateTime.parse("2020-07-09T00:00:00.000Z"),
@@ -171,6 +174,7 @@ class Stock with ChangeNotifier {
             frequency: "분기",
             evaPrice: 417320.1,
             dividend: 9250.2,
+            nextDividend: 0.51,
             exDividends: [
               ExDividend(
                   datetime: DateTime.parse("2020-05-20T00:00:00.000Z"),
@@ -216,7 +220,12 @@ class Stock with ChangeNotifier {
     _stockList.forEach((item) {
       item.exDividends.forEach((element) {
         month = element.datetime.month;
-        _monthlyDividends[month - 1] += element.price * item.amount * 1200;
+        if (element.datetime.year == DateTime.now().year) {
+          _monthlyDividends[month - 1] += element.price * item.amount * exrate;
+        } else {
+          _monthlyDividends[month - 1] +=
+              item.nextDividend * item.amount * exrate;
+        }
       });
     });
     _monthlyDividends.forEach((element) {

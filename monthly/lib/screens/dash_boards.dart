@@ -106,6 +106,10 @@ class _DashBoardsState extends State<DashBoards> {
         } else {
           avgPoint = pow(10, cnt);
         }
+        if (avgPoint * 2 >=
+            context.read<Stock>().monthlyDividends.reduce(max)) {
+          avgPoint = avgPoint / 2;
+        }
         break;
       }
     }
@@ -345,7 +349,8 @@ class _DashBoardsState extends State<DashBoards> {
                               gridData: FlGridData(
                                 show: true,
                                 checkToShowHorizontalLine: (value) =>
-                                    value % avgPoint == 0,
+                                    value % avgPoint == 0 &&
+                                    value <= 2 * avgPoint,
                                 getDrawingHorizontalLine: (value) => FlLine(
                                   color: const Color(0xff2a2747),
                                   strokeWidth: 0.3,
@@ -377,6 +382,7 @@ class _DashBoardsState extends State<DashBoards> {
                               Expanded(
                                 child: PieChart(
                                   PieChartData(
+                                      startDegreeOffset: -90,
                                       pieTouchData: PieTouchData(
                                           touchCallback: (pieTouchResponse) {
                                         setState(() {
