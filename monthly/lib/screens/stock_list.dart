@@ -69,21 +69,21 @@ class StockList extends StatelessWidget {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
+            MyStock myStock = context.watch<Stock>().stockList[index];
             return GestureDetector(
               onTap: () {
                 showModalBottomSheet(
                     context: context,
                     builder: (context) {
-                      MyStock myStock = context.watch<Stock>().stockList[index];
                       return Container(
-                        height: 440.0,
+                        height: 420.0,
                         color: Colors.transparent,
                         child: Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(40.0),
-                                  topRight: Radius.circular(40.0))),
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0))),
                           child: Column(
                             children: <Widget>[
                               SizedBox(
@@ -179,8 +179,104 @@ class StockList extends StatelessWidget {
                                         )
                                       ],
                                     ), //Row of top
+                                    SizedBox(height: 20.0),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "평가 금액",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "￦${myStock.evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              Text(
+                                                "총 배당금 / 주기",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "￦${myStock.dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                                    " "
+                                                        "${myStock.frequency}",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "평균 매입 단가",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "￦${myStock.avg.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              Text(
+                                                "보유수량",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "${myStock.amount} 주",
+                                                style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
+                              ),
+                              SizedBox(height: 20.0),
+                              Container(
+                                height: 175,
+                                decoration: BoxDecoration(
+                                    color: myStock.color,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(15.0),
+                                        topRight: Radius.circular(15.0))),
                               )
                             ],
                           ),
@@ -191,7 +287,7 @@ class StockList extends StatelessWidget {
               child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  color: context.watch<Stock>().stockList[index].color,
+                  color: myStock.color,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
@@ -208,9 +304,7 @@ class StockList extends StatelessWidget {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "${context.watch<Stock>().stockList[index].ticker}" +
-                                    " " +
-                                    "${context.watch<Stock>().stockList[index].name}",
+                                "${myStock.ticker}" + " " + "${myStock.name}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -225,9 +319,9 @@ class StockList extends StatelessWidget {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${context.watch<Stock>().stockList[index].dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                "￦${myStock.dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                     " "
-                                        "${context.watch<Stock>().stockList[index].frequency}",
+                                        "${myStock.frequency}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -247,9 +341,9 @@ class StockList extends StatelessWidget {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${context.watch<Stock>().stockList[index].evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                "￦${myStock.evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                     " / "
-                                        "${(context.watch<Stock>().stockList[index].percent).toStringAsFixed(1)}%",
+                                        "${(myStock.percent).toStringAsFixed(1)}%",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -264,7 +358,7 @@ class StockList extends StatelessWidget {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "${context.watch<Stock>().stockList[index].amount} 주",
+                                "${myStock.amount} 주",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
