@@ -76,7 +76,6 @@ class StockList extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return Container(
-                        height: 420.0,
                         color: Colors.transparent,
                         child: Container(
                           decoration: BoxDecoration(
@@ -270,13 +269,150 @@ class StockList extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 20.0),
-                              Container(
-                                height: 175,
-                                decoration: BoxDecoration(
-                                    color: myStock.color,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15.0),
-                                        topRight: Radius.circular(15.0))),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: myStock.color,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(15.0),
+                                          topRight: Radius.circular(15.0))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20.0, left: 25.0, right: 25.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "전일 종가",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "￦${myStock.closingPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(
+                                                height: 12.0,
+                                              ),
+                                              Text(
+                                                "예상 배당률",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "${myStock.divPercent}%",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(
+                                                height: 12.0,
+                                              ),
+                                              Text(
+                                                "최근 배당락일",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "${myStock.exDividends.last.datetime.year}년 ${myStock.exDividends.last.datetime.month}월 ${myStock.exDividends.last.datetime.day}일",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                "평가 손익",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: <Widget>[
+                                                  Text(
+                                                    "￦+${myStock.evaProfit.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    "(${myStock.evaProfitPercent}%)",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12.0,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 12.0,
+                                              ),
+                                              Text(
+                                                "자산 보유비율",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "${(myStock.percent).toStringAsFixed(1)}%",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(
+                                                height: 12.0,
+                                              ),
+                                              Text(
+                                                "배당금 비율",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12.0),
+                                              ),
+                                              Text(
+                                                "${(myStock.totalDivPercent).toStringAsFixed(1)}%",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               )
                             ],
                           ),
