@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
       title: 'Monthly',
       theme: ThemeData(
         fontFamily: 'NanumGothic',
-        canvasColor: Colors.transparent,
       ),
       home: Home(),
     );
