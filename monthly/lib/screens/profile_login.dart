@@ -51,6 +51,24 @@ class _ProfileLoginState extends State<ProfileLogin> {
     }
   }
 
+  _logout() async {
+    try {
+      var code = await UserApi.instance.logout();
+      print(code.toString());
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _unlink() async {
+    try {
+      var code = await UserApi.instance.unlink();
+      print(code.toString());
+    } catch (e) {
+      print(e);
+    }
+  }
+
   _userData() async {
     try {
       User user = await UserApi.instance.me();
@@ -120,6 +138,34 @@ class _ProfileLoginState extends State<ProfileLogin> {
                           _userData();
                         },
                         child: Text("User"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Container(
+                      color: Colors.yellow,
+                      child: FlatButton(
+                        onPressed: () {
+                          _logout();
+                        },
+                        child: Text("Logout"),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Container(
+                      color: Colors.yellow,
+                      child: FlatButton(
+                        onPressed: () {
+                          _unlink();
+                        },
+                        child: Text("unlink"),
                       ),
                     ),
                   ),
