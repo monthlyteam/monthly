@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:monthly/my_stock.dart';
 import 'package:provider/provider.dart';
@@ -164,11 +163,55 @@ class _StockListState extends State<StockList> {
                                           ),
                                           onPressed: () {
                                             print("삭제");
-                                            Navigator.of(context).pop();
-                                            setState(() {
-                                              context.read<Stock>().deleteStock(
-                                                  ticker: myStock.ticker);
-                                            });
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext bContext) {
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                      "${myStock.name}",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: kTextColor),
+                                                    ),
+                                                    content: Text(
+                                                      "해당 종목을 삭제하시겠습니까?",
+                                                      style: TextStyle(
+                                                          color: kTextColor),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.of(bContext)
+                                                              .pop();
+                                                        },
+                                                        child: Text("아니요"),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.of(bContext)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          setState(() {
+                                                            context
+                                                                .read<Stock>()
+                                                                .deleteStock(
+                                                                    ticker: myStock
+                                                                        .ticker);
+                                                          });
+                                                        },
+                                                        child: Text("예"),
+                                                      )
+                                                    ],
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10.0))),
+                                                  );
+                                                });
                                           },
                                         ),
                                         IconButton(
