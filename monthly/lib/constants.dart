@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 const kTextColor = Color(0xff2C2C2C);
 const kMainColor = Color(0xff19a2b5);
 
+const kUPColor = Color(0xffE5396E);
+const kDownColor = Color(0xff538FE0);
+
 const kColorList = [
   Color(0xFFF09797),
   Color(0xFFE8B447),
