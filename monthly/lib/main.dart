@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:monthly/user_data.dart';
 import 'home.dart';
 import 'package:provider/provider.dart';
 import 'stock.dart';
@@ -10,6 +11,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => UserData()),
         ChangeNotifierProvider(create: (_) => Stock()),
       ],
       child: MyApp(),
