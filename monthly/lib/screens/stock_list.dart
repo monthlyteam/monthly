@@ -5,7 +5,12 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../stock.dart';
 
-class StockList extends StatelessWidget {
+class StockList extends StatefulWidget {
+  @override
+  _StockListState createState() => _StockListState();
+}
+
+class _StockListState extends State<StockList> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -157,7 +162,14 @@ class StockList extends StatelessWidget {
                                             Icons.delete,
                                             color: kTextColor,
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            print("삭제");
+                                            Navigator.of(context).pop();
+                                            setState(() {
+                                              context.read<Stock>().deleteStock(
+                                                  ticker: myStock.ticker);
+                                            });
+                                          },
                                         ),
                                         IconButton(
                                           iconSize: 24.0,
