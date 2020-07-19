@@ -112,7 +112,6 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
           floating: true,
           backgroundColor: Colors.white,
         ),
-        SliverToBoxAdapter(),
         SliverFillRemaining(
           child: Container(
             child: Column(
