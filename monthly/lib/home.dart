@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'constants.dart';
-import 'screens/calender.dart';
+import 'screens/calendar.dart';
 import 'screens/dash_boards.dart';
 import 'screens/profile.dart';
 import 'screens/stock_list.dart';
