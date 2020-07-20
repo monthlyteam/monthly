@@ -83,7 +83,7 @@ class StockList extends StatelessWidget {
                       return StatefulBuilder(builder: (BuildContext context,
                           StateSetter setState /*You can rename this!*/) {
                         return Container(
-                          height: isEdit ? 240 : 360,
+                          height: isEdit ? 240 : 370,
                           child: Column(
                             children: <Widget>[
                               SizedBox(
