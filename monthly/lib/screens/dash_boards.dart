@@ -41,8 +41,8 @@ class _DashBoardsState extends State<DashBoards> {
   List<PieChartSectionData> showingSections() {
     return List.generate(context.watch<Stock>().stockList.length, (i) {
       final isTouched = i == piTouchedIndex;
-      final double fontSize = isTouched ? 25 : 16;
-      final double radius = isTouched ? 70 : 60;
+      final double fontSize = isTouched ? 30 : 20;
+      final double radius = isTouched ? 85 : 70;
       MyStock mStock = context.watch<Stock>().stockList[i];
       return PieChartSectionData(
         color: mStock.color,
@@ -399,7 +399,7 @@ class _DashBoardsState extends State<DashBoards> {
                                         show: false,
                                       ),
                                       sectionsSpace: 0.0,
-                                      centerSpaceRadius: 40.0,
+                                      centerSpaceRadius: 60.0,
                                       sections: showingSections()),
                                 ),
                               ),
