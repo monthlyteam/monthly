@@ -22,32 +22,31 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
 
     _events = {
       _selectedDay.subtract(Duration(days: 4)): [
-        'Event A5',
-        'Event B5',
-        'Event C5'
+        [1, 'SBUX', 'starbucks', 100000],
+        [0, 'SBUX', 'starbucks', 100000],
+        [1, 'SBUX', 'starbucks', 100000],
       ],
-      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
+      _selectedDay.subtract(Duration(days: 2)): [
+        [1, 'SBUX', 'starbucks', 100000],
+        [0, 'SBUX', 'starbucks', 100000],
+        [1, 'SBUX', 'starbucks', 100000],
+        [1, 'SBUX', 'starbucks', 100000],
+        [0, 'SBUX', 'starbucks', 100000],
+        [1, 'SBUX', 'starbucks', 100000],
+      ],
       _selectedDay: [
-        'Event A7',
-        'Event B7',
-        'Event C7',
-        'Event D7',
-        'Event B7',
-        'Event C7',
-        'Event D7'
+        [1, 'SBUX', 'starbucks', 10000],
+        [0, 'APPL', 'apple', 34000],
       ],
       _selectedDay.add(Duration(days: 1)): [
-        'Event A8',
-        'Event B8',
-        'Event C8',
-        'Event D8'
+        [1, 'SBUX', 'starbucks', 100000],
+        [0, 'SBUX', 'starbucks', 100000],
+        [1, 'SBUX', 'starbucks', 100000],
       ],
-      _selectedDay.add(Duration(days: 3)):
-          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
       _selectedDay.add(Duration(days: 7)): [
-        'Event A10',
-        'Event B10',
-        'Event C10'
+        [1, 'SBUX', 'starbucks', 100000],
+        [0, 'SBUX', 'starbucks', 100000],
+        [1, 'SBUX', 'starbucks', 100000],
       ],
     };
 
@@ -141,14 +140,16 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
       availableGestures: AvailableGestures.horizontalSwipe,
       calendarStyle: CalendarStyle(
         outsideDaysVisible: true,
-        weekendStyle: TextStyle().copyWith(color: Colors.red[800]),
+        weekendStyle: TextStyle().copyWith(color: Colors.blueGrey),
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
         weekendStyle: TextStyle().copyWith(
-          color: Colors.red[800],
+          color: Colors.blueGrey,
         ),
       ),
       headerStyle: HeaderStyle(
+        titleTextStyle:
+            TextStyle().copyWith(fontWeight: FontWeight.bold, fontSize: 18),
         centerHeaderTitle: true,
         formatButtonVisible: false,
       ),
@@ -159,10 +160,10 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
             height: 100,
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
-              color: _isSameDate(date) ? Colors.yellow : Colors.white,
+              color: _isSameDate(date) ? Color(0xffF2D49B) : Colors.white,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: Colors.red, //                   <--- border color
+                color: Color(0xff84BFA4), //                   <--- border color
                 width: 3.0,
               ),
             ),
@@ -178,7 +179,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
           return Container(
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
-              color: Colors.amber[400],
+              color: Color(0xffF2D49B),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
@@ -218,14 +219,63 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
     return ListView(
       children: _selectedEvents
           .map((event) => Container(
+                height: 75,
                 decoration: BoxDecoration(
-                  border: Border.all(width: 0.8),
-                  borderRadius: BorderRadius.circular(12.0),
+                  color: event[0] == 0 ? kMainColor : Color(0xffF25B7F),
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
                 margin:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 child: ListTile(
-                  title: Text(event.toString()),
+                  title: Text(
+                    event[0] == 0 ? "배당락일" : "지급일",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 5, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "티커/종목",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                            Text(
+                              '${event[1]} ${event[2]}',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "금액",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                            Text(
+                              '￦${event[3].round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   onTap: () => print('$event tapped!'),
                 ),
               ))
@@ -239,8 +289,8 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         color: _calendarController.isSelected(date)
-            ? Colors.brown[500]
-            : Colors.blue[400],
+            ? Color(0xff145A6A)
+            : Color(0xff248EA6),
       ),
       width: 16.0,
       height: 16.0,
