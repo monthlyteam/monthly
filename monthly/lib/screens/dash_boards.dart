@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:monthly/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:monthly/screens/dash_boards_level.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 
@@ -168,51 +169,61 @@ class _DashBoardsState extends State<DashBoards> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 25.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Text(
-                              "월 평균 배당금",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 20.0,
-                                color: Colors.white,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashBoardsLevel()),
+                        );
+                      },
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 25.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Text(
+                                "월 평균 배당금",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 20.0,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "￦ ${context.watch<Stock>().avgDividend}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                fontSize: 50.0,
-                                color: Colors.white,
+                              Text(
+                                "￦ ${context.watch<Stock>().avgDividend}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 50.0,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20.0,
-                            ),
-                            Text(
-                              " 매월 배당금으로 초밥 한조각!",
-                              style: TextStyle(
-                                  fontSize: 15.0, color: Colors.white),
-                            ),
-                          ],
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Text(
+                                " 매월 배당금으로 초밥 한조각!",
+                                style: TextStyle(
+                                    fontSize: 15.0, color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      height: 180.0,
-                      decoration: new BoxDecoration(
-                        color: Colors.grey.withOpacity(0.1),
-                        image: DecorationImage(
-                          colorFilter: new ColorFilter.mode(
-                              Colors.black.withOpacity(0.3), BlendMode.darken),
-                          fit: BoxFit.fitWidth,
-                          image: NetworkImage(
-                              'https://images.unsplash.com/photo-1562436260-126d541901e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'),
+                        height: 180.0,
+                        decoration: new BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          image: DecorationImage(
+                            colorFilter: new ColorFilter.mode(
+                                Colors.black.withOpacity(0.3),
+                                BlendMode.darken),
+                            fit: BoxFit.fitWidth,
+                            image: NetworkImage(
+                                'https://images.unsplash.com/photo-1562436260-126d541901e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'),
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
                     ),
                     SizedBox(
