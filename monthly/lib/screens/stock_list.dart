@@ -4,12 +4,7 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../stock.dart';
 
-class StockList extends StatefulWidget {
-  @override
-  _StockListState createState() => _StockListState();
-}
-
-class _StockListState extends State<StockList> {
+class StockList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -194,13 +189,11 @@ class _StockListState extends State<StockList> {
                                                               .pop();
                                                           Navigator.of(context)
                                                               .pop();
-                                                          setState(() {
-                                                            context
-                                                                .read<Stock>()
-                                                                .deleteStock(
-                                                                    ticker: myStock
-                                                                        .ticker);
-                                                          });
+                                                          context
+                                                              .read<Stock>()
+                                                              .deleteStock(
+                                                                  ticker: myStock
+                                                                      .ticker);
                                                         },
                                                         child: Text("예"),
                                                       )
