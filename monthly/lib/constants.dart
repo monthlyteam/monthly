@@ -28,3 +28,21 @@ const kColorList = [
   Color(0xFF386A0E),
   Color(0xFF2C206C)
 ];
+
+const kMonthlyLevel = [
+  [
+    10000,
+    "다음 목표는 뭘까요?",
+    'https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+  ],
+  [
+    5000,
+    "매월 배당금으로 로또 한 장!",
+    'https://images.unsplash.com/photo-1593453917438-14f60d0d2357?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+  ],
+  [
+    4000,
+    "매월 배당금으로 커피 한 잔!",
+    "https://images.unsplash.com/photo-1515442261605-65987783cb6a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
+  ],
+];
