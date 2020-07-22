@@ -3,6 +3,7 @@ import 'package:monthly/my_stock.dart';
 import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../stock.dart';
+import 'stock_list_add.dart';
 
 class StockList extends StatefulWidget {
   @override
@@ -87,7 +88,12 @@ class _StockListState extends State<StockList> {
                   Icons.search,
                   color: kTextColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StockListAdd()),
+                      );
+                },
               ),
               SizedBox(
                 width: 20.0,
