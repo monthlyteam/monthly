@@ -4,6 +4,7 @@ import 'screens/calendar.dart';
 import 'screens/dash_boards.dart';
 import 'screens/profile.dart';
 import 'screens/stock_list.dart';
+import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -22,38 +23,41 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: <Widget>[
-          Navigator(
-            key: _dashBoards,
-            onGenerateRoute: (route) => MaterialPageRoute(
-              settings: route,
-              builder: (context) => DashBoards(),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: <Widget>[
+            Navigator(
+              key: _dashBoards,
+              onGenerateRoute: (route) => MaterialPageRoute(
+                settings: route,
+                builder: (context) => DashBoards(),
+              ),
             ),
-          ),
-          Navigator(
-            key: _stockList,
-            onGenerateRoute: (route) => MaterialPageRoute(
-              settings: route,
-              builder: (context) => StockList(),
+            Navigator(
+              key: _stockList,
+              onGenerateRoute: (route) => MaterialPageRoute(
+                settings: route,
+                builder: (context) => StockList(),
+              ),
             ),
-          ),
-          Navigator(
-            key: _calender,
-            onGenerateRoute: (route) => MaterialPageRoute(
-              settings: route,
-              builder: (context) => Calender(),
+            Navigator(
+              key: _calender,
+              onGenerateRoute: (route) => MaterialPageRoute(
+                settings: route,
+                builder: (context) => Calender(),
+              ),
             ),
-          ),
-          Navigator(
-            key: _profile,
-            onGenerateRoute: (route) => MaterialPageRoute(
-              settings: route,
-              builder: (context) => Profile(),
+            Navigator(
+              key: _profile,
+              onGenerateRoute: (route) => MaterialPageRoute(
+                settings: route,
+                builder: (context) => Profile(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
