@@ -4,7 +4,12 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../stock.dart';
 
-class StockList extends StatelessWidget {
+class StockList extends StatefulWidget {
+  @override
+  _StockListState createState() => _StockListState();
+}
+
+class _StockListState extends State<StockList> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,11 +34,46 @@ class StockList extends StatelessWidget {
                 offset: Offset(0.0, 50.0),
                 onSelected: (String sel) {
                   print(sel);
+                  setState(() {
+                    switch (sel) {
+                      case "ticker":
+                        print("티커");
+                        context
+                            .read<Stock>()
+                            .stockList
+                            .sort((a, b) => a.ticker.compareTo(b.ticker));
+                        break;
+                      case "dividend":
+                        print("배당금");
+                        context
+                            .read<Stock>()
+                            .stockList
+                            .sort((a, b) => b.dividend.compareTo(a.dividend));
+                        break;
+                      case "evaPrice":
+                        print("평가금액");
+                        context
+                            .read<Stock>()
+                            .stockList
+                            .sort((a, b) => b.evaPrice.compareTo(a.evaPrice));
+                        break;
+                      default:
+                        break;
+                    }
+                  });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
-                    value: "detail",
-                    child: Text('detail'),
+                  PopupMenuItem<String>(
+                    value: "ticker",
+                    child: Text('티커'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: "dividend",
+                    child: Text('배당금'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: "evaPrice",
+                    child: Text('평가금액'),
                   ),
                 ],
                 icon: Icon(
