@@ -19,6 +19,12 @@ class _DashBoardsState extends State<DashBoards> {
   int piTouchedIndex = 0;
   double avgPoint = 0;
 
+  @override
+  void initState() {
+    calcPoint();
+    super.initState();
+  }
+
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
         final isTouched = i == barTouchedIndex;
         final barColor = isTouched ? Color(0xff84BFA4) : Color(0xfff2d49b);
@@ -341,7 +347,6 @@ class _DashBoardsState extends State<DashBoards> {
                                       fontWeight: FontWeight.bold),
                                   margin: 15.0,
                                   getTitles: (value) {
-                                    calcPoint();
                                     if (value == 0) {
                                       return '0';
                                     } else if (value == avgPoint) {
