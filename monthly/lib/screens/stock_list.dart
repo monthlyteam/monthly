@@ -4,7 +4,12 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../stock.dart';
 
-class StockList extends StatelessWidget {
+class StockList extends StatefulWidget {
+  @override
+  _StockListState createState() => _StockListState();
+}
+
+class _StockListState extends State<StockList> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,11 +34,46 @@ class StockList extends StatelessWidget {
                 offset: Offset(0.0, 50.0),
                 onSelected: (String sel) {
                   print(sel);
+                  setState(() {
+                    switch (sel) {
+                      case "ticker":
+                        print("티커");
+                        context
+                            .read<Stock>()
+                            .stockList
+                            .sort((a, b) => a.ticker.compareTo(b.ticker));
+                        break;
+                      case "dividend":
+                        print("배당금");
+                        context
+                            .read<Stock>()
+                            .stockList
+                            .sort((a, b) => b.dividend.compareTo(a.dividend));
+                        break;
+                      case "evaPrice":
+                        print("평가금액");
+                        context
+                            .read<Stock>()
+                            .stockList
+                            .sort((a, b) => b.evaPrice.compareTo(a.evaPrice));
+                        break;
+                      default:
+                        break;
+                    }
+                  });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
-                    value: "detail",
-                    child: Text('detail'),
+                  PopupMenuItem<String>(
+                    value: "ticker",
+                    child: Text('티커'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: "dividend",
+                    child: Text('배당금'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: "evaPrice",
+                    child: Text('평가금액'),
                   ),
                 ],
                 icon: Icon(
@@ -72,6 +112,8 @@ class StockList extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 bool isEdit = false;
+                final avgController = TextEditingController();
+                final amountController = TextEditingController();
                 showModalBottomSheet(
                     isScrollControlled: true,
                     shape: RoundedRectangleBorder(
@@ -80,10 +122,10 @@ class StockList extends StatelessWidget {
                             topRight: Radius.circular(30.0))),
                     context: context,
                     builder: (context) {
-                      return StatefulBuilder(builder: (BuildContext context,
-                          StateSetter setState /*You can rename this!*/) {
+                      return StatefulBuilder(builder:
+                          (BuildContext context, StateSetter setState) {
                         return Container(
-                          height: isEdit ? 240 : 360,
+                          height: isEdit ? 240 : 370,
                           child: Column(
                             children: <Widget>[
                               SizedBox(
@@ -270,7 +312,70 @@ class StockList extends StatelessWidget {
                                                 ),
                                                 onPressed: () {
                                                   setState(() {
-                                                    isEdit = !isEdit;
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            bContext) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                              "${myStock.name}",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color:
+                                                                      kTextColor),
+                                                            ),
+                                                            content: Text(
+                                                              "해당 종목을 수정하시겠습니까?",
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      kTextColor),
+                                                            ),
+                                                            actions: <Widget>[
+                                                              FlatButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          bContext)
+                                                                      .pop();
+                                                                },
+                                                                child:
+                                                                    Text("아니요"),
+                                                              ),
+                                                              FlatButton(
+                                                                onPressed: () {
+                                                                  isEdit =
+                                                                      !isEdit;
+                                                                  print(double.parse(
+                                                                      avgController
+                                                                          .text));
+                                                                  print(double.parse(
+                                                                      amountController
+                                                                          .text));
+                                                                  context.read<Stock>().modifyStock(
+                                                                      ticker: myStock
+                                                                          .ticker,
+                                                                      avg: double.parse(
+                                                                          avgController
+                                                                              .text),
+                                                                      amount: double.parse(
+                                                                          amountController
+                                                                              .text));
+                                                                  Navigator.of(
+                                                                          bContext)
+                                                                      .pop();
+                                                                },
+                                                                child:
+                                                                    Text("예"),
+                                                              )
+                                                            ],
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10.0))),
+                                                          );
+                                                        });
                                                   });
                                                 },
                                               ),
@@ -349,13 +454,25 @@ class StockList extends StatelessWidget {
                                                         EdgeInsets.all(2.0),
                                                     height: 24.0,
                                                     child: TextField(
-                                                      autofocus: true,
-                                                      style: TextStyle(
-                                                          color: kTextColor,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )),
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        controller:
+                                                            avgController,
+                                                        autofocus: true,
+                                                        style: TextStyle(
+                                                            color: kTextColor,
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        onSubmitted: (_) =>
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .nextFocus())),
                                               ),
                                               Visibility(
                                                 maintainState:
@@ -396,12 +513,25 @@ class StockList extends StatelessWidget {
                                                         EdgeInsets.all(2.0),
                                                     height: 24.0,
                                                     child: TextField(
-                                                      style: TextStyle(
-                                                          color: kTextColor,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )),
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .done,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        autofocus: true,
+                                                        controller:
+                                                            amountController,
+                                                        style: TextStyle(
+                                                            color: kTextColor,
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        onSubmitted: (_) =>
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .unfocus())),
                                               ),
                                               Visibility(
                                                 maintainState:
