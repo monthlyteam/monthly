@@ -4,6 +4,9 @@ import 'package:monthly/user_data.dart';
 import 'home.dart';
 import 'package:provider/provider.dart';
 import 'stock.dart';
+//import 'package:http/http.dart' as http;
+
+
 
 void main() {
   KakaoContext.clientId = "dfc5584eeb7d68ba3b1eac6eeb72db96";
@@ -18,6 +21,7 @@ void main() {
     ),
   );
 }
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
