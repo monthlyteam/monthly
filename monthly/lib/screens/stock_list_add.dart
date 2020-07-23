@@ -22,11 +22,14 @@ class _StockListAddState extends State<StockListAdd> {
         data = jsonDecode(response.body);
         print("response: ${data[0]}");
       } else {
+        print("서버에서 이상한거 받아옴");
         data = null;
       }
     } else {
+      print("입력값이 없음");
       data = null;
     }
+    setState(() {});
   }
 
   _buildRow(int index) {
@@ -52,14 +55,16 @@ class _StockListAddState extends State<StockListAdd> {
           SizedBox(
             width: 12.0,
           ),
-          RichText(
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              text: '${data[index]['ticker']} ${data[index]['name']}',
-              style: TextStyle(
-                  fontSize: 12.0,
-                  color: kTextColor,
-                  fontWeight: FontWeight.bold),
+          Flexible(
+            child: RichText(
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(
+                text: '${data[index]['ticker']} ${data[index]['name']}',
+                style: TextStyle(
+                    fontSize: 12.0,
+                    color: kTextColor,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           )
         ],
@@ -90,7 +95,9 @@ class _StockListAddState extends State<StockListAdd> {
                         Icons.arrow_back_ios,
                         color: kTextColor,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
                   ),
                   SizedBox(
@@ -98,7 +105,7 @@ class _StockListAddState extends State<StockListAdd> {
                   ),
                   Expanded(
                     child: Container(
-                      height: 30.0,
+                      height: 36.0,
                       child: TextField(
                           cursorColor: kTextColor,
                           controller: _controller,
@@ -116,11 +123,11 @@ class _StockListAddState extends State<StockListAdd> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               suffixIcon: Container(
-                                height: 20.0,
-                                width: 20.0,
+                                height: 22.0,
+                                width: 22.0,
                                 child: IconButton(
                                     padding: EdgeInsets.all(0.0),
-                                    iconSize: 20.0,
+                                    iconSize: 22.0,
                                     icon: Icon(
                                       Icons.clear,
                                       color: kTextColor,
@@ -128,9 +135,7 @@ class _StockListAddState extends State<StockListAdd> {
                                     onPressed: () => _controller.clear()),
                               )),
                           onChanged: (text) {
-                            setState(() async {
-                              await search(text);
-                            });
+                            search(text);
                             print(text);
                           }),
                     ),
@@ -147,8 +152,9 @@ class _StockListAddState extends State<StockListAdd> {
                 itemBuilder: (context, index) {
                   if (data != null) {
                     return this._buildRow(index);
+                  } else {
+                    return Container();
                   }
-                  return Container();
                 },
               ),
             )
