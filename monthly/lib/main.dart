@@ -16,6 +16,7 @@ Future<String> checkToken() async {
       final response = await http.get('http://13.125.225.138:5000/token');
       print('response: ${response.body}');
       prefs.setString("token", response.body);
+      token = response.body;
     }
     return token;
   } catch (e) {
@@ -30,8 +31,8 @@ Future<void> main() async {
   KakaoContext.javascriptClientId = "681b9f88d5034e80c2d669f839a5bac1";
 
   //Token for Develop
-//  String token = await checkToken();
-  String token = 'hJewaJavNAdx2BbR9wRiDQ';
+  String token = await checkToken();
+  //String token = 'pgJTF2u8-CqkjR5NXhuxMg';
 
   runApp(
     MultiProvider(

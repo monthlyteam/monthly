@@ -8,15 +8,15 @@ class MyStock {
   Color color; //메인 컬러
 
   double evaPrice; //평가금액
-  List<ExDividend> exDividends = List<ExDividend>(); //배당락일, 금액
+  List<dynamic> exDividends = List<dynamic>(); //배당락일 : 금액
   double nextDividend; //다음 예상 배당금(바로 직전 데이터와 같을 예정)
   double dividend; //배당금
-  double percent; //전체에서 평가금액의 비율(평가금액/전체 자산)
-  double totalDivPercent; //전체에서 배당률의 비율(배당금/전체 배당금)
+  double percent; //전체에서 평가금액의 비율(평가금액/전체 자산) 생성자
+  double totalDivPercent; //전체에서 배당률의 비율(배당금/전체 배당금) 생성자
   double divPercent; //배당률
-  double closingPrice; //전일 종가
-  double evaProfit; //평가손익
-  double evaProfitPercent; //평가손익 퍼센트
+  double closingPrice; //현재가격
+  double evaProfit; //평가손익 생성자 안에서 계산
+  double evaProfitPercent; //평가손익 퍼센트 생성자
   String frequency; //주기
   String logoURL; //로고Url
   MyStock(
@@ -29,18 +29,15 @@ class MyStock {
       this.exDividends,
       this.nextDividend,
       this.dividend,
-      this.percent,
-      this.totalDivPercent = 0.000,
-      this.divPercent = 0.000,
-      this.closingPrice = 5000,
-      this.evaProfit = 20000,
-      this.evaProfitPercent = -3.22,
+      this.percent = 0.0,
+      this.totalDivPercent = 0.0,
+      this.divPercent,
+      this.closingPrice,
+      this.evaProfit,
+      this.evaProfitPercent,
       this.frequency,
-      this.logoURL});
-}
-
-class ExDividend {
-  DateTime datetime; //배당락일
-  double price; //배당금
-  ExDividend({this.datetime, this.price});
+      this.logoURL}) {
+    evaProfit = evaPrice - amount * avg;
+    evaProfitPercent = (evaProfit / (amount * avg)) * 100;
+  }
 }

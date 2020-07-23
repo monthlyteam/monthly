@@ -283,169 +283,188 @@ class _DashBoardsState extends State<DashBoards> {
                     SizedBox(
                       height: 40.0,
                     ),
-                    Text(
-                      "월 차트",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: kTextColor,
-                          fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    AspectRatio(
-                      aspectRatio: 1.7,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: BarChart(
-                          BarChartData(
-                              alignment: BarChartAlignment.spaceAround,
-                              barTouchData: BarTouchData(
-                                touchTooltipData: BarTouchTooltipData(
-                                  tooltipBgColor: Color(0xff84BFA4),
-                                  tooltipPadding: const EdgeInsets.only(
-                                      top: 6.0, left: 6.0, right: 4.0),
-                                  tooltipBottomMargin: 4,
-                                  getTooltipItem: (
-                                    BarChartGroupData group,
-                                    int groupIndex,
-                                    BarChartRodData rod,
-                                    int rodIndex,
-                                  ) {
-                                    return BarTooltipItem(
-                                      "${context.read<Stock>().monthlyDividends[barTouchedIndex].round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                      TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15.0),
-                                    );
-                                  },
-                                ),
-                                touchCallback: (barTouchResponse) {
-                                  setState(() {
-                                    if (barTouchResponse.spot != null &&
-                                        barTouchResponse.touchInput
-                                            is! FlPanEnd &&
-                                        barTouchResponse.touchInput
-                                            is! FlLongPressEnd) {
-                                      barTouchedIndex = barTouchResponse
-                                          .spot.touchedBarGroupIndex;
-                                    }
-                                  });
-                                },
-                              ),
-                              titlesData: FlTitlesData(
-                                show: true,
-                                bottomTitles: SideTitles(
-                                  showTitles: true,
-                                  textStyle: TextStyle(
-                                      color: const Color(0xff2C2C2C),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12),
-                                  margin: 10,
-                                  getTitles: (double value) {
-                                    return '${(value).toInt() + 1}';
-                                  },
-                                ),
-                                leftTitles: SideTitles(
-                                  showTitles: true,
-                                  textStyle: TextStyle(
-                                      color: const Color(0xff2c2c2c),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold),
-                                  margin: 15.0,
-                                  getTitles: (value) {
-                                    if (value == 0) {
-                                      return '0';
-                                    } else if (value == avgPoint) {
-                                      return '${NumberFormat.compact().format(avgPoint)}';
-                                    } else if (value == 2 * avgPoint) {
-                                      return '${NumberFormat.compact().format(2 * avgPoint)}';
-                                    } else {
-                                      return '';
-                                    }
-                                  },
-                                ),
-                              ),
-                              borderData: FlBorderData(
-                                show: false,
-                              ),
-                              gridData: FlGridData(
-                                show: true,
-                                checkToShowHorizontalLine: (value) =>
-                                    value % avgPoint == 0 &&
-                                    value <= 2 * avgPoint,
-                                getDrawingHorizontalLine: (value) => FlLine(
-                                  color: const Color(0xff2a2747),
-                                  strokeWidth: 0.3,
-                                ),
-                              ),
-                              barGroups: showingGroups()),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    Text(
-                      "종목 비율",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: kTextColor,
-                          fontSize: 20),
-                    ),
-                    AspectRatio(
-                      aspectRatio: 1.1,
-                      child: Card(
-                        elevation: 0.0,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
+                    context.watch<Stock>().avgDividend != '0'
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Expanded(
-                                child: PieChart(
-                                  PieChartData(
-                                      startDegreeOffset: -90,
-                                      pieTouchData: PieTouchData(
-                                          touchCallback: (pieTouchResponse) {
-                                        setState(() {
-                                          if (pieTouchResponse
-                                                  .touchedSectionIndex !=
-                                              null) {
-                                            piTouchedIndex = pieTouchResponse
-                                                .touchedSectionIndex;
-                                          }
-                                          print(piTouchedIndex);
-                                        });
-                                      }),
-                                      borderData: FlBorderData(
-                                        show: false,
-                                      ),
-                                      sectionsSpace: 0.0,
-                                      centerSpaceRadius: 60.0,
-                                      sections: showingSections()),
+                              Text(
+                                "월 차트",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: kTextColor,
+                                    fontSize: 20),
+                              ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              AspectRatio(
+                                aspectRatio: 1.7,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: BarChart(
+                                    BarChartData(
+                                        alignment:
+                                            BarChartAlignment.spaceAround,
+                                        barTouchData: BarTouchData(
+                                          touchTooltipData: BarTouchTooltipData(
+                                            tooltipBgColor: Color(0xff84BFA4),
+                                            tooltipPadding:
+                                                const EdgeInsets.only(
+                                                    top: 6.0,
+                                                    left: 6.0,
+                                                    right: 4.0),
+                                            tooltipBottomMargin: 4,
+                                            getTooltipItem: (
+                                              BarChartGroupData group,
+                                              int groupIndex,
+                                              BarChartRodData rod,
+                                              int rodIndex,
+                                            ) {
+                                              return BarTooltipItem(
+                                                "${context.read<Stock>().monthlyDividends[barTouchedIndex].round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15.0),
+                                              );
+                                            },
+                                          ),
+                                          touchCallback: (barTouchResponse) {
+                                            setState(() {
+                                              if (barTouchResponse.spot !=
+                                                      null &&
+                                                  barTouchResponse.touchInput
+                                                      is! FlPanEnd &&
+                                                  barTouchResponse.touchInput
+                                                      is! FlLongPressEnd) {
+                                                barTouchedIndex =
+                                                    barTouchResponse.spot
+                                                        .touchedBarGroupIndex;
+                                              }
+                                            });
+                                          },
+                                        ),
+                                        titlesData: FlTitlesData(
+                                          show: true,
+                                          bottomTitles: SideTitles(
+                                            showTitles: true,
+                                            textStyle: TextStyle(
+                                                color: const Color(0xff2C2C2C),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
+                                            margin: 10,
+                                            getTitles: (double value) {
+                                              return '${(value).toInt() + 1}';
+                                            },
+                                          ),
+                                          leftTitles: SideTitles(
+                                            showTitles: true,
+                                            textStyle: TextStyle(
+                                                color: const Color(0xff2c2c2c),
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold),
+                                            margin: 15.0,
+                                            getTitles: (value) {
+                                              if (value == 0) {
+                                                return '0';
+                                              } else if (value == avgPoint) {
+                                                return '${NumberFormat.compact().format(avgPoint)}';
+                                              } else if (value ==
+                                                  2 * avgPoint) {
+                                                return '${NumberFormat.compact().format(2 * avgPoint)}';
+                                              } else {
+                                                return '';
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        borderData: FlBorderData(
+                                          show: false,
+                                        ),
+                                        gridData: FlGridData(
+                                          show: true,
+                                          checkToShowHorizontalLine: (value) =>
+                                              value % avgPoint == 0 &&
+                                              value <= 2 * avgPoint,
+                                          getDrawingHorizontalLine: (value) =>
+                                              FlLine(
+                                            color: const Color(0xff2a2747),
+                                            strokeWidth: 0.3,
+                                          ),
+                                        ),
+                                        barGroups: showingGroups()),
+                                  ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: 40.0,
+                              ),
+                              Text(
+                                "종목 비율",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: kTextColor,
+                                    fontSize: 20),
+                              ),
+                              AspectRatio(
+                                aspectRatio: 1.1,
+                                child: Card(
+                                  elevation: 0.0,
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: PieChart(
+                                            PieChartData(
+                                                startDegreeOffset: -90,
+                                                pieTouchData: PieTouchData(
+                                                    touchCallback:
+                                                        (pieTouchResponse) {
+                                                  setState(() {
+                                                    if (pieTouchResponse
+                                                            .touchedSectionIndex !=
+                                                        null) {
+                                                      piTouchedIndex =
+                                                          pieTouchResponse
+                                                              .touchedSectionIndex;
+                                                    }
+                                                    print(piTouchedIndex);
+                                                  });
+                                                }),
+                                                borderData: FlBorderData(
+                                                  show: false,
+                                                ),
+                                                sectionsSpace: 0.0,
+                                                centerSpaceRadius: 60.0,
+                                                sections: showingSections()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0),
+                                  child: Wrap(
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    direction: Axis.horizontal,
+                                    spacing: 10.0,
+                                    children: showingSectionTitle(),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 80.0,
                               ),
                             ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          direction: Axis.horizontal,
-                          spacing: 10.0,
-                          children: showingSectionTitle(),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 80.0,
-                    ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),

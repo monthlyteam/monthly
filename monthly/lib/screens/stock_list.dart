@@ -17,8 +17,8 @@ class _StockListState extends State<StockList> {
       MaterialPageRoute(builder: (context) => StockListAdd()),
     );
     print("ticker $information");
-
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -634,7 +634,7 @@ class _StockListState extends State<StockList> {
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  "${myStock.exDividends.last.datetime.year}년 ${myStock.exDividends.last.datetime.month}월 ${myStock.exDividends.last.datetime.day}일",
+                                                  "${DateTime.parse(myStock.exDividends.last['datetime']).year}년 ${DateTime.parse(myStock.exDividends.last['datetime']).month}월 ${DateTime.parse(myStock.exDividends.last['datetime']).day}일",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,

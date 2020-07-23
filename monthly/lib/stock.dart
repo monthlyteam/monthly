@@ -39,7 +39,8 @@ class Stock with ChangeNotifier {
   }
 
   void init() async {
-    addStock(
+    addStock(ticker: 'QYLD');
+    /* addStock(
         newStock: MyStock(
             ticker: "SBUX",
             name: "Starbucks",
@@ -66,58 +67,7 @@ class Stock with ChangeNotifier {
                   price: 0.36),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/starbucks.com"));
-    /*
-    addStock(
-        newStock: MyStock(
-            ticker: "SPHD",
-            name: "SPHD",
-            amount: 30.0,
-            avg: 50000.0,
-            color: Color(0xff88B14B),
-            frequency: "월",
-            evaPrice: 52300.1,
-            dividend: 45750.2,
-            percent: 30.0,
-            exDividends: [
-              ExDividend(
-                  datetime: DateTime.parse("2020-06-22T00:00:00.000Z"),
-                  price: 0.153),
-              ExDividend(
-                  datetime: DateTime.parse("2020-05-18T00:00:00.000Z"),
-                  price: 0.155),
-              ExDividend(
-                  datetime: DateTime.parse("2020-04-20T00:00:00.000Z"),
-                  price: 0.156),
-              ExDividend(
-                  datetime: DateTime.parse("2020-03-23T00:00:00.000Z"),
-                  price: 0.157),
-              ExDividend(
-                  datetime: DateTime.parse("2020-02-24T00:00:00.000Z"),
-                  price: 0.158),
-              ExDividend(
-                  datetime: DateTime.parse("2020-01-21T00:00:00.000Z"),
-                  price: 0.156),
-              ExDividend(
-                  datetime: DateTime.parse("2019-12-23T00:00:00.000Z"),
-                  price: 0.155),
-              ExDividend(
-                  datetime: DateTime.parse("2019-11-18T00:00:00.000Z"),
-                  price: 0.155),
-              ExDividend(
-                  datetime: DateTime.parse("2019-10-21T00:00:00.000Z"),
-                  price: 0.152),
-              ExDividend(
-                  datetime: DateTime.parse("2019-09-23T00:00:00.000Z"),
-                  price: 0.152),
-              ExDividend(
-                  datetime: DateTime.parse("2019-08-19T00:00:00.000Z"),
-                  price: 0.153),
-              ExDividend(
-                  datetime: DateTime.parse("2019-07-22T00:00:00.000Z"),
-                  price: 0.150),
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/samsung.com"));
-     */
+
     addStock(
         newStock: MyStock(
             ticker: "AAPL",
@@ -147,8 +97,8 @@ class Stock with ChangeNotifier {
             logoURL: "https:\/\/logo.clearbit.com\/apple.com"));
     addStock(
         newStock: MyStock(
-            ticker: "T",
-            name: "AT&T",
+            ticker: "AA",
+            name: "QYLDd",
             amount: 30.0,
             avg: 50000.0,
             color: Color(0xffE5396E),
@@ -172,39 +122,18 @@ class Stock with ChangeNotifier {
                   price: 0.51),
             ],
             logoURL: "https:\/\/logo.clearbit.com\/att.com"));
-    addStock(
-        newStock: MyStock(
-            ticker: "MSFT",
-            name: "MicroSoft",
-            amount: 20.0,
-            avg: 50000.0,
-            color: Color(0xff538FE0),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            nextDividend: 0.51,
-            exDividends: [
-              ExDividend(
-                  datetime: DateTime.parse("2020-05-20T00:00:00.000Z"),
-                  price: 0.51),
-              ExDividend(
-                  datetime: DateTime.parse("2020-02-19T00:00:00.000Z"),
-                  price: 0.51),
-              ExDividend(
-                  datetime: DateTime.parse("2019-11-20T00:00:00.000Z"),
-                  price: 0.51),
-              ExDividend(
-                  datetime: DateTime.parse("2019-08-14T00:00:00.000Z"),
-                  price: 0.46),
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
+ */
   }
 
-  void addStock({MyStock newStock}) {
-    _stockList.add(newStock);
+  void addStock({String ticker}) async {
+    await _httpStockPost(ticker, 10, 25);
+    MyStock ms = await _getMyData(ticker);
+    _stockList.add(ms);
     _calcMonthlyDividends();
     _calcStockPercent();
-    _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
+    _calcDividendPercent();
+//    await _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
+
     notifyListeners();
   }
 
@@ -212,6 +141,7 @@ class Stock with ChangeNotifier {
     _stockList.removeWhere((item) => item.ticker == ticker);
     _calcMonthlyDividends();
     _calcStockPercent();
+    _calcDividendPercent();
     _httpStockPost(ticker, -1, -1);
     notifyListeners();
   }
@@ -222,6 +152,7 @@ class Stock with ChangeNotifier {
     _stockList[index].avg = avg;
     _calcMonthlyDividends();
     _calcStockPercent();
+    _calcDividendPercent();
     _httpStockPost(ticker, amount, avg);
     notifyListeners();
   }
@@ -230,9 +161,10 @@ class Stock with ChangeNotifier {
     int month;
     _stockList.forEach((item) {
       item.exDividends.forEach((element) {
-        month = element.datetime.month;
-        if (element.datetime.year == DateTime.now().year) {
-          _monthlyDividends[month - 1] += element.price * item.amount * _exrate;
+        month = DateTime.parse(element['index']).month;
+        if (DateTime.parse(element['index']).year == DateTime.now().year) {
+          _monthlyDividends[month - 1] +=
+              element['dividend'] * item.amount * _exrate;
         } else {
           _monthlyDividends[month - 1] +=
               item.nextDividend * item.amount * _exrate;
@@ -256,6 +188,17 @@ class Stock with ChangeNotifier {
     });
   }
 
+  void _calcDividendPercent() {
+    double sumDividendPrice = 0;
+    _stockList.forEach((item) {
+      sumDividendPrice += item.dividend;
+    });
+
+    _stockList.forEach((item) {
+      item.totalDivPercent = ((item.dividend / sumDividendPrice) * 100);
+    });
+  }
+
   void addKakaoProfile({String profileImgUrl = '', String name, int kakaoId}) {
     _userData.profileImgUrl = profileImgUrl;
     _userData.name = name;
@@ -264,7 +207,8 @@ class Stock with ChangeNotifier {
     notifyListeners();
   }
 
-  void _httpStockPost(String ticker, double amount, double avgPrice) async {
+  Future<void> _httpStockPost(
+      String ticker, double amount, double avgPrice) async {
     var json = jsonEncode({
       'id': _userData.tokenId,
       'ticker': ticker,
@@ -302,5 +246,34 @@ class Stock with ChangeNotifier {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<MyStock> _getMyData(String ticker) async {
+    final response =
+        await http.get('http://13.125.225.138:5000/data/${_userData.tokenId}');
+    print('getMyDataresponse: ${response.body}');
+    var myData = json.decode(response.body);
+    int index = myData.indexWhere((item) => item['ticker'] == ticker);
+    var dF = myData[index];
+
+    print("sexxxxxxxxxxxxxx: ${dF['ExList']}");
+    print("sexxxxxxxxxxxxxxx: ${dF['ExList'][0]}");
+    print(
+        "sexxxxxxxxxxxxxxxx: ${DateTime.parse(dF['ExList'][0]['index']).year}");
+
+    return MyStock(
+        ticker: dF['ticker'],
+        name: dF['Name'],
+        amount: dF['amount'],
+        avg: dF['avgPrice'],
+        color: Colors.blueGrey,
+        evaPrice: dF['Price'] * dF['amount'],
+        exDividends: dF['ExList'],
+        nextDividend: dF['NextAmount'],
+        dividend: dF['YearlyDividend'] * dF['amount'],
+        divPercent: dF['DividendYield'] * 100,
+        closingPrice: dF['Price'],
+        frequency: dF['Frequency'],
+        logoURL: dF['Logo']);
   }
 }
