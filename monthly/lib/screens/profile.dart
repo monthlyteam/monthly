@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:monthly/constants.dart';
+import 'package:monthly/stock.dart';
 import 'profile_settings.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -13,7 +15,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   bool _isKakao = false;
   bool _isKakaoLogin = false;
-  String _userName = '사용자';
 
   @override
   void initState() {
@@ -32,7 +33,17 @@ class _ProfileState extends State<Profile> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch $url';
+      final scaffold = Scaffold.of(context);
+      scaffold.showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.black38,
+          content: const Text('메일 기본 앱을 찾을 수 없습니다.'),
+          action: SnackBarAction(
+              textColor: Colors.redAccent,
+              label: '확인',
+              onPressed: scaffold.hideCurrentSnackBar),
+        ),
+      );
     }
   }
 
@@ -99,9 +110,12 @@ class _ProfileState extends State<Profile> {
   _getUserKakaoName() async {
     try {
       User user = await UserApi.instance.me();
-      setState(() {
-        _userName = user.properties['nickname'];
-      });
+      context
+          .read<Stock>()
+          .addKakaoProfile(name: user.properties['nickname'], kakaoId: user.id);
+//      setState(() {
+//        _userName = user.properties['nickname'];
+//      });
     } catch (e) {
       setState(() {
         _isKakaoLogin = false;
@@ -159,7 +173,7 @@ class _ProfileState extends State<Profile> {
                                     fontSize: 14),
                               ),
                               Text(
-                                "$_userName",
+                                "${context.watch<Stock>().userData.name}",
                                 style: TextStyle(
                                     color: kTextColor.withOpacity(0.7),
                                     fontWeight: FontWeight.bold,

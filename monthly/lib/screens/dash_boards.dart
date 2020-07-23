@@ -190,34 +190,40 @@ class _DashBoardsState extends State<DashBoards> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
+                              SizedBox(
+                                height: 15,
+                              ),
                               Text(
                                 "월 평균 배당금",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w800,
-                                  fontSize: 20.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "￦ ${context.watch<Stock>().avgDividend}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 50.0,
+                                  fontSize: 25.0,
                                   color: Colors.white,
                                 ),
                               ),
                               SizedBox(
-                                height: 20.0,
+                                height: 20,
+                              ),
+                              Text(
+                                "￦${context.watch<Stock>().avgDividend}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 40.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15.0,
                               ),
                               Text(
                                 " 매월 배당금으로 초밥 한조각!",
                                 style: TextStyle(
-                                    fontSize: 15.0, color: Colors.white),
+                                    fontSize: 18.0, color: Colors.white),
                               ),
                             ],
                           ),
                         ),
-                        height: 180.0,
+                        height: 240.0,
                         decoration: new BoxDecoration(
                           color: Colors.grey.withOpacity(0.1),
                           image: DecorationImage(
@@ -225,8 +231,7 @@ class _DashBoardsState extends State<DashBoards> {
                                 Colors.black.withOpacity(0.3),
                                 BlendMode.darken),
                             fit: BoxFit.fitWidth,
-                            image: NetworkImage(
-                                'https://images.unsplash.com/photo-1562436260-126d541901e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'),
+                            image: AssetImage('images/C04.jpg'),
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
@@ -236,7 +241,7 @@ class _DashBoardsState extends State<DashBoards> {
                       height: 20.0,
                     ),
                     Container(
-                      height: 50.0,
+                      height: 60.0,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
@@ -249,12 +254,12 @@ class _DashBoardsState extends State<DashBoards> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       color: Colors.white,
-                                      fontSize: 20.0),
+                                      fontSize: 24.0),
                                 ),
                                 Text(
                                   "월 배당금",
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 15.0),
+                                      color: Colors.white, fontSize: 18.0),
                                 ),
                               ],
                             ),
@@ -284,6 +289,9 @@ class _DashBoardsState extends State<DashBoards> {
                           fontWeight: FontWeight.bold,
                           color: kTextColor,
                           fontSize: 20),
+                    ),
+                    SizedBox(
+                      height: 15.0,
                     ),
                     AspectRatio(
                       aspectRatio: 1.7,

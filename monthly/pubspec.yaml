@@ -37,6 +37,7 @@ flutter:
   uses-material-design: true
   assets:
     - icons/
+    - images/
 
   fonts:
     - family: NanumGothic

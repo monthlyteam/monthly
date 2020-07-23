@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class UserData {
   String profileImgUrl;
   String name;
-  String kakaoId;
+  int kakaoId;
   String tokenId;
 
   UserData(
       {this.profileImgUrl = '',
-      this.name = '',
-      this.kakaoId = '',
+      this.name = '사용자',
+      this.kakaoId = 0,
       this.tokenId});
 }

@@ -14,6 +14,7 @@ class Stock with ChangeNotifier {
   //getter
   List<MyStock> get stockList => _stockList;
   List<double> get monthlyDividends => _monthlyDividends;
+  UserData get userData => _userData;
   String get avgDividend {
     return (_monthlyDividends.reduce((a, b) => a + b) / 12.0)
         .round()
@@ -252,6 +253,13 @@ class Stock with ChangeNotifier {
     _stockList.forEach((item) {
       item.percent = ((item.evaPrice / sumEvaPrice) * 100);
     });
+  }
+
+  void addKakaoProfile({String profileImgUrl = '', String name, int kakaoId}) {
+    _userData.profileImgUrl = profileImgUrl;
+    _userData.name = name;
+    _userData.kakaoId = kakaoId;
+    notifyListeners();
   }
 
   void _httpPost(String ticker, double amount, double avgPrice) async {
