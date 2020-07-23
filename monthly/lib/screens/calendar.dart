@@ -161,9 +161,9 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
               color: _isSameDate(date) ? Color(0xffF2D49B) : Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: Color(0xff84BFA4), //                   <--- border color
+                color: Color(0xffA3751F), //                   <--- border color
                 width: 3.0,
               ),
             ),
@@ -180,7 +180,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
             margin: const EdgeInsets.all(4.0),
             decoration: BoxDecoration(
               color: Color(0xffF2D49B),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Center(
               child: Text(
@@ -287,6 +287,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
         shape: BoxShape.rectangle,
         color: _calendarController.isSelected(date)
             ? Color(0xff145A6A)
