@@ -19,8 +19,10 @@ class Stock with ChangeNotifier {
   UserData _userData = UserData();
   List<MyStock> _stockList = List<MyStock>();
   List<double> _monthlyDividends = List.filled(12, 0.0);
+  Map<DateTime, List> _calEvents = {};
 
   //getter
+  Map<DateTime, List> get calEvents => _calEvents;
   int get level => _level;
   List<List<dynamic>> get levelCard => _levelCard;
   List<MyStock> get stockList => _stockList;
@@ -50,89 +52,9 @@ class Stock with ChangeNotifier {
 
   void init() async {
     addStock(ticker: 'QYLD');
-    /* addStock(
-        newStock: MyStock(
-            ticker: "SBUX",
-            name: "Starbucks",
-            amount: 40.0,
-            avg: 50000.0,
-            color: Color(0xff538FE0),
-            frequency: "분기",
-            evaPrice: 81532.1,
-            dividend: 82231.5,
-            percent: 40.0,
-            nextDividend: 0.42,
-            exDividends: [
-              ExDividend(
-                  datetime: DateTime.parse("2020-05-07T00:00:00.000Z"),
-                  price: 0.41),
-              ExDividend(
-                  datetime: DateTime.parse("2020-02-05T00:00:00.000Z"),
-                  price: 0.41),
-              ExDividend(
-                  datetime: DateTime.parse("2019-11-12T00:00:00.000Z"),
-                  price: 0.41),
-              ExDividend(
-                  datetime: DateTime.parse("2019-08-07T00:00:00.000Z"),
-                  price: 0.36),
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/starbucks.com"));
-
-    addStock(
-        newStock: MyStock(
-            ticker: "AAPL",
-            name: "Apple",
-            amount: 10.0,
-            avg: 50000.0,
-            color: Color(0xffE5396E),
-            frequency: "분기",
-            evaPrice: 401500.1,
-            dividend: 41250.2,
-            percent: 15.0,
-            nextDividend: 0.82,
-            exDividends: [
-              ExDividend(
-                  datetime: DateTime.parse("2020-05-08T00:00:00.000Z"),
-                  price: 0.82),
-              ExDividend(
-                  datetime: DateTime.parse("2020-02-07T00:00:00.000Z"),
-                  price: 0.77),
-              ExDividend(
-                  datetime: DateTime.parse("2019-11-07T00:00:00.000Z"),
-                  price: 0.77),
-              ExDividend(
-                  datetime: DateTime.parse("2019-08-09T00:00:00.000Z"),
-                  price: 0.7),
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/apple.com"));
-    addStock(
-        newStock: MyStock(
-            ticker: "AA",
-            name: "QYLDd",
-            amount: 30.0,
-            avg: 50000.0,
-            color: Color(0xffE5396E),
-            frequency: "분기",
-            evaPrice: 417320.1,
-            dividend: 9250.2,
-            percent: 15.0,
-            nextDividend: 0.52,
-            exDividends: [
-              ExDividend(
-                  datetime: DateTime.parse("2020-07-09T00:00:00.000Z"),
-                  price: 0.52),
-              ExDividend(
-                  datetime: DateTime.parse("2020-04-08T00:00:00.000Z"),
-                  price: 0.52),
-              ExDividend(
-                  datetime: DateTime.parse("2020-01-09T00:00:00.000Z"),
-                  price: 0.52),
-              ExDividend(
-                  datetime: DateTime.parse("2019-10-09T00:00:00.000Z"),
-                  price: 0.51),
-            ],
-            logoURL: "https:\/\/logo.clearbit.com\/att.com"));
- */
+    addStock(ticker: 'KO');
+    addStock(ticker: 'TSLA');
+    addStock(ticker: 'GOOG');
   }
 
   void _setLevel() {
@@ -156,6 +78,43 @@ class Stock with ChangeNotifier {
     }
   }
 
+  void _setCalEvent() {
+    _stockList.forEach((item) {
+      item.exDividends.forEach((element) {
+        if (_calEvents.containsKey(DateTime.parse(element['index']))) {
+          //배당락일 정보 입력
+          _calEvents[DateTime.parse(element['index'])]
+              .add([0, item.ticker, item.name, element['dividend'] * _exrate]);
+        } else {
+          _calEvents[DateTime.parse(element['index'])] = [
+            [0, item.ticker, item.name, element['dividend'] * _exrate]
+          ];
+        }
+      });
+      if (item.dividendDate != null) {
+        //ETF 등 지급일 정보가 없을 경우 예외처리
+        if (_calEvents.containsKey(DateTime.parse(item.dividendDate))) {
+          //지급일 정보 입력
+          _calEvents[DateTime.parse(item.dividendDate)].add([
+            1,
+            item.ticker,
+            item.name,
+            (item.nextDividend * item.amount * _exrate)
+          ]);
+        } else {
+          _calEvents[DateTime.parse(item.dividendDate)] = [
+            [
+              1,
+              item.ticker,
+              item.name,
+              (item.nextDividend * item.amount * _exrate)
+            ]
+          ];
+        }
+      }
+    });
+  }
+
   void addStock({String ticker}) async {
     await _httpStockPost(ticker, 10, 25);
     MyStock ms = await _getMyData(ticker);
@@ -164,6 +123,7 @@ class Stock with ChangeNotifier {
     _calcStockPercent();
     _calcDividendPercent();
     _setLevel();
+    _setCalEvent();
 //    await _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
 
     notifyListeners();
@@ -176,6 +136,8 @@ class Stock with ChangeNotifier {
     _calcDividendPercent();
     _httpStockPost(ticker, -1, -1);
     _setLevel();
+    _setCalEvent();
+
     notifyListeners();
   }
 
@@ -188,6 +150,8 @@ class Stock with ChangeNotifier {
     _calcDividendPercent();
     _httpStockPost(ticker, amount, avg);
     _setLevel();
+    _setCalEvent();
+
     notifyListeners();
   }
 
@@ -249,7 +213,7 @@ class Stock with ChangeNotifier {
       'amount': amount,
       'avgPrice': avgPrice,
     });
-    print('json: $json');
+    print('httpStockPost json: $json');
 
     try {
       var response = await http.post(
@@ -308,6 +272,7 @@ class Stock with ChangeNotifier {
         divPercent: dF['DividendYield'] * 100,
         closingPrice: dF['Price'],
         frequency: dF['Frequency'],
+        dividendDate: dF['DividendDate'],
         logoURL: dF['Logo']);
   }
 }

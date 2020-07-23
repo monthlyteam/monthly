@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:monthly/stock.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:monthly/constants.dart';
+import 'package:provider/provider.dart';
 
 class Calender extends StatefulWidget {
   @override
@@ -9,7 +11,6 @@ class Calender extends StatefulWidget {
 }
 
 class _CalenderState extends State<Calender> with TickerProviderStateMixin {
-  Map<DateTime, List> _events;
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
@@ -20,37 +21,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
     initializeDateFormatting();
     final _selectedDay = DateTime.now();
 
-    _events = {
-      _selectedDay.subtract(Duration(days: 4)): [
-        [1, 'SBUX', 'starbucks', 100000],
-        [0, 'SBUX', 'starbucks', 100000],
-        [1, 'SBUX', 'starbucks', 100000],
-      ],
-      _selectedDay.subtract(Duration(days: 2)): [
-        [1, 'SBUX', 'starbucks', 100000],
-        [0, 'SBUX', 'starbucks', 100000],
-        [1, 'SBUX', 'starbucks', 100000],
-        [1, 'SBUX', 'starbucks', 100000],
-        [0, 'SBUX', 'starbucks', 100000],
-        [1, 'SBUX', 'starbucks', 100000],
-      ],
-      _selectedDay: [
-        [1, 'SBUX', 'starbucks', 10000],
-        [0, 'APPL', 'apple', 34000],
-      ],
-      _selectedDay.add(Duration(days: 1)): [
-        [1, 'SBUX', 'starbucks', 100000],
-        [0, 'SBUX', 'starbucks', 100000],
-        [1, 'SBUX', 'starbucks', 100000],
-      ],
-      _selectedDay.add(Duration(days: 7)): [
-        [1, 'SBUX', 'starbucks', 100000],
-        [0, 'SBUX', 'starbucks', 100000],
-        [1, 'SBUX', 'starbucks', 100000],
-      ],
-    };
-
-    _selectedEvents = _events[_selectedDay] ?? [];
+    _selectedEvents = context.read<Stock>().calEvents[_selectedDay] ?? [];
     _calendarController = CalendarController();
 
     _animationController = AnimationController(
@@ -133,7 +104,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
     return TableCalendar(
       locale: 'ko_KR',
       calendarController: _calendarController,
-      events: _events,
+      events: context.watch<Stock>().calEvents,
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.slide,
       startingDayOfWeek: StartingDayOfWeek.sunday,
@@ -237,7 +208,6 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                   subtitle: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 5, 0, 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,25 +217,33 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),
-                            Text(
-                              '${event[1]} ${event[2]}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
+                            Container(
+                              width: 200,
+                              child: Text(
+                                '${event[1]} ${event[2]}',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "금액",
+                              event[0] == 0 ? "주당 배당금" : "총 배당금",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),
                             Text(
-                              '￦${event[3].round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                              '￦${event[3].toStringAsFixed(1).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

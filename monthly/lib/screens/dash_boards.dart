@@ -218,7 +218,7 @@ class _DashBoardsState extends State<DashBoards> {
                               Text(
                                 "${kMonthlyLevel[context.watch<Stock>().level][1]}",
                                 style: TextStyle(
-                                    fontSize: 18.0, color: Colors.white),
+                                    fontSize: 15.0, color: Colors.white),
                               ),
                             ],
                           ),

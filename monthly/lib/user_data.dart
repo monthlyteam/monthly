@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class UserData {
   String profileImgUrl;
   String name;

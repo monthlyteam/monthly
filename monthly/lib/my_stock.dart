@@ -18,7 +18,9 @@ class MyStock {
   double evaProfit; //평가손익 생성자 안에서 계산
   double evaProfitPercent; //평가손익 퍼센트 생성자
   int frequency; //주기
+  String dividendDate;
   String logoURL; //로고Url
+
   MyStock(
       {this.ticker,
       this.name,
@@ -36,6 +38,7 @@ class MyStock {
       this.evaProfit,
       this.evaProfitPercent,
       this.frequency,
+      this.dividendDate,
       this.logoURL}) {
     evaProfit = evaPrice - amount * avg;
     evaProfitPercent = (evaProfit / (amount * avg)) * 100;
