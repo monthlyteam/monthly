@@ -33,41 +33,47 @@ class _StockListAddState extends State<StockListAdd> {
   }
 
   _buildRow(int index) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(left: 20.0, right: 25.0, top: 6.0, bottom: 6.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SizedBox(
-            height: 24.0,
-            width: 24.0,
-            child: IconButton(
-              padding: EdgeInsets.all(0.0),
-              iconSize: 24.0,
-              icon: Icon(
-                Icons.search,
-                color: kTextColor,
-              ),
-              onPressed: () {},
-            ),
-          ),
-          SizedBox(
-            width: 12.0,
-          ),
-          Flexible(
-            child: RichText(
-              overflow: TextOverflow.ellipsis,
-              text: TextSpan(
-                text: '${data[index]['ticker']} ${data[index]['name']}',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    color: kTextColor,
-                    fontWeight: FontWeight.bold),
+    return GestureDetector(
+      onTap: (){
+        print("ticker : ${data[index]['ticker']}, name : ${data[index]['name']}");
+        Navigator.pop(context, data[index]['ticker']);
+      },
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 20.0, right: 25.0, top: 6.0, bottom: 6.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 24.0,
+              width: 24.0,
+              child: IconButton(
+                padding: EdgeInsets.all(0.0),
+                iconSize: 24.0,
+                icon: Icon(
+                  Icons.search,
+                  color: kTextColor,
+                ),
+                onPressed: () {},
               ),
             ),
-          )
-        ],
+            SizedBox(
+              width: 12.0,
+            ),
+            Flexible(
+              child: RichText(
+                overflow: TextOverflow.ellipsis,
+                text: TextSpan(
+                  text: '${data[index]['ticker']} ${data[index]['name']}',
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      color: kTextColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -96,7 +102,7 @@ class _StockListAddState extends State<StockListAdd> {
                         color: kTextColor,
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -114,6 +120,8 @@ class _StockListAddState extends State<StockListAdd> {
                               color: kTextColor,
                               fontWeight: FontWeight.bold),
                           decoration: InputDecoration(
+                            hintText: "티커 또는 주식명을 입력해 주세요.",
+                              hintStyle: TextStyle(fontSize: 12.0),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 0.0, horizontal: 12.0),
                               filled: true,
@@ -132,11 +140,14 @@ class _StockListAddState extends State<StockListAdd> {
                                       Icons.clear,
                                       color: kTextColor,
                                     ),
-                                    onPressed: () => _controller.clear()),
+                                    onPressed: () { _controller.clear();
+                                    setState(() {
+                                      data = null;
+                                    });},)
                               )),
                           onChanged: (text) {
                             search(text);
-                            print(text);
+                            print("input : $text");
                           }),
                     ),
                   )

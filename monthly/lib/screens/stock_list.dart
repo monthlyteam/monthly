@@ -11,6 +11,14 @@ class StockList extends StatefulWidget {
 }
 
 class _StockListState extends State<StockList> {
+  void moveToSecondPage() async {
+    final information = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => StockListAdd()),
+    );
+    print("ticker $information");
+
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -89,10 +97,7 @@ class _StockListState extends State<StockList> {
                   color: kTextColor,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => StockListAdd()),
-                      );
+                  moveToSecondPage();
                 },
               ),
               SizedBox(
