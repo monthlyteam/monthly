@@ -6,7 +6,8 @@ import 'package:monthly/my_stock.dart';
 import 'package:monthly/user_data.dart';
 
 class Stock with ChangeNotifier {
-  final double exrate = 1200;
+  int _level = 20; //monthly level(Low level is Top)
+  double _exrate = 1200;
   UserData _userData = UserData();
   List<MyStock> _stockList = List<MyStock>();
   List<double> _monthlyDividends = List.filled(12, 0.0);
@@ -203,7 +204,7 @@ class Stock with ChangeNotifier {
     _stockList.add(newStock);
     _calcMonthlyDividends();
     _calcStockPercent();
-    _httpPost(newStock.ticker, newStock.avg, newStock.amount);
+    _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
     notifyListeners();
   }
 
@@ -211,7 +212,7 @@ class Stock with ChangeNotifier {
     _stockList.removeWhere((item) => item.ticker == ticker);
     _calcMonthlyDividends();
     _calcStockPercent();
-    _httpPost(ticker, -1, -1);
+    _httpStockPost(ticker, -1, -1);
     notifyListeners();
   }
 
@@ -221,7 +222,7 @@ class Stock with ChangeNotifier {
     _stockList[index].avg = avg;
     _calcMonthlyDividends();
     _calcStockPercent();
-    _httpPost(ticker, amount, avg);
+    _httpStockPost(ticker, amount, avg);
     notifyListeners();
   }
 
@@ -231,10 +232,10 @@ class Stock with ChangeNotifier {
       item.exDividends.forEach((element) {
         month = element.datetime.month;
         if (element.datetime.year == DateTime.now().year) {
-          _monthlyDividends[month - 1] += element.price * item.amount * exrate;
+          _monthlyDividends[month - 1] += element.price * item.amount * _exrate;
         } else {
           _monthlyDividends[month - 1] +=
-              item.nextDividend * item.amount * exrate;
+              item.nextDividend * item.amount * _exrate;
         }
       });
     });
@@ -259,10 +260,11 @@ class Stock with ChangeNotifier {
     _userData.profileImgUrl = profileImgUrl;
     _userData.name = name;
     _userData.kakaoId = kakaoId;
+    _httpKakaoPost(kakaoId);
     notifyListeners();
   }
 
-  void _httpPost(String ticker, double amount, double avgPrice) async {
+  void _httpStockPost(String ticker, double amount, double avgPrice) async {
     var json = jsonEncode({
       'id': _userData.tokenId,
       'ticker': ticker,
@@ -274,6 +276,24 @@ class Stock with ChangeNotifier {
     try {
       var response = await http.post(
         'http://13.125.225.138:5000/update',
+        headers: {"content-Type": "application/json"},
+        body: json,
+        encoding: Encoding.getByName("utf-8"),
+      );
+      print('response: ${response.statusCode}');
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _httpKakaoPost(int kakaoId) async {
+    var json = jsonEncode({
+      'id': _userData.tokenId,
+      'kakaoid': kakaoId,
+    });
+    try {
+      var response = await http.post(
+        'http://13.125.225.138:5000/kakao',
         headers: {"content-Type": "application/json"},
         body: json,
         encoding: Encoding.getByName("utf-8"),
