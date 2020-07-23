@@ -21,6 +21,8 @@ class _StockListAddState extends State<StockListAdd> {
       if (response.body != "[]") {
         data = jsonDecode(response.body);
         print("response: ${data[0]}");
+      } else {
+        data = null;
       }
     } else {
       data = null;
@@ -126,8 +128,8 @@ class _StockListAddState extends State<StockListAdd> {
                                     onPressed: () => _controller.clear()),
                               )),
                           onChanged: (text) {
-                            setState(() {
-                              search(text);
+                            setState(() async {
+                              await search(text);
                             });
                             print(text);
                           }),
@@ -146,6 +148,7 @@ class _StockListAddState extends State<StockListAdd> {
                   if (data != null) {
                     return this._buildRow(index);
                   }
+                  return Container();
                 },
               ),
             )

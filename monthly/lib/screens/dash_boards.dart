@@ -52,7 +52,7 @@ class _DashBoardsState extends State<DashBoards> {
       final double radius = isTouched ? 85 : 70;
       MyStock mStock = context.watch<Stock>().stockList[i];
       return PieChartSectionData(
-        color: mStock.color,
+        color: kColorList[i % 20],
         value: mStock.percent,
         title: '${mStock.percent.round()}%',
         radius: radius,
@@ -81,7 +81,7 @@ class _DashBoardsState extends State<DashBoards> {
             height: containerSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: mStock.color,
+              color: kColorList[i % 20],
             ),
           ),
           const SizedBox(
