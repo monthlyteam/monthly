@@ -67,7 +67,7 @@ class DashBoardsLevel extends StatelessWidget {
                                   BlendMode.darken),
                               fit: BoxFit.fitWidth,
                               image: AssetImage(
-                                '${kMonthlyLevel[index][2]}',
+                                '${context.watch<Stock>().levelCard[index][2]}',
                               ),
                             ),
                             borderRadius:
@@ -94,7 +94,7 @@ class DashBoardsLevel extends StatelessWidget {
                                   height: 20,
                                 ),
                                 Text(
-                                  "￦${(kMonthlyLevel[index][0]).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}~",
+                                  "￦${(context.watch<Stock>().levelCard[index][0]).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}~",
                                   style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 40.0,
@@ -105,9 +105,11 @@ class DashBoardsLevel extends StatelessWidget {
                                   height: 15.0,
                                 ),
                                 Text(
-                                  "${kMonthlyLevel[index][1]}",
+                                  "${context.watch<Stock>().levelCard[index][1]}",
                                   style: TextStyle(
-                                      fontSize: 15.0, color: Colors.white),
+                                    fontSize: 15.0,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             ),
@@ -116,7 +118,7 @@ class DashBoardsLevel extends StatelessWidget {
                       ],
                     );
                   },
-                  childCount: kMonthlyLevel.length,
+                  childCount: context.watch<Stock>().levelCard.length,
                 ),
               ),
             ),

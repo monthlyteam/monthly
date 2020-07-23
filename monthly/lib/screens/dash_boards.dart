@@ -216,7 +216,7 @@ class _DashBoardsState extends State<DashBoards> {
                                 height: 15.0,
                               ),
                               Text(
-                                " 매월 배당금으로 초밥 한조각!",
+                                "${kMonthlyLevel[context.watch<Stock>().level][1]}",
                                 style: TextStyle(
                                     fontSize: 18.0, color: Colors.white),
                               ),
@@ -231,7 +231,8 @@ class _DashBoardsState extends State<DashBoards> {
                                 Colors.black.withOpacity(0.3),
                                 BlendMode.darken),
                             fit: BoxFit.fitWidth,
-                            image: AssetImage('images/C04.jpg'),
+                            image: AssetImage(
+                                '${kMonthlyLevel[context.watch<Stock>().level][2]}'),
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),

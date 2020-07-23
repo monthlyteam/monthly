@@ -2,17 +2,27 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
+import 'package:monthly/constants.dart';
 import 'package:monthly/my_stock.dart';
 import 'package:monthly/user_data.dart';
 
 class Stock with ChangeNotifier {
-  int _level = 20; //monthly level(Low level is Top)
+  int _level = 19; //monthly level(Low level is Top)
+  List<List<dynamic>> _levelCard = [
+    [
+      0,
+      '주식 정보를 입력해주세요! \n하단 메뉴 2번에서 추가 할 수 있습니다.',
+      'images/C20.jpg',
+    ],
+  ];
   double _exrate = 1200;
   UserData _userData = UserData();
   List<MyStock> _stockList = List<MyStock>();
   List<double> _monthlyDividends = List.filled(12, 0.0);
 
   //getter
+  int get level => _level;
+  List<List<dynamic>> get levelCard => _levelCard;
   List<MyStock> get stockList => _stockList;
   List<double> get monthlyDividends => _monthlyDividends;
   UserData get userData => _userData;
@@ -125,6 +135,27 @@ class Stock with ChangeNotifier {
  */
   }
 
+  void _setLevel() {
+    double avgDiv = (_monthlyDividends.reduce((a, b) => a + b) / 12.0);
+    _levelCard = [];
+    for (int i = 19; i > 0; i--) {
+      if (avgDiv < kMonthlyLevel[i][0]) {
+        _level = i + 1;
+        int nextDiv = kMonthlyLevel[i][0];
+
+        _levelCard.add([
+          kMonthlyLevel[i][0],
+          '다음 목표까지 ${(nextDiv.toDouble() - avgDiv).round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}원!',
+          'images/C00.jpg'
+        ]);
+        _levelCard = _levelCard.reversed.toList();
+        notifyListeners();
+        break;
+      }
+      _levelCard.add(kMonthlyLevel[i]);
+    }
+  }
+
   void addStock({String ticker}) async {
     await _httpStockPost(ticker, 10, 25);
     MyStock ms = await _getMyData(ticker);
@@ -132,6 +163,7 @@ class Stock with ChangeNotifier {
     _calcMonthlyDividends();
     _calcStockPercent();
     _calcDividendPercent();
+    _setLevel();
 //    await _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
 
     notifyListeners();
@@ -143,6 +175,7 @@ class Stock with ChangeNotifier {
     _calcStockPercent();
     _calcDividendPercent();
     _httpStockPost(ticker, -1, -1);
+    _setLevel();
     notifyListeners();
   }
 
@@ -154,6 +187,7 @@ class Stock with ChangeNotifier {
     _calcStockPercent();
     _calcDividendPercent();
     _httpStockPost(ticker, amount, avg);
+    _setLevel();
     notifyListeners();
   }
 
