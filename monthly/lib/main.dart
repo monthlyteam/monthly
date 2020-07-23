@@ -30,14 +30,13 @@ Future<void> main() async {
   KakaoContext.javascriptClientId = "681b9f88d5034e80c2d669f839a5bac1";
 
   //Token for Develop
-  String token = await checkToken();
-//  String token = 'hJewaJavNAdx2BbR9wRiDQ';
+//  String token = await checkToken();
+  String token = 'hJewaJavNAdx2BbR9wRiDQ';
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserData(tokenId: token)),
-        ChangeNotifierProvider(create: (_) => Stock()),
+        ChangeNotifierProvider(create: (_) => Stock(token)),
       ],
       child: MyApp(),
     ),

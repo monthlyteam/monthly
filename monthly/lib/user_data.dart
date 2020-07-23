@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 
-class UserData with ChangeNotifier {
-  String _profileImgUrl = '';
-  String _name = '';
-  String _kakaoId = '';
-  final String tokenId;
+class UserData {
+  String profileImgUrl;
+  String name;
+  String kakaoId;
+  String tokenId;
 
-  UserData({this.tokenId});
-
-  void addKakaoProfile({String profileImgUrl, String name, String kakaoId}) {
-    _profileImgUrl = profileImgUrl;
-    _name = name;
-    _kakaoId = kakaoId;
-    notifyListeners();
-  }
+  UserData(
+      {this.profileImgUrl = '',
+      this.name = '',
+      this.kakaoId = '',
+      this.tokenId});
 }

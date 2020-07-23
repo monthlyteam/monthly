@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:monthly/my_stock.dart';
+import 'package:monthly/user_data.dart';
 
 class Stock with ChangeNotifier {
   final double exrate = 1200;
+  UserData _userData = UserData();
   List<MyStock> _stockList = List<MyStock>();
   List<double> _monthlyDividends = List.filled(12, 0.0);
 
@@ -26,7 +31,8 @@ class Stock with ChangeNotifier {
             (Match m) => '${m[1]},');
   }
 
-  Stock() {
+  Stock(String token) {
+    _userData.tokenId = token;
     init();
   }
 
@@ -196,6 +202,7 @@ class Stock with ChangeNotifier {
     _stockList.add(newStock);
     _calcMonthlyDividends();
     _calcStockPercent();
+    _httpPost(newStock.ticker, newStock.avg, newStock.amount);
     notifyListeners();
   }
 
@@ -203,6 +210,7 @@ class Stock with ChangeNotifier {
     _stockList.removeWhere((item) => item.ticker == ticker);
     _calcMonthlyDividends();
     _calcStockPercent();
+    _httpPost(ticker, -1, -1);
     notifyListeners();
   }
 
@@ -212,6 +220,7 @@ class Stock with ChangeNotifier {
     _stockList[index].avg = avg;
     _calcMonthlyDividends();
     _calcStockPercent();
+    _httpPost(ticker, amount, avg);
     notifyListeners();
   }
 
@@ -243,5 +252,27 @@ class Stock with ChangeNotifier {
     _stockList.forEach((item) {
       item.percent = ((item.evaPrice / sumEvaPrice) * 100);
     });
+  }
+
+  void _httpPost(String ticker, double amount, double avgPrice) async {
+    var json = jsonEncode({
+      'id': _userData.tokenId,
+      'ticker': ticker,
+      'amount': amount,
+      'avgPrice': avgPrice,
+    });
+    print('json: $json');
+
+    try {
+      var response = await http.post(
+        'http://13.125.225.138:5000/update',
+        headers: {"content-Type": "application/json"},
+        body: json,
+        encoding: Encoding.getByName("utf-8"),
+      );
+      print('response: ${response.statusCode}');
+    } catch (e) {
+      print(e);
+    }
   }
 }
