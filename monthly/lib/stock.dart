@@ -125,7 +125,7 @@ class Stock with ChangeNotifier {
  */
   }
 
-  void addStock({String ticker}) async {
+  Future<void> addStock({String ticker}) async {
     await _httpStockPost(ticker, 10, 25);
     MyStock ms = await _getMyData(ticker);
     _stockList.add(ms);
@@ -133,7 +133,7 @@ class Stock with ChangeNotifier {
     _calcStockPercent();
     _calcDividendPercent();
 //    await _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
-
+    print("add끝");
     notifyListeners();
   }
 
@@ -255,12 +255,6 @@ class Stock with ChangeNotifier {
     var myData = json.decode(response.body);
     int index = myData.indexWhere((item) => item['ticker'] == ticker);
     var dF = myData[index];
-
-    print("sexxxxxxxxxxxxxx: ${dF['ExList']}");
-    print("sexxxxxxxxxxxxxxx: ${dF['ExList'][0]}");
-    print(
-        "sexxxxxxxxxxxxxxxx: ${DateTime.parse(dF['ExList'][0]['index']).year}");
-
     return MyStock(
         ticker: dF['ticker'],
         name: dF['Name'],

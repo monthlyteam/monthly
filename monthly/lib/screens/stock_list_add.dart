@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:monthly/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../stock.dart';
 
 class StockListAdd extends StatefulWidget {
   @override
@@ -34,13 +37,15 @@ class _StockListAddState extends State<StockListAdd> {
 
   _buildRow(int index) {
     return GestureDetector(
-      onTap: (){
-        print("ticker : ${data[index]['ticker']}, name : ${data[index]['name']}");
+      onTap: () async {
+        print(
+            "ticker : ${data[index]['ticker']}, name : ${data[index]['name']}");
+        await context.read<Stock>().addStock(ticker: data[index]['ticker']);
         Navigator.pop(context, data[index]['ticker']);
       },
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 20.0, right: 25.0, top: 6.0, bottom: 6.0),
+        padding: const EdgeInsets.only(
+            left: 20.0, right: 25.0, top: 6.0, bottom: 6.0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -120,7 +125,7 @@ class _StockListAddState extends State<StockListAdd> {
                               color: kTextColor,
                               fontWeight: FontWeight.bold),
                           decoration: InputDecoration(
-                            hintText: "티커 또는 주식명을 입력해 주세요.",
+                              hintText: "티커 또는 주식명을 입력해 주세요.",
                               hintStyle: TextStyle(fontSize: 12.0),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 0.0, horizontal: 12.0),
@@ -131,20 +136,22 @@ class _StockListAddState extends State<StockListAdd> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               suffixIcon: Container(
-                                height: 22.0,
-                                width: 22.0,
-                                child: IconButton(
+                                  height: 22.0,
+                                  width: 22.0,
+                                  child: IconButton(
                                     padding: EdgeInsets.all(0.0),
                                     iconSize: 22.0,
                                     icon: Icon(
                                       Icons.clear,
                                       color: kTextColor,
                                     ),
-                                    onPressed: () { _controller.clear();
-                                    setState(() {
-                                      data = null;
-                                    });},)
-                              )),
+                                    onPressed: () {
+                                      _controller.clear();
+                                      setState(() {
+                                        data = null;
+                                      });
+                                    },
+                                  ))),
                           onChanged: (text) {
                             search(text);
                             print("input : $text");

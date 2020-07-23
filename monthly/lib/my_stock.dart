@@ -17,7 +17,7 @@ class MyStock {
   double closingPrice; //현재가격
   double evaProfit; //평가손익 생성자 안에서 계산
   double evaProfitPercent; //평가손익 퍼센트 생성자
-  String frequency; //주기
+  int frequency; //주기
   String logoURL; //로고Url
   MyStock(
       {this.ticker,
