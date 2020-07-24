@@ -122,6 +122,7 @@ class Stock with ChangeNotifier {
       final response = await http
           .get('http://13.125.225.138:5000/data/${_userData.tokenId}');
       var myData = json.decode(response.body);
+      print("adsf: $myData");
       int index = myData.indexWhere((item) => item['ticker'] == ticker);
       var dF = myData[index];
 
@@ -136,6 +137,7 @@ class Stock with ChangeNotifier {
           name: dF['Name'],
           amount: dF['amount'],
           avg: dF['avgPrice'],
+          dividendMonth: dF['DividendMonth'],
           exDividends: dF['ExList'],
           nextDividend: dF['NextAmount'].toDouble(),
           yearlyDividend: dF['YearlyDividend'].toDouble(),
@@ -213,19 +215,18 @@ class Stock with ChangeNotifier {
   }
 
   void _calcMonthlyDividends() {
-    int month;
     _monthlyDividends = List.filled(12, 0.0);
-
     _stockList.forEach((item) {
-      item.exDividends.forEach((element) {
-        month = DateTime.parse(element['index']).month;
-        if (DateTime.parse(element['index']).year == DateTime.now().year) {
-          _monthlyDividends[month - 1] +=
-              element['dividend'] * item.amount * item.wonExchange;
-        } else {
-          _monthlyDividends[month - 1] += item.wNextDividend * item.amount;
+      if (item.frequency == -1) {
+      } else if (item.frequency == 12) {
+        for (int i = 0; i < 12; i++) {
+          _monthlyDividends[i] += item.wNextDividend * item.amount;
         }
-      });
+      } else {
+        item.dividendMonth.forEach((element) {
+          _monthlyDividends[element - 1] += item.wNextDividend * item.amount;
+        });
+      }
     });
   }
 
