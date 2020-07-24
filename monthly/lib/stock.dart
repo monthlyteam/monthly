@@ -108,6 +108,7 @@ class Stock with ChangeNotifier {
   }
 
   void _setCalEvent() {
+    _calEvents = {};
     _stockList.forEach((item) {
       item.exDividends.forEach((element) {
         if (_calEvents.containsKey(DateTime.parse(element['index']))) {
@@ -144,7 +145,18 @@ class Stock with ChangeNotifier {
     });
   }
 
-  Future<void> addStock({String ticker}) async {
+  Future<bool> addStock({String ticker}) async {
+    print("중복 티커 $ticker");
+    for (int i = 0; i < _stockList.length; i++) {
+      print("중복확인 중");
+
+      if (_stockList[i].ticker == ticker) {
+        print("중복됨");
+        return false;
+      }
+    }
+    print("중복 확인안됨 $ticker");
+
     // TODO: 10, 25 Must be changed to 0, 0
     await _httpStockPost(ticker, 10, 25);
     MyStock ms = await _getMyData(ticker);
@@ -154,9 +166,8 @@ class Stock with ChangeNotifier {
     _calcDividendPercent();
     _setLevel();
     _setCalEvent();
-//    await _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
-    print("add끝");
     notifyListeners();
+    return true;
   }
 
   void deleteStock({String ticker}) {
