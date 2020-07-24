@@ -237,7 +237,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              event[0] == 0 ? "주당 배당금" : "총 배당금",
+                              event[0] == 0 ? "한 주당 배당금" : "총 배당금",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),

@@ -15,13 +15,14 @@ class Stock with ChangeNotifier {
       'images/C20.jpg',
     ],
   ];
-  double _exrate = 1200;
+  double _dollar = 1000.0; //원-달러 확율
   UserData _userData = UserData();
   List<MyStock> _stockList = List<MyStock>();
   List<double> _monthlyDividends = List.filled(12, 0.0);
   Map<DateTime, List> _calEvents = {};
 
   //getter
+  double get dollar => _dollar;
   Map<DateTime, List> get calEvents => _calEvents;
   int get level => _level;
   List<List<dynamic>> get levelCard => _levelCard;
@@ -45,37 +46,10 @@ class Stock with ChangeNotifier {
             (Match m) => '${m[1]},');
   }
 
-  Stock(String token) {
+  Stock(String token, double dollar, List<MyStock> stockList) {
     _userData.tokenId = token;
-    init();
-  }
-
-  void init() async {
-//    addStock(ticker: 'TSLA');
-//    addStock(ticker: 'KO');
-//    addStock(ticker: 'QQQ');
-
-    final response =
-        await http.get('http://13.125.225.138:5000/data/${_userData.tokenId}');
-    var myData = json.decode(response.body);
-
-    print("myData : $myData");
-    myData.forEach((item) {
-      print("item: $item");
-      _stockList.add(MyStock(
-          ticker: item['ticker'],
-          name: item['Name'],
-          amount: item['amount'],
-          avg: item['avgPrice'],
-          exDividends: item['ExList'],
-          nextDividend: item['NextAmount'].toDouble(),
-          yearlyDividend: item['YearlyDividend'],
-          divPercent: (item['DividendYield'] ?? 0.0) * 100,
-          closingPrice: item['Price'],
-          frequency: item['Frequency'],
-          dividendDate: item['DividendDate'] ?? '',
-          logoURL: item['Logo']));
-    });
+    _dollar = dollar;
+    _stockList = stockList;
 
     _calcMonthlyDividends();
     _calcStockPercent();
@@ -113,10 +87,10 @@ class Stock with ChangeNotifier {
         if (_calEvents.containsKey(DateTime.parse(element['index']))) {
           //배당락일 정보 입력
           _calEvents[DateTime.parse(element['index'])]
-              .add([0, item.ticker, item.name, element['dividend'] * _exrate]);
+              .add([0, item.ticker, item.name, element['dividend'] * _dollar]);
         } else {
           _calEvents[DateTime.parse(element['index'])] = [
-            [0, item.ticker, item.name, element['dividend'] * _exrate]
+            [0, item.ticker, item.name, element['dividend'] * _dollar]
           ];
         }
       });
@@ -128,7 +102,7 @@ class Stock with ChangeNotifier {
             1,
             item.ticker,
             item.name,
-            (item.nextDividend * item.amount * _exrate)
+            (item.nextDividend * item.amount * _dollar)
           ]);
         } else {
           _calEvents[DateTime.parse(item.dividendDate)] = [
@@ -136,7 +110,7 @@ class Stock with ChangeNotifier {
               1,
               item.ticker,
               item.name,
-              (item.nextDividend * item.amount * _exrate)
+              (item.nextDividend * item.amount * _dollar)
             ]
           ];
         }
@@ -201,10 +175,10 @@ class Stock with ChangeNotifier {
         month = DateTime.parse(element['index']).month;
         if (DateTime.parse(element['index']).year == DateTime.now().year) {
           _monthlyDividends[month - 1] +=
-              element['dividend'] * item.amount * _exrate;
+              element['dividend'] * item.amount * _dollar;
         } else {
           _monthlyDividends[month - 1] +=
-              item.nextDividend * item.amount * _exrate;
+              item.nextDividend * item.amount * _dollar;
         }
       });
     });
@@ -303,7 +277,7 @@ class Stock with ChangeNotifier {
         avg: dF['avgPrice'],
         exDividends: dF['ExList'],
         nextDividend: dF['NextAmount'].toDouble(),
-        yearlyDividend: dF['YearlyDividend'],
+        yearlyDividend: dF['YearlyDividend'].toDouble(),
         divPercent: (dF['DividendYield'] ?? 0.0) * 100,
         closingPrice: dF['Price'],
         frequency: dF['Frequency'],

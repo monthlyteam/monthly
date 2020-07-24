@@ -1,11 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:monthly/user_data.dart';
 import 'home.dart';
 import 'package:provider/provider.dart';
 import 'stock.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'my_stock.dart';
 
 Future<String> checkToken() async {
   try {
@@ -24,20 +26,58 @@ Future<String> checkToken() async {
   }
 }
 
+Future<double> getDollarData() async {
+  try {
+    final response = await http.get('http://13.125.225.138:5000/dollar');
+    var dollar = json.decode(response.body);
+    return dollar['USD'].toDouble();
+  } catch (e) {
+    return 1200.0;
+  }
+}
+
+Future<List<MyStock>> initStockData(String token) async {
+  try {
+    final response = await http.get('http://13.125.225.138:5000/data/$token');
+    var myData = json.decode(response.body);
+
+    List<MyStock> stockList = [];
+    myData.forEach((item) {
+      print("item: $item");
+      stockList.add(MyStock(
+          ticker: item['ticker'],
+          name: item['Name'],
+          amount: item['amount'],
+          avg: item['avgPrice'],
+          exDividends: item['ExList'],
+          nextDividend: item['NextAmount'].toDouble(),
+          yearlyDividend: item['YearlyDividend'].toDouble(),
+          divPercent: (item['DividendYield'] ?? 0.0) * 100,
+          closingPrice: item['Price'],
+          frequency: item['Frequency'],
+          dividendDate: item['DividendDate'] ?? '',
+          logoURL: item['Logo']));
+    });
+    return stockList;
+  } catch (e) {
+    return [];
+  }
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   KakaoContext.clientId = "dfc5584eeb7d68ba3b1eac6eeb72db96";
   KakaoContext.javascriptClientId = "681b9f88d5034e80c2d669f839a5bac1";
 
-  //Token for Develop
   String token = await checkToken();
-  //String token = 'pgJTF2u8-CqkjR5NXhuxMg';
+  double dollar = await getDollarData();
+  List<MyStock> stockList = await initStockData(token);
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Stock(token)),
+        ChangeNotifierProvider(create: (_) => Stock(token, dollar, stockList)),
       ],
       child: MyApp(),
     ),
