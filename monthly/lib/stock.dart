@@ -7,7 +7,7 @@ import 'package:monthly/my_stock.dart';
 import 'package:monthly/user_data.dart';
 
 class Stock with ChangeNotifier {
-  int _level = 19; //monthly level(Low level is Top)
+  int _level = 19; //monthly level(level.1 is Top)
   List<List<dynamic>> _levelCard = [
     [
       0,
@@ -51,14 +51,17 @@ class Stock with ChangeNotifier {
   }
 
   void init() async {
-//    addStock(ticker: 'KO');
 //    addStock(ticker: 'TSLA');
+//    addStock(ticker: 'KO');
+//    addStock(ticker: 'QQQ');
 
     final response =
         await http.get('http://13.125.225.138:5000/data/${_userData.tokenId}');
     var myData = json.decode(response.body);
 
+    print("myData : $myData");
     myData.forEach((item) {
+      print("item: $item");
       _stockList.add(MyStock(
           ticker: item['ticker'],
           name: item['Name'],
@@ -74,6 +77,13 @@ class Stock with ChangeNotifier {
           dividendDate: item['DividendDate'] ?? '',
           logoURL: item['Logo']));
     });
+
+    _calcMonthlyDividends();
+    _calcStockPercent();
+    _calcDividendPercent();
+    _setLevel();
+    _setCalEvent();
+    notifyListeners();
   }
 
   void _setLevel() {
@@ -135,6 +145,7 @@ class Stock with ChangeNotifier {
   }
 
   void addStock({String ticker}) async {
+    // TODO: 10, 25 Must be changed to 0, 0
     await _httpStockPost(ticker, 10, 25);
     MyStock ms = await _getMyData(ticker);
     _stockList.add(ms);
@@ -271,6 +282,7 @@ class Stock with ChangeNotifier {
     print('getMyDataresponse: ${response.body}');
     var myData = json.decode(response.body);
     int index = myData.indexWhere((item) => item['ticker'] == ticker);
+    print('index: $index,mydata[index]: ${myData[index]}');
     var dF = myData[index];
     print(
         "wwjfowijeiofjwojefow: ${dF['Name']}, ${dF['DividendDate']}, ${dF['Price']}");
