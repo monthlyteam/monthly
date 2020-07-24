@@ -162,53 +162,88 @@ class _StockListState extends State<StockList> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              child: SizedBox(
-                                                width: 54,
-                                              ),
-                                              height: 54,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        offset:
-                                                            Offset(0.0, 1.0),
-                                                        color: Colors.grey,
-                                                        blurRadius: 1.0)
-                                                  ],
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.contain,
-                                                      image: NetworkImage(
-                                                          myStock.logoURL))),
-                                            ),
-                                            SizedBox(
-                                              width: 10.0,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                  "${myStock.ticker}",
-                                                  style: TextStyle(
-                                                      color: Color(0xff2c2c2c),
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      fontSize: 25.0),
+                                        Expanded(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: SizedBox(
+                                                  width: 54,
                                                 ),
-                                                Text(
-                                                  "${myStock.name}",
-                                                  style: TextStyle(
-                                                      color: Color(0xff2c2c2c),
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 16.0),
-                                                )
-                                              ],
-                                            ),
-                                          ],
+                                                height: 54,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          offset:
+                                                              Offset(0.0, 1.0),
+                                                          color: Colors.grey,
+                                                          blurRadius: 1.0)
+                                                    ],
+                                                    image: DecorationImage(
+                                                        fit: BoxFit.contain,
+                                                        // ignore: unrelated_type_equality_checks
+                                                        image: myStock
+                                                                    .logoURL ==
+                                                                ""
+                                                            ? AssetImage(
+                                                                'images/default_logo.png')
+                                                            : NetworkImage(
+                                                                myStock
+                                                                    .logoURL))),
+                                              ),
+                                              SizedBox(
+                                                width: 10.0,
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                    Text(
+                                                      "${myStock.ticker}",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Color(0xff2c2c2c),
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          fontSize: 25.0),
+                                                    ),
+                                                    Container(
+                                                      height: 20.0,
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          Flexible(
+                                                            child: RichText(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              text: TextSpan(
+                                                                text:
+                                                                    "${myStock.name}",
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        kTextColor,
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8.0,
+                                              )
+                                            ],
+                                          ),
                                         ),
                                         Row(
                                           children: <Widget>[
@@ -411,7 +446,7 @@ class _StockListState extends State<StockList> {
                                                     fontSize: 12.0),
                                               ),
                                               Text(
-                                                "￦${myStock.evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 16.0,
@@ -428,9 +463,9 @@ class _StockListState extends State<StockList> {
                                                     fontSize: 12.0),
                                               ),
                                               Text(
-                                                "￦${myStock.dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                                "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                                     " "
-                                                        "${myStock.frequency}",
+                                                        "연 ${myStock.frequency}회",
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 16.0,
@@ -600,7 +635,7 @@ class _StockListState extends State<StockList> {
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  "￦${myStock.closingPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                  "￦${myStock.closingPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -617,7 +652,7 @@ class _StockListState extends State<StockList> {
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  "${myStock.divPercent}%",
+                                                  "${myStock.divPercent.toStringAsFixed(1)}%",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -634,7 +669,7 @@ class _StockListState extends State<StockList> {
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  "${DateTime.parse(myStock.exDividends.last['datetime']).year}년 ${DateTime.parse(myStock.exDividends.last['datetime']).month}월 ${DateTime.parse(myStock.exDividends.last['datetime']).day}일",
+                                                  "${DateTime.parse(myStock.exDividends.last['index']).year}년 ${DateTime.parse(myStock.exDividends.last['index']).month}월 ${DateTime.parse(myStock.exDividends.last['index']).day}일",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -661,7 +696,7 @@ class _StockListState extends State<StockList> {
                                                       CrossAxisAlignment.end,
                                                   children: <Widget>[
                                                     Text(
-                                                      "￦+${myStock.evaProfit.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                      "￦${myStock.evaProfit.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 16.0,
@@ -669,7 +704,7 @@ class _StockListState extends State<StockList> {
                                                               FontWeight.bold),
                                                     ),
                                                     Text(
-                                                      "(${myStock.evaProfitPercent}%)",
+                                                      "(${myStock.evaProfitPercent.toStringAsFixed(1)}%)",
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 12.0,
@@ -746,12 +781,23 @@ class _StockListState extends State<StockList> {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 9.0),
                               ),
-                              Text(
-                                "${myStock.ticker}" + " " + "${myStock.name}",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold),
+                              Row(
+                                children: <Widget>[
+                                  Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      text: TextSpan(
+                                        text: "${myStock.ticker}" +
+                                            " " +
+                                            "${myStock.name}",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(
                                 height: 12.0,
@@ -764,7 +810,7 @@ class _StockListState extends State<StockList> {
                               Text(
                                 "￦${myStock.dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                     " "
-                                        "${myStock.frequency}",
+                                        "연${myStock.frequency}회",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -784,7 +830,7 @@ class _StockListState extends State<StockList> {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${myStock.evaPrice.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                     " / "
                                         "${(myStock.percent).toStringAsFixed(1)}%",
                                 style: TextStyle(

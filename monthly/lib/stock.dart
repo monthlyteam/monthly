@@ -134,7 +134,7 @@ class Stock with ChangeNotifier {
     });
   }
 
-  void addStock({String ticker}) async {
+  Future<void> addStock({String ticker}) async {
     await _httpStockPost(ticker, 10, 25);
     MyStock ms = await _getMyData(ticker);
     _stockList.add(ms);
@@ -144,7 +144,7 @@ class Stock with ChangeNotifier {
     _setLevel();
     _setCalEvent();
 //    await _httpStockPost(newStock.ticker, newStock.avg, newStock.amount);
-
+    print("add끝");
     notifyListeners();
   }
 
