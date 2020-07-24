@@ -119,19 +119,12 @@ class Stock with ChangeNotifier {
   }
 
   Future<bool> addStock({String ticker}) async {
-    print("중복 티커 $ticker");
     for (int i = 0; i < _stockList.length; i++) {
-      print("중복확인 중");
-
       if (_stockList[i].ticker == ticker) {
-        print("중복됨");
         return false;
       }
     }
-    print("중복 확인안됨 $ticker");
-
-    // TODO: 10, 25 Must be changed to 0, 0
-    await _httpStockPost(ticker, 10, 25);
+    await _httpStockPost(ticker, 0, 0);
     MyStock ms = await _getMyData(ticker);
     _stockList.add(ms);
     _calcMonthlyDividends();
@@ -182,10 +175,7 @@ class Stock with ChangeNotifier {
         }
       });
     });
-    _monthlyDividends.forEach((element) {
-      print(element);
-    });
-    print("-------------");
+    _monthlyDividends.forEach((element) {});
   }
 
   void _calcStockPercent() {
@@ -226,7 +216,6 @@ class Stock with ChangeNotifier {
       'amount': amount,
       'avgPrice': avgPrice,
     });
-    print('httpStockPost json: $json');
 
     try {
       var response = await http.post(
@@ -253,7 +242,7 @@ class Stock with ChangeNotifier {
         body: json,
         encoding: Encoding.getByName("utf-8"),
       );
-      print('response: ${response.statusCode}');
+      print('statuscode: ${response.statusCode}');
     } catch (e) {
       print(e);
     }
@@ -262,14 +251,10 @@ class Stock with ChangeNotifier {
   Future<MyStock> _getMyData(String ticker) async {
     final response =
         await http.get('http://13.125.225.138:5000/data/${_userData.tokenId}');
-    print('getMyDataresponse: ${response.body}');
     var myData = json.decode(response.body);
     int index = myData.indexWhere((item) => item['ticker'] == ticker);
-    print('index: $index,mydata[index]: ${myData[index]}');
     var dF = myData[index];
 
-    print(
-        "wwjfowijeiofjwojefow: ${dF['Name']}, ${dF['DividendDate']}, ${dF['Price']}");
     return MyStock(
         ticker: dF['ticker'],
         name: dF['Name'],

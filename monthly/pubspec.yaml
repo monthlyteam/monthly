@@ -49,6 +49,6 @@ flutter:
           weight: 800
 
 flutter_native_splash:
-  image: images/Monthly_Logo.png
+  image: images/Splash.png
   color: "ffffff"
   android_disable_fullscreen: true

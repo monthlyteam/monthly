@@ -8,6 +8,7 @@ import 'stock.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'my_stock.dart';
+import 'package:flutter/services.dart';
 
 Future<String> checkToken() async {
   try {
@@ -74,18 +75,21 @@ Future<void> main() async {
   double dollar = await getDollarData();
   List<MyStock> stockList = await initStockData(token);
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => Stock(token, dollar, stockList)),
-      ],
-      child: MyApp(),
-    ),
-  );
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+              create: (_) => Stock(token, dollar, stockList)),
+        ],
+        child: MyApp(),
+      ),
+    );
+  });
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     print('${context.watch<Stock>().thisMonthDividend}');
