@@ -257,7 +257,8 @@ class _StockListState extends State<StockList> {
                                       child: TextField(
                                           textInputAction: TextInputAction.next,
                                           keyboardType: TextInputType.number,
-                                          controller: avgController,
+                                          controller: avgController
+                                            ..text = "${myStock.avg}",
                                           autofocus: true,
                                           style: TextStyle(
                                               color: kTextColor,
@@ -281,7 +282,8 @@ class _StockListState extends State<StockList> {
                                           textInputAction: TextInputAction.done,
                                           keyboardType: TextInputType.number,
                                           autofocus: true,
-                                          controller: amountController,
+                                          controller: amountController
+                                            ..text = "${myStock.avg}",
                                           style: TextStyle(
                                               color: kTextColor,
                                               fontSize: 16.0,
@@ -794,8 +796,9 @@ class _StockListState extends State<StockList> {
                                                         keyboardType:
                                                             TextInputType
                                                                 .number,
-                                                        controller:
-                                                            avgController,
+                                                        controller: avgController
+                                                          ..text =
+                                                              "${myStock.avg}",
                                                         autofocus: true,
                                                         style: TextStyle(
                                                             color: kTextColor,
@@ -855,7 +858,9 @@ class _StockListState extends State<StockList> {
                                                                 .number,
                                                         autofocus: true,
                                                         controller:
-                                                            amountController,
+                                                            amountController
+                                                              ..text =
+                                                                  "${myStock.avg}",
                                                         style: TextStyle(
                                                             color: kTextColor,
                                                             fontSize: 16.0,
@@ -1101,7 +1106,7 @@ class _StockListState extends State<StockList> {
                               Text(
                                 myStock.frequency == -1
                                     ? "￦0"
-                                    : "￦${myStock.dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                    : "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                         " " +
                                         "연${myStock.frequency}회",
                                 style: TextStyle(
@@ -1118,14 +1123,12 @@ class _StockListState extends State<StockList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "평가금액 / 비율",
+                                "평가금액",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
-                                    " / "
-                                        "${(myStock.percent).toStringAsFixed(1)}%",
+                                "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
