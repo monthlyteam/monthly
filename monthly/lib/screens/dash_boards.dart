@@ -51,10 +51,13 @@ class _DashBoardsState extends State<DashBoards> {
       final double fontSize = isTouched ? 30 : 20;
       final double radius = isTouched ? 85 : 70;
       MyStock mStock = context.watch<Stock>().stockList[i];
-      final title = (context.watch<Stock>().stockList.length > 2 &&
+      String title = (context.watch<Stock>().stockList.length > 2 &&
               mStock.percent.round() < 5)
           ? ""
           : "${mStock.percent.round()}%";
+      if (isTouched) {
+        title = "${mStock.percent.round()}%";
+      }
       return PieChartSectionData(
         color: kColorList[i % 20],
         value: mStock.percent,
@@ -92,7 +95,7 @@ class _DashBoardsState extends State<DashBoards> {
             width: 4,
           ),
           Text(
-            "${mStock.percent.round()}%",
+            "${mStock.percent.round()}% ",
             style: TextStyle(
                 fontSize: 12.0,
                 fontWeight: textFontWeight,
@@ -134,8 +137,6 @@ class _DashBoardsState extends State<DashBoards> {
         break;
       }
     }
-    print("$avg, $avgPoint, $cnt");
-    print(NumberFormat.compact().format(avgPoint));
   }
 
   @override
@@ -151,9 +152,7 @@ class _DashBoardsState extends State<DashBoards> {
                 offset: Offset(0.0, 50.0),
                 padding: EdgeInsets.symmetric(horizontal: 25.0),
                 onSelected: (String sel) {
-                  setState(() {
-                    print(sel);
-                  });
+                  setState(() {});
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   const PopupMenuItem<String>(
@@ -445,7 +444,6 @@ class _DashBoardsState extends State<DashBoards> {
                                                           pieTouchResponse
                                                               .touchedSectionIndex;
                                                     }
-                                                    print(piTouchedIndex);
                                                   });
                                                 }),
                                                 borderData: FlBorderData(
