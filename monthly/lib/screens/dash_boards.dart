@@ -392,7 +392,7 @@ class _DashBoardsState extends State<DashBoards> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "월 차트",
+                                "예상 배당금 차트",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: kTextColor,
@@ -469,6 +469,7 @@ class _DashBoardsState extends State<DashBoards> {
                                                 fontWeight: FontWeight.bold),
                                             margin: 15.0,
                                             getTitles: (value) {
+                                              calcPoint();
                                               if (value == 0) {
                                                 return '0';
                                               } else if (value == avgPoint) {
@@ -504,7 +505,7 @@ class _DashBoardsState extends State<DashBoards> {
                                 height: 40.0,
                               ),
                               Text(
-                                "종목 비율",
+                                "평가 자산 비율",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: kTextColor,

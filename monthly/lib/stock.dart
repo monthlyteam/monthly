@@ -89,9 +89,13 @@ class Stock with ChangeNotifier {
   }
 
   void deleteStock({String ticker}) {
+    print("delete before : ${_stockList.length}");
     _stockList.removeWhere((item) => item.ticker == ticker);
+    print("delete after : ${_stockList.length}");
     _httpStockPost(ticker, -1, -1);
+    print("calc before : $_monthlyDividends");
     _calcAndSet();
+    print("calc after : $_monthlyDividends");
 
     notifyListeners();
   }
@@ -210,6 +214,8 @@ class Stock with ChangeNotifier {
 
   void _calcMonthlyDividends() {
     int month;
+    _monthlyDividends = List.filled(12, 0.0);
+
     _stockList.forEach((item) {
       item.exDividends.forEach((element) {
         month = DateTime.parse(element['index']).month;

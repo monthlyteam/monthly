@@ -215,7 +215,7 @@ class _StockListState extends State<StockList> {
                                           color: kTextColor, fontSize: 12.0),
                                     ),
                                     Text(
-                                      "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                      "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                       style: TextStyle(
                                           color: kTextColor,
                                           fontSize: 16.0,
@@ -726,7 +726,7 @@ class _StockListState extends State<StockList> {
                                                     fontSize: 12.0),
                                               ),
                                               Text(
-                                                "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 16.0,
@@ -745,7 +745,7 @@ class _StockListState extends State<StockList> {
                                               Text(
                                                 myStock.frequency == -1
                                                     ? "￦0"
-                                                    : "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                                    : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                                         " "
                                                             "연 ${myStock.frequency}회",
                                                 style: TextStyle(
@@ -917,7 +917,7 @@ class _StockListState extends State<StockList> {
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  "￦${myStock.closingPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                  "￦${myStock.wClosingPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -974,7 +974,7 @@ class _StockListState extends State<StockList> {
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  "￦${myStock.evaProfit.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                  "￦${myStock.wEvaProfit.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -1078,7 +1078,7 @@ class _StockListState extends State<StockList> {
                               Text(
                                 myStock.frequency == -1
                                     ? "￦0"
-                                    : "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                    : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                         " " +
                                         "연${myStock.frequency}회",
                                 style: TextStyle(
@@ -1100,7 +1100,7 @@ class _StockListState extends State<StockList> {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,

@@ -79,7 +79,7 @@ class MyStock {
     this.amount = amount;
     _evaPrice = _closingPrice * amount;
     _evaProfit = (_evaPrice) - ((amount * avg) / wonExchange);
-    evaProfitPercent = (_closingPrice / ((amount * avg) / wonExchange)) * 100;
+    evaProfitPercent = (_evaProfit / ((amount * avg) / wonExchange)) * 100;
     _dividend = _yearlyDividend * amount;
 
     if (_evaProfit > 0.0)
