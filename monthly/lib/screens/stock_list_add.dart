@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:monthly/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../stock.dart';
 
@@ -15,6 +16,7 @@ class StockListAdd extends StatefulWidget {
 class _StockListAddState extends State<StockListAdd> {
   var _controller = TextEditingController();
   var data;
+  ProgressDialog pr;
 
   Future<void> search(String input) async {
     if (input != "") {
@@ -38,9 +40,13 @@ class _StockListAddState extends State<StockListAdd> {
   _buildRow(int index) {
     return GestureDetector(
       onTap: () async {
+        pr.show();
         print(
             "ticker : ${data[index]['ticker']}, name : ${data[index]['name']}");
         await context.read<Stock>().addStock(ticker: data[index]['ticker']);
+        pr.hide().then((isHidden) {
+          print(isHidden);
+        });
         Navigator.pop(context, data[index]['ticker']);
       },
       child: Padding(
@@ -85,6 +91,7 @@ class _StockListAddState extends State<StockListAdd> {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

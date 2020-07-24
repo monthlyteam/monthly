@@ -465,7 +465,7 @@ class _StockListState extends State<StockList> {
                                               Text(
                                                 "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                                     " "
-                                                        "연${myStock.frequency}회",
+                                                        "연 ${myStock.frequency}회",
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 16.0,
