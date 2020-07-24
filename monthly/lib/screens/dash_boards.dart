@@ -278,12 +278,16 @@ class _DashBoardsState extends State<DashBoards> {
                                 ),
                               ],
                             ),
-                            Text(
-                              "￦ ${context.watch<Stock>().thisMonthDividend}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  color: Colors.white,
-                                  fontSize: 20.0),
+                            Container(
+                              width: 190,
+                              child: Text(
+                                "￦${context.watch<Stock>().thisMonthDividend}",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                    fontSize: 20.0),
+                              ),
                             ),
                           ],
                         ),
@@ -314,13 +318,16 @@ class _DashBoardsState extends State<DashBoards> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18.0),
                                 ),
-                                Text(
-                                  "￦ ${context.watch<Stock>().totalInvestPrice}",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                      fontSize: 20.0),
+                                Container(
+                                  width: 190,
+                                  child: Text(
+                                    "￦${context.watch<Stock>().totalInvestPrice}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                        fontSize: 20.0),
+                                  ),
                                 ),
                               ],
                             ),
@@ -335,13 +342,16 @@ class _DashBoardsState extends State<DashBoards> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18.0),
                                 ),
-                                Text(
-                                  "￦ ${context.watch<Stock>().totalEvaPrice}",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                      fontSize: 20.0),
+                                Container(
+                                  width: 190,
+                                  child: Text(
+                                    "￦${context.watch<Stock>().totalEvaPrice}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                        fontSize: 20.0),
+                                  ),
                                 ),
                               ],
                             ),
@@ -356,13 +366,16 @@ class _DashBoardsState extends State<DashBoards> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18.0),
                                 ),
-                                Text(
-                                  "￦ ${context.watch<Stock>().totalEvaProfit}",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                      fontSize: 20.0),
+                                Container(
+                                  width: 190,
+                                  child: Text(
+                                    "￦${context.watch<Stock>().totalEvaProfit}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.white,
+                                        fontSize: 20.0),
+                                  ),
                                 ),
                               ],
                             ),
