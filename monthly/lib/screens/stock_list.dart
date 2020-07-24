@@ -17,6 +17,292 @@ class _StockListState extends State<StockList> {
       MaterialPageRoute(builder: (context) => StockListAdd()),
     );
     print("ticker $information");
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            final avgController = TextEditingController();
+            final amountController = TextEditingController();
+            MyStock myStock = context.watch<Stock>().stockList[context
+                .watch<Stock>()
+                .stockList
+                .indexWhere((item) => item.ticker == information)];
+            return Container(
+              height: 240,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                    child: IconButton(
+                      padding: EdgeInsets.all(0.0),
+                      iconSize: 30,
+                      icon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Color(0xffededed),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              child: Row(
+                                children: <Widget>[
+                                  Container(
+                                    child: SizedBox(
+                                      width: 54,
+                                    ),
+                                    height: 54,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              offset: Offset(0.0, 1.0),
+                                              color: Colors.grey,
+                                              blurRadius: 1.0)
+                                        ],
+                                        image: DecorationImage(
+                                            fit: BoxFit.contain,
+                                            // ignore: unrelated_type_equality_checks
+                                            image: myStock.logoURL == ""
+                                                ? AssetImage(
+                                                    'images/default_logo.png')
+                                                : NetworkImage(
+                                                    myStock.logoURL))),
+                                  ),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "${myStock.ticker}",
+                                          style: TextStyle(
+                                              color: Color(0xff2c2c2c),
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 25.0),
+                                        ),
+                                        Container(
+                                          height: 20.0,
+                                          child: Row(
+                                            children: <Widget>[
+                                              Flexible(
+                                                child: RichText(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  text: TextSpan(
+                                                    text: "${myStock.name}",
+                                                    style: TextStyle(
+                                                        color: kTextColor,
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 8.0,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                IconButton(
+                                  iconSize: 24.0,
+                                  icon: Icon(
+                                    Icons.check,
+                                    color: kTextColor,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext bContext) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                "${myStock.name}",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: kTextColor),
+                                              ),
+                                              content: Text(
+                                                "해당 종목을 수정하시겠습니까?",
+                                                style: TextStyle(
+                                                    color: kTextColor),
+                                              ),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.of(bContext)
+                                                        .pop();
+                                                  },
+                                                  child: Text("아니요"),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    print(double.parse(
+                                                        avgController.text));
+                                                    print(double.parse(
+                                                        amountController.text));
+                                                    context
+                                                        .read<Stock>()
+                                                        .modifyStock(
+                                                            ticker:
+                                                                myStock.ticker,
+                                                            avg: double.parse(
+                                                                avgController
+                                                                    .text),
+                                                            amount: double.parse(
+                                                                amountController
+                                                                    .text));
+                                                    Navigator.of(bContext)
+                                                        .pop();
+                                                  },
+                                                  child: Text("예"),
+                                                )
+                                              ],
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              10.0))),
+                                            );
+                                          });
+                                    });
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        ), //Row of top
+                        SizedBox(height: 20.0),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "평가 금액",
+                                    style: TextStyle(
+                                        color: kTextColor, fontSize: 12.0),
+                                  ),
+                                  Text(
+                                    "￦${myStock.evaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                    style: TextStyle(
+                                        color: kTextColor,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Text(
+                                    "총 배당금 / 주기",
+                                    style: TextStyle(
+                                        color: kTextColor, fontSize: 12.0),
+                                  ),
+                                  Text(
+                                    myStock.frequency == -1
+                                        ? "￦0"
+                                        : "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                            " "
+                                                "연 ${myStock.frequency}회",
+                                    style: TextStyle(
+                                        color: kTextColor,
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "평균 매입 단가",
+                                    style: TextStyle(
+                                        color: kTextColor, fontSize: 12.0),
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.all(2.0),
+                                      height: 24.0,
+                                      child: TextField(
+                                          textInputAction: TextInputAction.next,
+                                          keyboardType: TextInputType.number,
+                                          controller: avgController,
+                                          autofocus: true,
+                                          style: TextStyle(
+                                              color: kTextColor,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold),
+                                          onSubmitted: (_) =>
+                                              FocusScope.of(context)
+                                                  .nextFocus())),
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Text(
+                                    "보유수량",
+                                    style: TextStyle(
+                                        color: kTextColor, fontSize: 12.0),
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.all(2.0),
+                                      height: 24.0,
+                                      child: TextField(
+                                          textInputAction: TextInputAction.done,
+                                          keyboardType: TextInputType.number,
+                                          autofocus: true,
+                                          controller: amountController,
+                                          style: TextStyle(
+                                              color: kTextColor,
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.bold),
+                                          onSubmitted: (_) =>
+                                              FocusScope.of(context)
+                                                  .unfocus())),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                ],
+              ),
+            );
+          });
+        });
   }
 
   @override
@@ -463,9 +749,11 @@ class _StockListState extends State<StockList> {
                                                     fontSize: 12.0),
                                               ),
                                               Text(
-                                                "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
-                                                    " "
-                                                        "연 ${myStock.frequency}회",
+                                                myStock.frequency == -1
+                                                    ? "￦0"
+                                                    : "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                                        " "
+                                                            "연 ${myStock.frequency}회",
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 16.0,
@@ -669,7 +957,10 @@ class _StockListState extends State<StockList> {
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  "${DateTime.parse(myStock.exDividends.last['index']).year}년 ${DateTime.parse(myStock.exDividends.last['index']).month}월 ${DateTime.parse(myStock.exDividends.last['index']).day}일",
+                                                  myStock.exDividends.length ==
+                                                          0
+                                                      ? "배당이 없습니다."
+                                                      : "${DateTime.parse(myStock.exDividends.last['index']).year}년 ${DateTime.parse(myStock.exDividends.last['index']).month}월 ${DateTime.parse(myStock.exDividends.last['index']).day}일",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -808,8 +1099,10 @@ class _StockListState extends State<StockList> {
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
-                                "￦${myStock.dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
-                                    " "
+                                myStock.frequency == -1
+                                    ? "￦0"
+                                    : "￦${myStock.dividend.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
+                                        " " +
                                         "연${myStock.frequency}회",
                                 style: TextStyle(
                                     color: Colors.white,
