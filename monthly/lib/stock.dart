@@ -69,9 +69,9 @@ class Stock with ChangeNotifier {
           avg: item['avgPrice'],
           evaPrice: item['Price'] * item['amount'],
           exDividends: item['ExList'],
-          nextDividend: item['NextAmount'],
+          nextDividend: item['NextAmount'].toDouble(),
           dividend: item['YearlyDividend'] * item['amount'],
-          divPercent: (item['DividendYield'] ?? 0.0) * 100,
+          divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
           closingPrice: item['Price'],
           frequency: item['Frequency'],
           dividendDate: item['DividendDate'] ?? '',
@@ -295,6 +295,7 @@ class Stock with ChangeNotifier {
     int index = myData.indexWhere((item) => item['ticker'] == ticker);
     print('index: $index,mydata[index]: ${myData[index]}');
     var dF = myData[index];
+
     print(
         "wwjfowijeiofjwojefow: ${dF['Name']}, ${dF['DividendDate']}, ${dF['Price']}");
     return MyStock(
@@ -304,7 +305,7 @@ class Stock with ChangeNotifier {
         avg: dF['avgPrice'],
         evaPrice: dF['Price'] * dF['amount'],
         exDividends: dF['ExList'],
-        nextDividend: dF['NextAmount'],
+        nextDividend: dF['NextAmount'].toDouble(),
         dividend: dF['YearlyDividend'] * dF['amount'],
         divPercent: (dF['DividendYield'] ?? 0.0) * 100,
         closingPrice: dF['Price'],
