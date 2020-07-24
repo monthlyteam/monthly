@@ -219,6 +219,7 @@ class _DashBoardsState extends State<DashBoards> {
                               ),
                               Text(
                                 "￦${context.watch<Stock>().avgDividend}",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w800,
                                   fontSize: 40.0,
@@ -289,6 +290,95 @@ class _DashBoardsState extends State<DashBoards> {
                       ),
                       decoration: new BoxDecoration(
                         color: kMainColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Container(
+                      height: 130.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "투자 금액",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18.0),
+                                ),
+                                Text(
+                                  "￦ ${context.watch<Stock>().totalInvestPrice}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                      fontSize: 20.0),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "평가 금액",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18.0),
+                                ),
+                                Text(
+                                  "￦ ${context.watch<Stock>().totalEvaPrice}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                      fontSize: 20.0),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "평가 손익",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18.0),
+                                ),
+                                Text(
+                                  "￦ ${context.watch<Stock>().totalEvaProfit}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                      fontSize: 20.0),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "(${context.watch<Stock>().totalEvaProfitPercent}%)",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                  fontSize: 15.0),
+                            ),
+                          ],
+                        ),
+                      ),
+                      decoration: new BoxDecoration(
+                        color: kSubColor,
                         borderRadius: BorderRadius.all(
                           Radius.circular(10.0),
                         ),

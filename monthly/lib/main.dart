@@ -37,14 +37,18 @@ Future<double> getDollarData() async {
   }
 }
 
-Future<List<MyStock>> initStockData(String token) async {
+Future<List<MyStock>> initStockData(String token, double dollar) async {
   try {
     final response = await http.get('http://13.125.225.138:5000/data/$token');
     var myData = json.decode(response.body);
-
+    double exchange = 1;
     List<MyStock> stockList = [];
     myData.forEach((item) {
-      print("item: $item");
+      if (item['ticker'].contains('.KS'))
+        exchange = 1;
+      else
+        exchange = dollar;
+
       stockList.add(MyStock(
           ticker: item['ticker'],
           name: item['Name'],
@@ -53,11 +57,12 @@ Future<List<MyStock>> initStockData(String token) async {
           exDividends: item['ExList'],
           nextDividend: item['NextAmount'].toDouble(),
           yearlyDividend: item['YearlyDividend'].toDouble(),
-          divPercent: (item['DividendYield'] ?? 0.0) * 100,
+          divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
           closingPrice: item['Price'],
           frequency: item['Frequency'],
           dividendDate: item['DividendDate'] ?? '',
-          logoURL: item['Logo']));
+          logoURL: item['Logo'],
+          wonExchange: exchange));
     });
     return stockList;
   } catch (e) {
@@ -73,7 +78,7 @@ Future<void> main() async {
 
   String token = await checkToken();
   double dollar = await getDollarData();
-  List<MyStock> stockList = await initStockData(token);
+  List<MyStock> stockList = await initStockData(token, dollar);
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {

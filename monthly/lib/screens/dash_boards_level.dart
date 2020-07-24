@@ -95,9 +95,10 @@ class DashBoardsLevel extends StatelessWidget {
                                 ),
                                 Text(
                                   "￦${(context.watch<Stock>().levelCard[index][0]).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}~",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 40.0,
+                                    fontSize: 38.0,
                                     color: Colors.white,
                                   ),
                                 ),

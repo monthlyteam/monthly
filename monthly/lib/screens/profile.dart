@@ -113,9 +113,6 @@ class _ProfileState extends State<Profile> {
       context
           .read<Stock>()
           .addKakaoProfile(name: user.properties['nickname'], kakaoId: user.id);
-//      setState(() {
-//        _userName = user.properties['nickname'];
-//      });
     } catch (e) {
       setState(() {
         _isKakaoLogin = false;

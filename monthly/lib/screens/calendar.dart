@@ -218,7 +218,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),
                             Container(
-                              width: 200,
+                              width: 190,
                               child: Text(
                                 '${event[1]} ${event[2]}',
                                 overflow: TextOverflow.ellipsis,
@@ -241,13 +241,16 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),
-                            Text(
-                              '￦${event[3].toStringAsFixed(1).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
+                            Container(
+                              width: 110,
+                              child: Text(
+                                '￦${event[3].toStringAsFixed(1).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
                             ),
                           ],
                         ),
