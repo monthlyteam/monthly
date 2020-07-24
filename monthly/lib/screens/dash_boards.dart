@@ -92,7 +92,7 @@ class _DashBoardsState extends State<DashBoards> {
             width: 4,
           ),
           Text(
-            "${mStock.percent.round()}%",
+            "${mStock.percent.round()}% ",
             style: TextStyle(
                 fontSize: 12.0,
                 fontWeight: textFontWeight,
