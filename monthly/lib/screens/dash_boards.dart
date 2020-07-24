@@ -51,10 +51,14 @@ class _DashBoardsState extends State<DashBoards> {
       final double fontSize = isTouched ? 30 : 20;
       final double radius = isTouched ? 85 : 70;
       MyStock mStock = context.watch<Stock>().stockList[i];
+      final title = (context.watch<Stock>().stockList.length > 2 &&
+              mStock.percent.round() < 5)
+          ? ""
+          : "${mStock.percent.round()}%";
       return PieChartSectionData(
         color: kColorList[i % 20],
         value: mStock.percent,
-        title: '${mStock.percent.round()}%',
+        title: title,
         radius: radius,
         titleStyle: TextStyle(
             fontSize: fontSize,
@@ -86,6 +90,13 @@ class _DashBoardsState extends State<DashBoards> {
           ),
           const SizedBox(
             width: 4,
+          ),
+          Text(
+            "${mStock.percent.round()}%",
+            style: TextStyle(
+                fontSize: 12.0,
+                fontWeight: textFontWeight,
+                color: Color(0xff2c2c2c)),
           ),
           Flexible(
             child: Text(
@@ -449,6 +460,9 @@ class _DashBoardsState extends State<DashBoards> {
                                     ),
                                   ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
                               ),
                               Center(
                                 child: Padding(
