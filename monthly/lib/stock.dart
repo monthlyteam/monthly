@@ -51,10 +51,29 @@ class Stock with ChangeNotifier {
   }
 
   void init() async {
-    addStock(ticker: 'QYLD');
-    addStock(ticker: 'KO');
-    addStock(ticker: 'TSLA');
-    addStock(ticker: 'GOOG');
+//    addStock(ticker: 'KO');
+//    addStock(ticker: 'TSLA');
+
+    final response =
+        await http.get('http://13.125.225.138:5000/data/${_userData.tokenId}');
+    var myData = json.decode(response.body);
+
+    myData.forEach((item) {
+      _stockList.add(MyStock(
+          ticker: item['ticker'],
+          name: item['Name'],
+          amount: item['amount'],
+          avg: item['avgPrice'],
+          evaPrice: item['Price'] * item['amount'],
+          exDividends: item['ExList'],
+          nextDividend: item['NextAmount'],
+          dividend: item['YearlyDividend'] * item['amount'],
+          divPercent: (item['DividendYield'] ?? 0.0) * 100,
+          closingPrice: item['Price'],
+          frequency: item['Frequency'],
+          dividendDate: item['DividendDate'] ?? '',
+          logoURL: item['Logo']));
+    });
   }
 
   void _setLevel() {
@@ -91,8 +110,8 @@ class Stock with ChangeNotifier {
           ];
         }
       });
-      if (item.dividendDate != null) {
-        //ETF 등 지급일 정보가 없을 경우 예외처리
+      if (item.dividendDate != '') {
+        //ETF 등 해당 종목이 지급일 정보가 없을 경우 예외처리
         if (_calEvents.containsKey(DateTime.parse(item.dividendDate))) {
           //지급일 정보 입력
           _calEvents[DateTime.parse(item.dividendDate)].add([
@@ -222,7 +241,7 @@ class Stock with ChangeNotifier {
         body: json,
         encoding: Encoding.getByName("utf-8"),
       );
-      print('response: ${response.statusCode}');
+      print('statusCode: ${response.statusCode}');
     } catch (e) {
       print(e);
     }
@@ -253,26 +272,21 @@ class Stock with ChangeNotifier {
     var myData = json.decode(response.body);
     int index = myData.indexWhere((item) => item['ticker'] == ticker);
     var dF = myData[index];
-
-    print("sexxxxxxxxxxxxxx: ${dF['ExList']}");
-    print("sexxxxxxxxxxxxxxx: ${dF['ExList'][0]}");
     print(
-        "sexxxxxxxxxxxxxxxx: ${DateTime.parse(dF['ExList'][0]['index']).year}");
-
+        "wwjfowijeiofjwojefow: ${dF['Name']}, ${dF['DividendDate']}, ${dF['Price']}");
     return MyStock(
         ticker: dF['ticker'],
         name: dF['Name'],
         amount: dF['amount'],
         avg: dF['avgPrice'],
-        color: Colors.blueGrey,
         evaPrice: dF['Price'] * dF['amount'],
         exDividends: dF['ExList'],
         nextDividend: dF['NextAmount'],
         dividend: dF['YearlyDividend'] * dF['amount'],
-        divPercent: dF['DividendYield'] * 100,
+        divPercent: (dF['DividendYield'] ?? 0.0) * 100,
         closingPrice: dF['Price'],
         frequency: dF['Frequency'],
-        dividendDate: dF['DividendDate'],
+        dividendDate: dF['DividendDate'] ?? '',
         logoURL: dF['Logo']);
   }
 }

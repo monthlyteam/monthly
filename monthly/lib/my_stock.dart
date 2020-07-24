@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:monthly/constants.dart';
 
 class MyStock {
   String ticker; //티커
@@ -26,7 +27,6 @@ class MyStock {
       this.name,
       this.amount,
       this.avg,
-      this.color,
       this.evaPrice,
       this.exDividends,
       this.nextDividend,
@@ -42,5 +42,12 @@ class MyStock {
       this.logoURL}) {
     evaProfit = evaPrice - amount * avg;
     evaProfitPercent = (evaProfit / (amount * avg)) * 100;
+
+    if (evaProfit > 0.0)
+      this.color = kUPColor;
+    else if (evaProfit < 0.0)
+      this.color = kDownColor;
+    else
+      this.color = Colors.blueGrey;
   }
 }
