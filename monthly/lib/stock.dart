@@ -228,19 +228,6 @@ class Stock with ChangeNotifier {
         });
       }
     });
-    print("qqq: $_monthlyDividends");
-
-//    _stockList.forEach((item) {
-//      item.exDividends.forEach((element) {
-//        month = DateTime.parse(element['index']).month;
-//        if (DateTime.parse(element['index']).year == DateTime.now().year) {
-//          _monthlyDividends[month - 1] +=
-//              element['dividend'] * item.amount * item.wonExchange;
-//        } else {
-//          _monthlyDividends[month - 1] += item.wNextDividend * item.amount;
-//        }
-//      });
-//    });
   }
 
   void _calcStockPercent() {

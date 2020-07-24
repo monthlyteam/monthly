@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
@@ -48,7 +49,7 @@ Future<List<MyStock>> initStockData(String token, double dollar) async {
         exchange = 1;
       else
         exchange = dollar;
-
+      print('dividendmonth: ${item['DividendMonth']}');
       stockList.add(MyStock(
           ticker: item['ticker'],
           name: item['Name'],
@@ -67,7 +68,7 @@ Future<List<MyStock>> initStockData(String token, double dollar) async {
     });
     return stockList;
   } catch (e) {
-    return [];
+    exit(0);
   }
 }
 
