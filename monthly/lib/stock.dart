@@ -67,11 +67,10 @@ class Stock with ChangeNotifier {
           name: item['Name'],
           amount: item['amount'],
           avg: item['avgPrice'],
-          evaPrice: item['Price'] * item['amount'],
           exDividends: item['ExList'],
           nextDividend: item['NextAmount'].toDouble(),
-          dividend: item['YearlyDividend'] * item['amount'],
-          divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
+          yearlyDividend: item['YearlyDividend'],
+          divPercent: (item['DividendYield'] ?? 0.0) * 100,
           closingPrice: item['Price'],
           frequency: item['Frequency'],
           dividendDate: item['DividendDate'] ?? '',
@@ -184,8 +183,7 @@ class Stock with ChangeNotifier {
 
   void modifyStock({String ticker, double avg, double amount}) {
     int index = _stockList.indexWhere((item) => item.ticker == ticker);
-    _stockList[index].amount = amount;
-    _stockList[index].avg = avg;
+    _stockList[index].editValue(avg: avg, amount: amount);
     _calcMonthlyDividends();
     _calcStockPercent();
     _calcDividendPercent();
@@ -303,10 +301,9 @@ class Stock with ChangeNotifier {
         name: dF['Name'],
         amount: dF['amount'],
         avg: dF['avgPrice'],
-        evaPrice: dF['Price'] * dF['amount'],
         exDividends: dF['ExList'],
         nextDividend: dF['NextAmount'].toDouble(),
-        dividend: dF['YearlyDividend'] * dF['amount'],
+        yearlyDividend: dF['YearlyDividend'],
         divPercent: (dF['DividendYield'] ?? 0.0) * 100,
         closingPrice: dF['Price'],
         frequency: dF['Frequency'],
