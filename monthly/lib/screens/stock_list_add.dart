@@ -118,7 +118,7 @@ class _StockListAddState extends State<StockListAdd> {
                             color: kTextColor,
                           ),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pop(context, "-1");
                           },
                         ),
                       ),

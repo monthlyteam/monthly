@@ -16,23 +16,25 @@ class _StockListState extends State<StockList> {
       context,
       MaterialPageRoute(builder: (context) => StockListAdd()),
     );
-    showModalBottomSheet(
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                topRight: Radius.circular(30.0))),
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            MyStock myStock = context.watch<Stock>().stockList[context
+    if (information == "-1") {
+    } else {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0))),
+          context: context,
+          builder: (context) {
+            var index = context
                 .watch<Stock>()
                 .stockList
-                .indexWhere((item) => item.ticker == information)];
-            final avgController = TextEditingController(text: '${myStock.avg}');
+                .indexWhere((item) => item.ticker == information);
+            MyStock myStock = context.watch<Stock>().stockList[index];
+            final avgController =
+                TextEditingController(text: '${myStock.avg.round()}');
             final amountController =
-                TextEditingController(text: '${myStock.amount}');
+                TextEditingController(text: '${myStock.amount.round()}');
             return Container(
               height: 240,
               child: Column(
@@ -68,6 +70,7 @@ class _StockListState extends State<StockList> {
                                     height: 54,
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
+                                        color: Colors.white,
                                         boxShadow: [
                                           BoxShadow(
                                               offset: Offset(0.0, 1.0),
@@ -138,57 +141,54 @@ class _StockListState extends State<StockList> {
                                     color: kTextColor,
                                   ),
                                   onPressed: () {
-                                    setState(() {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext bContext) {
-                                            return AlertDialog(
-                                              title: Text(
-                                                "${myStock.name}",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: kTextColor),
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext bContext) {
+                                          return AlertDialog(
+                                            title: Text(
+                                              "${myStock.name}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: kTextColor),
+                                            ),
+                                            content: Text(
+                                              myStock.amount.round() == 0
+                                                  ? "해당 종목을 추가하시겠습니까?"
+                                                  : "해당 종목을 수정하시겠습니까?",
+                                              style:
+                                                  TextStyle(color: kTextColor),
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                onPressed: () {
+                                                  Navigator.of(bContext).pop();
+                                                },
+                                                child: Text("아니요"),
                                               ),
-                                              content: Text(
-                                                "해당 종목을 수정하시겠습니까?",
-                                                style: TextStyle(
-                                                    color: kTextColor),
-                                              ),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.of(bContext)
-                                                        .pop();
-                                                  },
-                                                  child: Text("아니요"),
-                                                ),
-                                                FlatButton(
-                                                  onPressed: () {
-                                                    context
-                                                        .read<Stock>()
-                                                        .modifyStock(
-                                                            ticker:
-                                                                myStock.ticker,
-                                                            avg: double.parse(
-                                                                avgController
-                                                                    .text),
-                                                            amount: double.parse(
-                                                                amountController
-                                                                    .text));
-                                                    Navigator.of(bContext)
-                                                        .pop();
-                                                  },
-                                                  child: Text("예"),
-                                                )
-                                              ],
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                            );
-                                          });
-                                    });
+                                              FlatButton(
+                                                onPressed: () {
+                                                  context
+                                                      .read<Stock>()
+                                                      .modifyStock(
+                                                          ticker:
+                                                              myStock.ticker,
+                                                          avg: double.parse(
+                                                              avgController
+                                                                  .text),
+                                                          amount: double.parse(
+                                                              amountController
+                                                                  .text));
+                                                  Navigator.of(bContext).pop();
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text("예"),
+                                              )
+                                            ],
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10.0))),
+                                          );
+                                        });
                                   },
                                 ),
                               ],
@@ -298,7 +298,7 @@ class _StockListState extends State<StockList> {
               ),
             );
           });
-        });
+    }
   }
 
   @override
@@ -402,9 +402,9 @@ class _StockListState extends State<StockList> {
               onTap: () {
                 bool isEdit = false;
                 final avgController =
-                    TextEditingController(text: "${myStock.avg}");
+                    TextEditingController(text: "${myStock.avg.round()}");
                 final amountController =
-                    TextEditingController(text: "${myStock.amount}");
+                    TextEditingController(text: "${myStock.amount.round()}");
                 showModalBottomSheet(
                     isScrollControlled: true,
                     shape: RoundedRectangleBorder(
@@ -451,6 +451,7 @@ class _StockListState extends State<StockList> {
                                                 ),
                                                 height: 54,
                                                 decoration: BoxDecoration(
+                                                    color: Colors.white,
                                                     shape: BoxShape.circle,
                                                     boxShadow: [
                                                       BoxShadow(
@@ -938,16 +939,13 @@ class _StockListState extends State<StockList> {
                                                   height: 12.0,
                                                 ),
                                                 Text(
-                                                  "최근 배당락일",
+                                                  "배당금 비율",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 12.0),
                                                 ),
                                                 Text(
-                                                  myStock.exDividends.length ==
-                                                          0
-                                                      ? "배당이 없습니다."
-                                                      : "${DateTime.parse(myStock.exDividends.last['index']).year}년 ${DateTime.parse(myStock.exDividends.last['index']).month}월 ${DateTime.parse(myStock.exDividends.last['index']).day}일",
+                                                  "${(myStock.totalDivPercent).toStringAsFixed(1)}%",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -969,27 +967,30 @@ class _StockListState extends State<StockList> {
                                                       color: Colors.white,
                                                       fontSize: 12.0),
                                                 ),
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      "￦${myStock.evaProfit.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Text(
-                                                      "(${myStock.evaProfitPercent.toStringAsFixed(1)}%)",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12.0,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
+                                                Text(
+                                                  "￦${myStock.evaProfit.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                SizedBox(
+                                                  height: 12.0,
+                                                ),
+                                                Text(
+                                                  "평가 손익률",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12.0),
+                                                ),
+                                                Text(
+                                                  "${myStock.evaProfitPercent.toStringAsFixed(1)}%",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16.0,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 SizedBox(
                                                   height: 12.0,
@@ -1002,23 +1003,6 @@ class _StockListState extends State<StockList> {
                                                 ),
                                                 Text(
                                                   "${(myStock.percent).toStringAsFixed(1)}%",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                  height: 12.0,
-                                                ),
-                                                Text(
-                                                  "배당금 비율",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12.0),
-                                                ),
-                                                Text(
-                                                  "${(myStock.totalDivPercent).toStringAsFixed(1)}%",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
