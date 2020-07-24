@@ -87,12 +87,15 @@ class _DashBoardsState extends State<DashBoards> {
           const SizedBox(
             width: 4,
           ),
-          Text(
-            '${mStock.ticker} ${mStock.name}',
-            style: TextStyle(
-                fontSize: 12.0,
-                fontWeight: textFontWeight,
-                color: Color(0xff2c2c2c)),
+          Flexible(
+            child: Text(
+              '${mStock.ticker} ${mStock.name}',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: textFontWeight,
+                  color: Color(0xff2c2c2c)),
+            ),
           )
         ],
       );
