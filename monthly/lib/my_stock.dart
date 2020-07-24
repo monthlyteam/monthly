@@ -13,6 +13,7 @@ class MyStock {
   String dividendDate; //지급일
   String logoURL; //로고Url
   double divPercent; //배당률
+  List<int> dividendMonth; //예상 배당 월
 
   //외부에서 환율 계산
   double percent = 0; //전체에서 평가금액의 비율(평가금액/전체 자산) 생성자
@@ -48,6 +49,7 @@ class MyStock {
       this.name,
       this.amount,
       this.avg,
+      this.dividendMonth,
       this.exDividends,
       nextDividend,
       yearlyDividend,

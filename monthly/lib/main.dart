@@ -54,6 +54,7 @@ Future<List<MyStock>> initStockData(String token, double dollar) async {
           name: item['Name'],
           amount: item['amount'],
           avg: item['avgPrice'],
+          dividendMonth: item['DividendMonth'],
           exDividends: item['ExList'],
           nextDividend: item['NextAmount'].toDouble(),
           yearlyDividend: item['YearlyDividend'].toDouble(),
