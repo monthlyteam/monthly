@@ -16,7 +16,6 @@ class _StockListState extends State<StockList> {
       context,
       MaterialPageRoute(builder: (context) => StockListAdd()),
     );
-    print("ticker $information");
     showModalBottomSheet(
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
@@ -27,12 +26,13 @@ class _StockListState extends State<StockList> {
         builder: (context) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-            final avgController = TextEditingController();
-            final amountController = TextEditingController();
             MyStock myStock = context.watch<Stock>().stockList[context
                 .watch<Stock>()
                 .stockList
                 .indexWhere((item) => item.ticker == information)];
+            final avgController = TextEditingController(text: '${myStock.avg}');
+            final amountController =
+                TextEditingController(text: '${myStock.amount}');
             return Container(
               height: 240,
               child: Column(
@@ -164,10 +164,6 @@ class _StockListState extends State<StockList> {
                                                 ),
                                                 FlatButton(
                                                   onPressed: () {
-                                                    print(double.parse(
-                                                        avgController.text));
-                                                    print(double.parse(
-                                                        amountController.text));
                                                     context
                                                         .read<Stock>()
                                                         .modifyStock(
@@ -257,8 +253,7 @@ class _StockListState extends State<StockList> {
                                       child: TextField(
                                           textInputAction: TextInputAction.next,
                                           keyboardType: TextInputType.number,
-                                          controller: avgController
-                                            ..text = "${myStock.avg}",
+                                          controller: avgController,
                                           autofocus: true,
                                           style: TextStyle(
                                               color: kTextColor,
@@ -282,8 +277,7 @@ class _StockListState extends State<StockList> {
                                           textInputAction: TextInputAction.done,
                                           keyboardType: TextInputType.number,
                                           autofocus: true,
-                                          controller: amountController
-                                            ..text = "${myStock.avg}",
+                                          controller: amountController,
                                           style: TextStyle(
                                               color: kTextColor,
                                               fontSize: 16.0,
@@ -330,25 +324,21 @@ class _StockListState extends State<StockList> {
               PopupMenuButton<String>(
                 offset: Offset(0.0, 50.0),
                 onSelected: (String sel) {
-                  print(sel);
                   setState(() {
                     switch (sel) {
                       case "ticker":
-                        print("티커");
                         context
                             .read<Stock>()
                             .stockList
                             .sort((a, b) => a.ticker.compareTo(b.ticker));
                         break;
                       case "dividend":
-                        print("배당금");
                         context
                             .read<Stock>()
                             .stockList
                             .sort((a, b) => b.dividend.compareTo(a.dividend));
                         break;
                       case "evaPrice":
-                        print("평가금액");
                         context
                             .read<Stock>()
                             .stockList
@@ -411,8 +401,10 @@ class _StockListState extends State<StockList> {
             return GestureDetector(
               onTap: () {
                 bool isEdit = false;
-                final avgController = TextEditingController();
-                final amountController = TextEditingController();
+                final avgController =
+                    TextEditingController(text: "${myStock.avg}");
+                final amountController =
+                    TextEditingController(text: "${myStock.amount}");
                 showModalBottomSheet(
                     isScrollControlled: true,
                     shape: RoundedRectangleBorder(
@@ -550,7 +542,6 @@ class _StockListState extends State<StockList> {
                                                   color: kTextColor,
                                                 ),
                                                 onPressed: () {
-                                                  print("삭제");
                                                   showDialog(
                                                       context: context,
                                                       builder: (BuildContext
@@ -680,12 +671,6 @@ class _StockListState extends State<StockList> {
                                                                 onPressed: () {
                                                                   isEdit =
                                                                       !isEdit;
-                                                                  print(double.parse(
-                                                                      avgController
-                                                                          .text));
-                                                                  print(double.parse(
-                                                                      amountController
-                                                                          .text));
                                                                   context.read<Stock>().modifyStock(
                                                                       ticker: myStock
                                                                           .ticker,
@@ -796,9 +781,8 @@ class _StockListState extends State<StockList> {
                                                         keyboardType:
                                                             TextInputType
                                                                 .number,
-                                                        controller: avgController
-                                                          ..text =
-                                                              "${myStock.avg}",
+                                                        controller:
+                                                            avgController,
                                                         autofocus: true,
                                                         style: TextStyle(
                                                             color: kTextColor,
@@ -858,9 +842,7 @@ class _StockListState extends State<StockList> {
                                                                 .number,
                                                         autofocus: true,
                                                         controller:
-                                                            amountController
-                                                              ..text =
-                                                                  "${myStock.avg}",
+                                                            amountController,
                                                         style: TextStyle(
                                                             color: kTextColor,
                                                             fontSize: 16.0,
