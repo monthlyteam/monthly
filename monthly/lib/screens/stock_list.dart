@@ -17,7 +17,7 @@ class _StockListState extends State<StockList> {
       MaterialPageRoute(builder: (context) => StockListAdd()),
     );
     if (information == "-1") {
-    } else {
+    } else if (information != null) {
       showModalBottomSheet(
           isScrollControlled: true,
           shape: RoundedRectangleBorder(
@@ -370,13 +370,13 @@ class _StockListState extends State<StockList> {
                         context
                             .read<Stock>()
                             .stockList
-                            .sort((a, b) => b.dividend.compareTo(a.dividend));
+                            .sort((a, b) => b.wDividend.compareTo(a.wDividend));
                         break;
                       case "evaPrice":
                         context
                             .read<Stock>()
                             .stockList
-                            .sort((a, b) => b.evaPrice.compareTo(a.evaPrice));
+                            .sort((a, b) => b.wEvaPrice.compareTo(a.wEvaPrice));
                         break;
                       default:
                         break;

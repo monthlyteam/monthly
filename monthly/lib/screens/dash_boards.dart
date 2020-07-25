@@ -482,7 +482,7 @@ class _DashBoardsState extends State<DashBoards> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              context.watch<Stock>().avgDividend != '0'
+                              context.watch<Stock>().avgDividend != "0"
                                   ? Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -621,72 +621,84 @@ class _DashBoardsState extends State<DashBoards> {
                                       ],
                                     )
                                   : Container(),
-                              Text(
-                                "평가 자산 비율",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: kTextColor,
-                                    fontSize: 20),
-                              ),
-                              AspectRatio(
-                                aspectRatio: 1.1,
-                                child: Card(
-                                  elevation: 0.0,
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
+                              context.watch<Stock>().totalEvaPrice != "0"
+                                  ? Column(
                                       children: <Widget>[
-                                        Expanded(
-                                          child: PieChart(
-                                            PieChartData(
-                                                startDegreeOffset: -90,
-                                                pieTouchData: PieTouchData(
-                                                    touchCallback:
-                                                        (pieTouchResponse) {
-                                                  setState(() {
-                                                    if (pieTouchResponse
-                                                            .touchedSectionIndex !=
-                                                        null) {
-                                                      piTouchedIndex =
-                                                          pieTouchResponse
-                                                              .touchedSectionIndex;
-                                                    }
-                                                  });
-                                                }),
-                                                borderData: FlBorderData(
-                                                  show: false,
-                                                ),
-                                                sectionsSpace: 0.0,
-                                                centerSpaceRadius: 60.0,
-                                                sections: showingSections()),
+                                        Text(
+                                          "평가 자산 비율",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kTextColor,
+                                              fontSize: 20),
+                                        ),
+                                        AspectRatio(
+                                          aspectRatio: 1.1,
+                                          child: Card(
+                                            elevation: 0.0,
+                                            color: Colors.white,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child: PieChart(
+                                                      PieChartData(
+                                                          startDegreeOffset:
+                                                              -90,
+                                                          pieTouchData:
+                                                              PieTouchData(
+                                                                  touchCallback:
+                                                                      (pieTouchResponse) {
+                                                            setState(() {
+                                                              if (pieTouchResponse
+                                                                      .touchedSectionIndex !=
+                                                                  null) {
+                                                                piTouchedIndex =
+                                                                    pieTouchResponse
+                                                                        .touchedSectionIndex;
+                                                              }
+                                                            });
+                                                          }),
+                                                          borderData:
+                                                              FlBorderData(
+                                                            show: false,
+                                                          ),
+                                                          sectionsSpace: 0.0,
+                                                          centerSpaceRadius:
+                                                              60.0,
+                                                          sections:
+                                                              showingSections()),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Wrap(
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
+                                              direction: Axis.horizontal,
+                                              spacing: 10.0,
+                                              children: showingSectionTitle(),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 40.0,
+                                        ),
                                       ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
-                                  child: Wrap(
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    direction: Axis.horizontal,
-                                    spacing: 10.0,
-                                    children: showingSectionTitle(),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 40.0,
-                              ),
-                              context.watch<Stock>().avgDividend != '0'
+                                    )
+                                  : Container(),
+                              context.watch<Stock>().avgDividend != "0"
                                   ? Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
