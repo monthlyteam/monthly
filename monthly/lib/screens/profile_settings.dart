@@ -12,6 +12,7 @@ class ProfileSettings extends StatelessWidget {
             SliverAppBar(
               titleSpacing: 0.0,
               elevation: 0.0,
+              centerTitle: true,
               title: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Text(
