@@ -201,7 +201,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                         fontSize: 18),
                   ),
                   subtitle: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 5, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
                     child: Row(
                       children: <Widget>[
                         Column(
@@ -237,7 +237,7 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),
                             Container(
-                              width: 110,
+                              width: 100,
                               child: Text(
                                 '￦${event[3].toStringAsFixed(1).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
                                 overflow: TextOverflow.ellipsis,

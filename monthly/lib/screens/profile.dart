@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:monthly/constants.dart';
 import 'package:monthly/stock.dart';
-import 'profile_settings.dart';
+import 'profile_info.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
@@ -231,7 +231,7 @@ class _ProfileState extends State<Profile> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProfileSettings()),
+                                builder: (context) => ProfileInfo()),
                           );
                         },
                         child: Container(
@@ -243,15 +243,15 @@ class _ProfileState extends State<Profile> {
                                 width: 15,
                               ),
                               Icon(
-                                Icons.settings,
+                                Icons.info,
                                 color: Colors.white,
-                                size: 20,
+                                size: 22,
                               ),
                               SizedBox(
                                 width: 15,
                               ),
                               Text(
-                                "환경설정",
+                                "정보",
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,
@@ -277,9 +277,9 @@ class _ProfileState extends State<Profile> {
                                 width: 15,
                               ),
                               Icon(
-                                Icons.help,
+                                Icons.mail,
                                 color: Colors.white,
-                                size: 20,
+                                size: 22,
                               ),
                               SizedBox(
                                 width: 15,
