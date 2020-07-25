@@ -279,7 +279,7 @@ class _DashBoardsState extends State<DashBoards> {
                               ],
                             ),
                             Container(
-                              width: 190,
+                              width: 180,
                               child: Text(
                                 "￦${context.watch<Stock>().thisMonthDividend}",
                                 overflow: TextOverflow.ellipsis,

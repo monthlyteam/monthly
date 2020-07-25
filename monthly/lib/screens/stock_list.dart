@@ -31,6 +31,18 @@ class _StockListState extends State<StockList> {
                 .stockList
                 .indexWhere((item) => item.ticker == information);
             MyStock myStock = context.watch<Stock>().stockList[index];
+            DecorationImage decorationImage;
+            try {
+              print("before sex");
+              decorationImage = new DecorationImage(
+                  fit: BoxFit.contain, image: NetworkImage(myStock.logoURL));
+              print("sex");
+            } catch (e) {
+              print(e);
+              decorationImage = new DecorationImage(
+                  fit: BoxFit.contain,
+                  image: AssetImage('images/default_logo.png'));
+            }
             final avgController =
                 TextEditingController(text: "${myStock.avg.round()}");
             final amountController =
@@ -71,22 +83,16 @@ class _StockListState extends State<StockList> {
                                       ),
                                       height: 54,
                                       decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                offset: Offset(0.0, 1.0),
-                                                color: Colors.grey,
-                                                blurRadius: 1.0)
-                                          ],
-                                          image: DecorationImage(
-                                              fit: BoxFit.contain,
-                                              // ignore: unrelated_type_equality_checks
-                                              image: myStock.logoURL == ""
-                                                  ? AssetImage(
-                                                      'images/default_logo.png')
-                                                  : NetworkImage(
-                                                      myStock.logoURL))),
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              offset: Offset(0.0, 1.0),
+                                              color: Colors.grey,
+                                              blurRadius: 1.0)
+                                        ],
+                                        image: decorationImage,
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 10.0,
@@ -257,9 +263,12 @@ class _StockListState extends State<StockList> {
                                         padding: EdgeInsets.all(2.0),
                                         height: 24.0,
                                         child: TextField(
+                                            maxLines: 1,
                                             textInputAction:
                                                 TextInputAction.next,
-                                            keyboardType: TextInputType.number,
+                                            keyboardType:
+                                                TextInputType.numberWithOptions(
+                                                    decimal: true),
                                             controller: avgController,
                                             autofocus: true,
                                             style: TextStyle(
@@ -281,8 +290,11 @@ class _StockListState extends State<StockList> {
                                         padding: EdgeInsets.all(2.0),
                                         height: 24.0,
                                         child: TextField(
+                                          maxLines: 1,
                                           textInputAction: TextInputAction.done,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
                                           autofocus: true,
                                           controller: amountController,
                                           style: TextStyle(
@@ -409,8 +421,12 @@ class _StockListState extends State<StockList> {
                 bool isEdit = false;
                 final avgController =
                     TextEditingController(text: "${myStock.avg.round()}");
+                avgController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: avgController.text.length));
                 final amountController =
                     TextEditingController(text: "${myStock.amount.round()}");
+                amountController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: amountController.text.length));
                 showModalBottomSheet(
                     isScrollControlled: true,
                     shape: RoundedRectangleBorder(
@@ -782,12 +798,13 @@ class _StockListState extends State<StockList> {
                                                         EdgeInsets.all(2.0),
                                                     height: 24.0,
                                                     child: TextField(
+                                                        maxLines: 1,
                                                         textInputAction:
                                                             TextInputAction
                                                                 .next,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
+                                                        keyboardType: TextInputType
+                                                            .numberWithOptions(
+                                                                decimal: true),
                                                         controller:
                                                             avgController,
                                                         autofocus: true,
@@ -841,12 +858,13 @@ class _StockListState extends State<StockList> {
                                                         EdgeInsets.all(2.0),
                                                     height: 24.0,
                                                     child: TextField(
+                                                        maxLines: 1,
                                                         textInputAction:
                                                             TextInputAction
                                                                 .done,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
+                                                        keyboardType: TextInputType
+                                                            .numberWithOptions(
+                                                                decimal: true),
                                                         autofocus: true,
                                                         controller:
                                                             amountController,
