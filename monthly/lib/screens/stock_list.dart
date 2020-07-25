@@ -31,18 +31,6 @@ class _StockListState extends State<StockList> {
                 .stockList
                 .indexWhere((item) => item.ticker == information);
             MyStock myStock = context.watch<Stock>().stockList[index];
-            DecorationImage decorationImage;
-            try {
-              print("before sex");
-              decorationImage = new DecorationImage(
-                  fit: BoxFit.contain, image: NetworkImage(myStock.logoURL));
-              print("sex");
-            } catch (e) {
-              print(e);
-              decorationImage = new DecorationImage(
-                  fit: BoxFit.contain,
-                  image: AssetImage('images/default_logo.png'));
-            }
             final avgController =
                 TextEditingController(text: "${myStock.avg.round()}");
             avgController.selection = TextSelection.fromPosition(
@@ -51,6 +39,7 @@ class _StockListState extends State<StockList> {
                 TextEditingController(text: "${myStock.amount.round()}");
             amountController.selection = TextSelection.fromPosition(
                 TextPosition(offset: amountController.text.length));
+            var amount = myStock.amount;
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
               return Container(
@@ -82,8 +71,18 @@ class _StockListState extends State<StockList> {
                                 child: Row(
                                   children: <Widget>[
                                     Container(
-                                      child: SizedBox(
-                                        width: 54,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(54.0),
+                                        child: FadeInImage(
+                                            fit: BoxFit.contain,
+                                            width: 54,
+                                            image: myStock.logoURL == ""
+                                                ? AssetImage(
+                                                    'images/default_logo.png')
+                                                : NetworkImage(myStock.logoURL),
+                                            placeholder: AssetImage(
+                                                'images/default_logo.png')),
                                       ),
                                       height: 54,
                                       decoration: BoxDecoration(
@@ -95,7 +94,6 @@ class _StockListState extends State<StockList> {
                                               color: Colors.grey,
                                               blurRadius: 1.0)
                                         ],
-                                        image: decorationImage,
                                       ),
                                     ),
                                     SizedBox(
@@ -225,7 +223,7 @@ class _StockListState extends State<StockList> {
                                           color: kTextColor, fontSize: 12.0),
                                     ),
                                     Text(
-                                      "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                      "￦${(myStock.wClosingPrice * amount).toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: kTextColor,
@@ -236,16 +234,16 @@ class _StockListState extends State<StockList> {
                                       height: 20.0,
                                     ),
                                     Text(
-                                      "총 배당금 / 주기",
+                                      myStock.frequency == -1
+                                          ? "연 배당금"
+                                          : "연 배당금 / 연 ${myStock.frequency}회",
                                       style: TextStyle(
                                           color: kTextColor, fontSize: 12.0),
                                     ),
                                     Text(
                                       myStock.frequency == -1
                                           ? "￦0"
-                                          : "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
-                                              " "
-                                                  "연 ${myStock.frequency}회",
+                                          : "￦${(myStock.wYearlyDividend * amount).toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: kTextColor,
@@ -298,20 +296,28 @@ class _StockListState extends State<StockList> {
                                         padding: EdgeInsets.all(2.0),
                                         height: 24.0,
                                         child: TextField(
-                                          maxLength: 10,
-                                          textInputAction: TextInputAction.done,
-                                          decoration:
-                                              InputDecoration(counterText: ""),
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                  decimal: true),
-                                          autofocus: true,
-                                          controller: amountController,
-                                          style: TextStyle(
-                                              color: kTextColor,
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold),
-                                        )),
+                                            maxLength: 10,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            decoration: InputDecoration(
+                                                counterText: ""),
+                                            keyboardType:
+                                                TextInputType.numberWithOptions(
+                                                    decimal: true),
+                                            autofocus: true,
+                                            controller: amountController,
+                                            style: TextStyle(
+                                                color: kTextColor,
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.bold),
+                                            onChanged: (text) {
+                                              setState(() {
+                                                if (text != null) {
+                                                  amount = double.parse(text);
+                                                }
+                                                print("amount : $text");
+                                              });
+                                            })),
                                   ],
                                 ),
                               )
@@ -437,6 +443,7 @@ class _StockListState extends State<StockList> {
                     TextEditingController(text: "${myStock.amount.round()}");
                 amountController.selection = TextSelection.fromPosition(
                     TextPosition(offset: amountController.text.length));
+                var amount = myStock.amount;
                 showModalBottomSheet(
                     isScrollControlled: true,
                     shape: RoundedRectangleBorder(
@@ -478,31 +485,35 @@ class _StockListState extends State<StockList> {
                                           child: Row(
                                             children: <Widget>[
                                               Container(
-                                                child: SizedBox(
-                                                  width: 54,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          54.0),
+                                                  child: FadeInImage(
+                                                      fit: BoxFit.contain,
+                                                      width: 54,
+                                                      image: myStock.logoURL ==
+                                                              ""
+                                                          ? AssetImage(
+                                                              'images/default_logo.png',
+                                                            )
+                                                          : NetworkImage(
+                                                              myStock.logoURL),
+                                                      placeholder: AssetImage(
+                                                          'images/default_logo.png')),
                                                 ),
                                                 height: 54,
                                                 decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    shape: BoxShape.circle,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                          offset:
-                                                              Offset(0.0, 1.0),
-                                                          color: Colors.grey,
-                                                          blurRadius: 1.0)
-                                                    ],
-                                                    image: DecorationImage(
-                                                        fit: BoxFit.contain,
-                                                        // ignore: unrelated_type_equality_checks
-                                                        image: myStock
-                                                                    .logoURL ==
-                                                                ""
-                                                            ? AssetImage(
-                                                                'images/default_logo.png')
-                                                            : NetworkImage(
-                                                                myStock
-                                                                    .logoURL))),
+                                                  color: Colors.white,
+                                                  shape: BoxShape.circle,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        offset:
+                                                            Offset(0.0, 1.0),
+                                                        color: Colors.grey,
+                                                        blurRadius: 1.0)
+                                                  ],
+                                                ),
                                               ),
                                               SizedBox(
                                                 width: 10.0,
@@ -752,7 +763,7 @@ class _StockListState extends State<StockList> {
                                                     fontSize: 12.0),
                                               ),
                                               Text(
-                                                "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                "￦${(myStock.wClosingPrice * amount).toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: kTextColor,
@@ -774,7 +785,7 @@ class _StockListState extends State<StockList> {
                                               Text(
                                                 myStock.frequency == -1
                                                     ? "￦0"
-                                                    : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                    : "￦${(myStock.wYearlyDividend * amount).toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: kTextColor,
@@ -870,8 +881,8 @@ class _StockListState extends State<StockList> {
                                                     isEdit ? true : false,
                                                 visible: isEdit ? true : false,
                                                 child: Container(
-                                                    padding:
-                                                        EdgeInsets.all(2.0),
+                                                    padding: EdgeInsets.all(
+                                                        2.0),
                                                     height: 24.0,
                                                     child: TextField(
                                                         maxLength: 10,
@@ -897,7 +908,18 @@ class _StockListState extends State<StockList> {
                                                         onSubmitted: (_) =>
                                                             FocusScope.of(
                                                                     context)
-                                                                .unfocus())),
+                                                                .unfocus(),
+                                                        onChanged: (text) {
+                                                          setState(() {
+                                                            if (text != null) {
+                                                              amount =
+                                                                  double.parse(
+                                                                      text);
+                                                            }
+                                                            print(
+                                                                "amount : $text");
+                                                          });
+                                                        })),
                                               ),
                                               Visibility(
                                                 maintainState:
