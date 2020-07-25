@@ -40,21 +40,16 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
   }
 
   void _onDaySelected(DateTime day, List events) {
-    print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;
     });
   }
 
   void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onVisibleDaysChanged');
-  }
+      DateTime first, DateTime last, CalendarFormat format) {}
 
   void _onCalendarCreated(
-      DateTime first, DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onCalendarCreated');
-  }
+      DateTime first, DateTime last, CalendarFormat format) {}
 
   bool _isSameDate(DateTime other) {
     var now = DateTime.now();
@@ -257,7 +252,6 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  onTap: () => print('$event tapped!'),
                 ),
               ))
           .toList(),

@@ -279,9 +279,10 @@ class _DashBoardsState extends State<DashBoards> {
                               ],
                             ),
                             Container(
-                              width: 180,
+                              width: 175,
                               child: Text(
                                 "￦${context.watch<Stock>().thisMonthDividend}",
+                                textAlign: TextAlign.end,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
@@ -323,6 +324,7 @@ class _DashBoardsState extends State<DashBoards> {
                                   child: Text(
                                     "￦${context.watch<Stock>().totalInvestPrice}",
                                     overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.end,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w800,
                                         color: Colors.white,
@@ -347,6 +349,7 @@ class _DashBoardsState extends State<DashBoards> {
                                   child: Text(
                                     "￦${context.watch<Stock>().totalEvaPrice}",
                                     overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.end,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w800,
                                         color: Colors.white,
@@ -371,6 +374,7 @@ class _DashBoardsState extends State<DashBoards> {
                                   child: Text(
                                     "￦${context.watch<Stock>().totalEvaProfit}",
                                     overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.end,
                                     style: TextStyle(
                                         fontWeight: FontWeight.w800,
                                         color: Colors.white,
@@ -412,7 +416,7 @@ class _DashBoardsState extends State<DashBoards> {
                                     fontSize: 20),
                               ),
                               SizedBox(
-                                height: 15.0,
+                                height: 30.0,
                               ),
                               AspectRatio(
                                 aspectRatio: 1.7,
