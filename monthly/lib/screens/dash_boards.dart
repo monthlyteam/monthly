@@ -27,7 +27,7 @@ class _DashBoardsState extends State<DashBoards> {
 
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
         final isTouched = i == barTouchedIndex;
-        final barColor = isTouched ? Color(0xff84BFA4) : Color(0xfff2d49b);
+        final barColor = isTouched ? kMainColor : Color(0xfff2d49b);
         final barWidth = isTouched ? 12.0 : 10.0;
         final List<int> showTooltips = [isTouched ? 0 : 1];
         final double monthDividends =
@@ -424,7 +424,7 @@ class _DashBoardsState extends State<DashBoards> {
                                             BarChartAlignment.spaceAround,
                                         barTouchData: BarTouchData(
                                           touchTooltipData: BarTouchTooltipData(
-                                            tooltipBgColor: Color(0xff84BFA4),
+                                            tooltipBgColor: kMainColor,
                                             tooltipPadding:
                                                 const EdgeInsets.only(
                                                     top: 6.0,
@@ -466,7 +466,7 @@ class _DashBoardsState extends State<DashBoards> {
                                           bottomTitles: SideTitles(
                                             showTitles: true,
                                             textStyle: TextStyle(
-                                                color: const Color(0xff2C2C2C),
+                                                color: kTextColor,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 12),
                                             margin: 10,
@@ -477,7 +477,7 @@ class _DashBoardsState extends State<DashBoards> {
                                           leftTitles: SideTitles(
                                             showTitles: true,
                                             textStyle: TextStyle(
-                                                color: const Color(0xff2c2c2c),
+                                                color: kTextColor,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold),
                                             margin: 15.0,
