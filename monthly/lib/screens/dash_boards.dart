@@ -478,7 +478,7 @@ class _DashBoardsState extends State<DashBoards> {
                       height: 40.0,
                     ),
                     // ignore: unrelated_type_equality_checks
-                    context.watch<Stock>().stockList.length != '0'
+                    context.watch<Stock>().stockList.length != 0
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
