@@ -45,8 +45,12 @@ class _StockListState extends State<StockList> {
             }
             final avgController =
                 TextEditingController(text: "${myStock.avg.round()}");
+            avgController.selection = TextSelection.fromPosition(
+                TextPosition(offset: avgController.text.length));
             final amountController =
                 TextEditingController(text: "${myStock.amount.round()}");
+            amountController.selection = TextSelection.fromPosition(
+                TextPosition(offset: amountController.text.length));
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
               return Container(
@@ -222,6 +226,7 @@ class _StockListState extends State<StockList> {
                                     ),
                                     Text(
                                       "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: kTextColor,
                                           fontSize: 16.0,
@@ -241,6 +246,7 @@ class _StockListState extends State<StockList> {
                                           : "￦${myStock.dividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
                                               " "
                                                   "연 ${myStock.frequency}회",
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: kTextColor,
                                           fontSize: 16.0,
@@ -263,9 +269,11 @@ class _StockListState extends State<StockList> {
                                         padding: EdgeInsets.all(2.0),
                                         height: 24.0,
                                         child: TextField(
-                                            maxLines: 1,
+                                            maxLength: 10,
                                             textInputAction:
                                                 TextInputAction.next,
+                                            decoration: InputDecoration(
+                                                counterText: ""),
                                             keyboardType:
                                                 TextInputType.numberWithOptions(
                                                     decimal: true),
@@ -290,8 +298,10 @@ class _StockListState extends State<StockList> {
                                         padding: EdgeInsets.all(2.0),
                                         height: 24.0,
                                         child: TextField(
-                                          maxLines: 1,
+                                          maxLength: 10,
                                           textInputAction: TextInputAction.done,
+                                          decoration:
+                                              InputDecoration(counterText: ""),
                                           keyboardType:
                                               TextInputType.numberWithOptions(
                                                   decimal: true),
@@ -743,6 +753,7 @@ class _StockListState extends State<StockList> {
                                               ),
                                               Text(
                                                 "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 16.0,
@@ -753,7 +764,9 @@ class _StockListState extends State<StockList> {
                                                 height: 20.0,
                                               ),
                                               Text(
-                                                "총 배당금 / 주기",
+                                                myStock.frequency == -1
+                                                    ? "연 배당금"
+                                                    : "연 배당금 / 연 ${myStock.frequency}회",
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 12.0),
@@ -761,9 +774,8 @@ class _StockListState extends State<StockList> {
                                               Text(
                                                 myStock.frequency == -1
                                                     ? "￦0"
-                                                    : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
-                                                        " "
-                                                            "연 ${myStock.frequency}회",
+                                                    : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 16.0,
@@ -798,10 +810,14 @@ class _StockListState extends State<StockList> {
                                                         EdgeInsets.all(2.0),
                                                     height: 24.0,
                                                     child: TextField(
-                                                        maxLines: 1,
+                                                        maxLength: 10,
                                                         textInputAction:
                                                             TextInputAction
                                                                 .next,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                counterText:
+                                                                    ""),
                                                         keyboardType: TextInputType
                                                             .numberWithOptions(
                                                                 decimal: true),
@@ -858,10 +874,14 @@ class _StockListState extends State<StockList> {
                                                         EdgeInsets.all(2.0),
                                                     height: 24.0,
                                                     child: TextField(
-                                                        maxLines: 1,
+                                                        maxLength: 10,
                                                         textInputAction:
                                                             TextInputAction
                                                                 .done,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                counterText:
+                                                                    ""),
                                                         keyboardType: TextInputType
                                                             .numberWithOptions(
                                                                 decimal: true),
@@ -991,13 +1011,30 @@ class _StockListState extends State<StockList> {
                                                       color: Colors.white,
                                                       fontSize: 12.0),
                                                 ),
-                                                Text(
-                                                  "￦${myStock.wEvaProfit.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                Row(
+                                                  children: <Widget>[
+                                                    Text(
+                                                      "${myStock.wEvaProfit >= 0 ? "+" : "-"}",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Flexible(
+                                                      child: Text(
+                                                        "￦${myStock.wEvaProfit.abs().toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                                 SizedBox(
                                                   height: 12.0,
@@ -1010,6 +1047,8 @@ class _StockListState extends State<StockList> {
                                                 ),
                                                 Text(
                                                   "${myStock.evaProfitPercent.toStringAsFixed(1)}%",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -1027,6 +1066,8 @@ class _StockListState extends State<StockList> {
                                                 ),
                                                 Text(
                                                   "${(myStock.percent).toStringAsFixed(1)}%",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16.0,
@@ -1089,16 +1130,15 @@ class _StockListState extends State<StockList> {
                                 height: 12.0,
                               ),
                               Text(
-                                "총 배당금 / 주기",
+                                "연 배당금",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 9.0),
                               ),
                               Text(
                                 myStock.frequency == -1
                                     ? "￦0"
-                                    : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}" +
-                                        " " +
-                                        "연${myStock.frequency}회",
+                                    : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -1119,6 +1159,7 @@ class _StockListState extends State<StockList> {
                               ),
                               Text(
                                 "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -1134,6 +1175,7 @@ class _StockListState extends State<StockList> {
                               ),
                               Text(
                                 "${myStock.amount} 주",
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
