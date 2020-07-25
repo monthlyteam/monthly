@@ -17,11 +17,11 @@ class DashBoards extends StatefulWidget {
 class _DashBoardsState extends State<DashBoards> {
   int barTouchedIndex = DateTime.now().month - 1;
   int piTouchedIndex = 0;
+  int piDivTouchedIndex = 0;
   double avgPoint = 0;
 
   @override
   void initState() {
-    calcPoint();
     super.initState();
   }
 
@@ -59,8 +59,34 @@ class _DashBoardsState extends State<DashBoards> {
         title = "${mStock.percent.round()}%";
       }
       return PieChartSectionData(
-        color: kColorList[i % 20],
+        color: kColorList[i % kColorList.length],
         value: mStock.percent,
+        title: title,
+        radius: radius,
+        titleStyle: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xffffffff)),
+      );
+    });
+  }
+
+  List<PieChartSectionData> showingDivSections() {
+    return List.generate(context.watch<Stock>().stockList.length, (i) {
+      final isTouched = i == piDivTouchedIndex;
+      final double fontSize = isTouched ? 30 : 20;
+      final double radius = isTouched ? 85 : 70;
+      MyStock mStock = context.watch<Stock>().stockList[i];
+      String title = (context.watch<Stock>().stockList.length > 2 &&
+              mStock.totalDivPercent.round() < 5)
+          ? ""
+          : "${mStock.totalDivPercent.round()}%";
+      if (isTouched) {
+        title = "${mStock.totalDivPercent.round()}%";
+      }
+      return PieChartSectionData(
+        color: kColorList[kColorList.length - 1 - (i % kColorList.length)],
+        value: mStock.totalDivPercent,
         title: title,
         radius: radius,
         titleStyle: TextStyle(
@@ -88,7 +114,7 @@ class _DashBoardsState extends State<DashBoards> {
             height: containerSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: kColorList[i % 20],
+              color: kColorList[i % kColorList.length],
             ),
           ),
           const SizedBox(
@@ -96,6 +122,52 @@ class _DashBoardsState extends State<DashBoards> {
           ),
           Text(
             "${mStock.percent.round()}% ",
+            style: TextStyle(
+                fontSize: 12.0,
+                fontWeight: textFontWeight,
+                color: Color(0xff2c2c2c)),
+          ),
+          Flexible(
+            child: Text(
+              '${mStock.ticker} ${mStock.name}',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: textFontWeight,
+                  color: Color(0xff2c2c2c)),
+            ),
+          )
+        ],
+      );
+    });
+  }
+
+  List<Row> showingDivSectionTitle() {
+    return List.generate(context.watch<Stock>().stockList.length, (i) {
+      final isTouched = i == piDivTouchedIndex;
+      final double marginSize = isTouched ? 0.0 : 2.0;
+      final double containerSize = 14.0 - (marginSize * 2.0);
+      final FontWeight textFontWeight =
+          isTouched ? FontWeight.bold : FontWeight.w400;
+      MyStock mStock = context.watch<Stock>().stockList[i];
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: marginSize),
+            width: containerSize,
+            height: containerSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color:
+                  kColorList[kColorList.length - 1 - (i % kColorList.length)],
+            ),
+          ),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(
+            "${mStock.totalDivPercent.round()}% ",
             style: TextStyle(
                 fontSize: 12.0,
                 fontWeight: textFontWeight,
@@ -124,11 +196,12 @@ class _DashBoardsState extends State<DashBoards> {
       avg /= 10.0;
       cnt++;
       if (avg <= 1.0) {
-        if (avg.roundToDouble() == 0.0) {
+        if (avg.round() == 0) {
+          cnt--;
+          avgPoint = pow(10, cnt);
+        } else {
           cnt--;
           avgPoint = 5 * pow(10, cnt);
-        } else {
-          avgPoint = pow(10, cnt);
         }
         if (avgPoint * 2 >=
             context.read<Stock>().monthlyDividends.reduce(max)) {
@@ -407,6 +480,8 @@ class _DashBoardsState extends State<DashBoards> {
                             children: <Widget>[
                               context.watch<Stock>().avgDividend != '0'
                                   ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
                                           "예상 배당금 차트",
@@ -604,6 +679,86 @@ class _DashBoardsState extends State<DashBoards> {
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                height: 40.0,
+                              ),
+                              context.watch<Stock>().avgDividend != '0'
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "배당금 비율",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kTextColor,
+                                              fontSize: 20),
+                                        ),
+                                        AspectRatio(
+                                          aspectRatio: 1.1,
+                                          child: Card(
+                                            elevation: 0.0,
+                                            color: Colors.white,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    child: PieChart(
+                                                      PieChartData(
+                                                          startDegreeOffset:
+                                                              -90,
+                                                          pieTouchData:
+                                                              PieTouchData(
+                                                                  touchCallback:
+                                                                      (pieTouchResponse) {
+                                                            setState(() {
+                                                              if (pieTouchResponse
+                                                                      .touchedSectionIndex !=
+                                                                  null) {
+                                                                piDivTouchedIndex =
+                                                                    pieTouchResponse
+                                                                        .touchedSectionIndex;
+                                                              }
+                                                            });
+                                                          }),
+                                                          borderData:
+                                                              FlBorderData(
+                                                            show: false,
+                                                          ),
+                                                          sectionsSpace: 0.0,
+                                                          centerSpaceRadius:
+                                                              60.0,
+                                                          sections:
+                                                              showingDivSections()),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: Wrap(
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
+                                              direction: Axis.horizontal,
+                                              spacing: 10.0,
+                                              children:
+                                                  showingDivSectionTitle(),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
                               SizedBox(
                                 height: 80.0,
                               ),
