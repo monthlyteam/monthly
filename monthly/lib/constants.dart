@@ -23,11 +23,6 @@ const kColorList = [
   Color(0xFF0E7961),
   Color(0xFF599318),
   Color(0xFF7258FC),
-  Color(0xFFAC2727),
-  Color(0xFF9F650A),
-  Color(0xFF9B9B9B),
-  Color(0xFF386A0E),
-  Color(0xFF2C206C)
 ];
 
 const kMonthlyLevelUnknown = [
