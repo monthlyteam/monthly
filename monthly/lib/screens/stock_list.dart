@@ -266,7 +266,9 @@ class _StockListState extends State<StockList> {
                                             maxLines: 1,
                                             textInputAction:
                                                 TextInputAction.next,
-                                            keyboardType: TextInputType.number,
+                                            keyboardType:
+                                                TextInputType.numberWithOptions(
+                                                    decimal: true),
                                             controller: avgController,
                                             autofocus: true,
                                             style: TextStyle(
@@ -290,7 +292,9 @@ class _StockListState extends State<StockList> {
                                         child: TextField(
                                           maxLines: 1,
                                           textInputAction: TextInputAction.done,
-                                          keyboardType: TextInputType.number,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
                                           autofocus: true,
                                           controller: amountController,
                                           style: TextStyle(
@@ -798,9 +802,9 @@ class _StockListState extends State<StockList> {
                                                         textInputAction:
                                                             TextInputAction
                                                                 .next,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
+                                                        keyboardType: TextInputType
+                                                            .numberWithOptions(
+                                                                decimal: true),
                                                         controller:
                                                             avgController,
                                                         autofocus: true,
@@ -858,9 +862,9 @@ class _StockListState extends State<StockList> {
                                                         textInputAction:
                                                             TextInputAction
                                                                 .done,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
+                                                        keyboardType: TextInputType
+                                                            .numberWithOptions(
+                                                                decimal: true),
                                                         autofocus: true,
                                                         controller:
                                                             amountController,

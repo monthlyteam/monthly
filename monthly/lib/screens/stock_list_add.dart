@@ -52,6 +52,7 @@ class _StockListAddState extends State<StockListAdd> {
         });
         Navigator.pop(context, data[index]['ticker']);
       },
+      behavior: HitTestBehavior.translucent,
       child: Padding(
         padding: const EdgeInsets.only(
             left: 20.0, right: 25.0, top: 6.0, bottom: 6.0),
