@@ -400,123 +400,148 @@ class _DashBoardsState extends State<DashBoards> {
                     SizedBox(
                       height: 40.0,
                     ),
-                    context.watch<Stock>().avgDividend != '0'
+                    // ignore: unrelated_type_equality_checks
+                    context.watch<Stock>().stockList.length != '0'
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "예상 배당금 차트",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: kTextColor,
-                                    fontSize: 20),
-                              ),
-                              SizedBox(
-                                height: 15.0,
-                              ),
-                              AspectRatio(
-                                aspectRatio: 1.7,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: BarChart(
-                                    BarChartData(
-                                        alignment:
-                                            BarChartAlignment.spaceAround,
-                                        barTouchData: BarTouchData(
-                                          touchTooltipData: BarTouchTooltipData(
-                                            tooltipBgColor: kMainColor,
-                                            tooltipPadding:
-                                                const EdgeInsets.only(
-                                                    top: 6.0,
-                                                    left: 6.0,
-                                                    right: 4.0),
-                                            tooltipBottomMargin: 4,
-                                            getTooltipItem: (
-                                              BarChartGroupData group,
-                                              int groupIndex,
-                                              BarChartRodData rod,
-                                              int rodIndex,
-                                            ) {
-                                              return BarTooltipItem(
-                                                "${context.read<Stock>().monthlyDividends[barTouchedIndex].round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
-                                                TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15.0),
-                                              );
-                                            },
-                                          ),
-                                          touchCallback: (barTouchResponse) {
-                                            setState(() {
-                                              if (barTouchResponse.spot !=
-                                                      null &&
-                                                  barTouchResponse.touchInput
-                                                      is! FlPanEnd &&
-                                                  barTouchResponse.touchInput
-                                                      is! FlLongPressEnd) {
-                                                barTouchedIndex =
-                                                    barTouchResponse.spot
-                                                        .touchedBarGroupIndex;
-                                              }
-                                            });
-                                          },
+                              context.watch<Stock>().avgDividend != '0'
+                                  ? Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "예상 배당금 차트",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kTextColor,
+                                              fontSize: 20),
                                         ),
-                                        titlesData: FlTitlesData(
-                                          show: true,
-                                          bottomTitles: SideTitles(
-                                            showTitles: true,
-                                            textStyle: TextStyle(
-                                                color: kTextColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12),
-                                            margin: 10,
-                                            getTitles: (double value) {
-                                              return '${(value).toInt() + 1}';
-                                            },
-                                          ),
-                                          leftTitles: SideTitles(
-                                            showTitles: true,
-                                            textStyle: TextStyle(
-                                                color: kTextColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold),
-                                            margin: 15.0,
-                                            getTitles: (value) {
-                                              calcPoint();
-                                              if (value == 0) {
-                                                return '0';
-                                              } else if (value == avgPoint) {
-                                                return '${NumberFormat.compact().format(avgPoint)}';
-                                              } else if (value ==
-                                                  2 * avgPoint) {
-                                                return '${NumberFormat.compact().format(2 * avgPoint)}';
-                                              } else {
-                                                return '';
-                                              }
-                                            },
+                                        SizedBox(
+                                          height: 15.0,
+                                        ),
+                                        AspectRatio(
+                                          aspectRatio: 1.7,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: BarChart(
+                                              BarChartData(
+                                                  alignment: BarChartAlignment
+                                                      .spaceAround,
+                                                  barTouchData: BarTouchData(
+                                                    touchTooltipData:
+                                                        BarTouchTooltipData(
+                                                      tooltipBgColor:
+                                                          kMainColor,
+                                                      tooltipPadding:
+                                                          const EdgeInsets.only(
+                                                              top: 6.0,
+                                                              left: 6.0,
+                                                              right: 4.0),
+                                                      tooltipBottomMargin: 4,
+                                                      getTooltipItem: (
+                                                        BarChartGroupData group,
+                                                        int groupIndex,
+                                                        BarChartRodData rod,
+                                                        int rodIndex,
+                                                      ) {
+                                                        return BarTooltipItem(
+                                                          "${context.read<Stock>().monthlyDividends[barTouchedIndex].round().toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                          TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 15.0),
+                                                        );
+                                                      },
+                                                    ),
+                                                    touchCallback:
+                                                        (barTouchResponse) {
+                                                      setState(() {
+                                                        if (barTouchResponse
+                                                                    .spot !=
+                                                                null &&
+                                                            barTouchResponse
+                                                                    .touchInput
+                                                                is! FlPanEnd &&
+                                                            barTouchResponse
+                                                                    .touchInput
+                                                                is! FlLongPressEnd) {
+                                                          barTouchedIndex =
+                                                              barTouchResponse
+                                                                  .spot
+                                                                  .touchedBarGroupIndex;
+                                                        }
+                                                      });
+                                                    },
+                                                  ),
+                                                  titlesData: FlTitlesData(
+                                                    show: true,
+                                                    bottomTitles: SideTitles(
+                                                      showTitles: true,
+                                                      textStyle: TextStyle(
+                                                          color: kTextColor,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12),
+                                                      margin: 10,
+                                                      getTitles:
+                                                          (double value) {
+                                                        return '${(value).toInt() + 1}';
+                                                      },
+                                                    ),
+                                                    leftTitles: SideTitles(
+                                                      showTitles: true,
+                                                      textStyle: TextStyle(
+                                                          color: kTextColor,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      margin: 15.0,
+                                                      getTitles: (value) {
+                                                        calcPoint();
+                                                        if (value == 0) {
+                                                          return '0';
+                                                        } else if (value ==
+                                                            avgPoint) {
+                                                          return '${NumberFormat.compact().format(avgPoint)}';
+                                                        } else if (value ==
+                                                            2 * avgPoint) {
+                                                          return '${NumberFormat.compact().format(2 * avgPoint)}';
+                                                        } else {
+                                                          return '';
+                                                        }
+                                                      },
+                                                    ),
+                                                  ),
+                                                  borderData: FlBorderData(
+                                                    show: false,
+                                                  ),
+                                                  gridData: FlGridData(
+                                                    show: true,
+                                                    checkToShowHorizontalLine:
+                                                        (value) =>
+                                                            value % avgPoint ==
+                                                                0 &&
+                                                            value <=
+                                                                2 * avgPoint,
+                                                    getDrawingHorizontalLine:
+                                                        (value) => FlLine(
+                                                      color: const Color(
+                                                          0xff2a2747),
+                                                      strokeWidth: 0.3,
+                                                    ),
+                                                  ),
+                                                  barGroups: showingGroups()),
+                                            ),
                                           ),
                                         ),
-                                        borderData: FlBorderData(
-                                          show: false,
+                                        SizedBox(
+                                          height: 40.0,
                                         ),
-                                        gridData: FlGridData(
-                                          show: true,
-                                          checkToShowHorizontalLine: (value) =>
-                                              value % avgPoint == 0 &&
-                                              value <= 2 * avgPoint,
-                                          getDrawingHorizontalLine: (value) =>
-                                              FlLine(
-                                            color: const Color(0xff2a2747),
-                                            strokeWidth: 0.3,
-                                          ),
-                                        ),
-                                        barGroups: showingGroups()),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 40.0,
-                              ),
+                                      ],
+                                    )
+                                  : Container(),
                               Text(
                                 "평가 자산 비율",
                                 style: TextStyle(
