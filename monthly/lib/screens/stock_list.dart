@@ -18,6 +18,20 @@ class _StockListState extends State<StockList> {
     );
     if (information == "-1") {
     } else if (information != null) {
+      var index = context
+          .read<Stock>()
+          .stockList
+          .indexWhere((item) => item.ticker == information);
+      MyStock myStock = context.read<Stock>().stockList[index];
+      final avgController =
+          TextEditingController(text: "${myStock.avg.round()}");
+      avgController.selection = TextSelection.fromPosition(
+          TextPosition(offset: avgController.text.length));
+      final amountController =
+          TextEditingController(text: "${myStock.amount.round()}");
+      amountController.selection = TextSelection.fromPosition(
+          TextPosition(offset: amountController.text.length));
+      var amount = myStock.amount;
       showModalBottomSheet(
           isScrollControlled: true,
           shape: RoundedRectangleBorder(
@@ -26,20 +40,6 @@ class _StockListState extends State<StockList> {
                   topRight: Radius.circular(30.0))),
           context: context,
           builder: (context) {
-            var index = context
-                .watch<Stock>()
-                .stockList
-                .indexWhere((item) => item.ticker == information);
-            MyStock myStock = context.watch<Stock>().stockList[index];
-            final avgController =
-                TextEditingController(text: "${myStock.avg.round()}");
-            avgController.selection = TextSelection.fromPosition(
-                TextPosition(offset: avgController.text.length));
-            final amountController =
-                TextEditingController(text: "${myStock.amount.round()}");
-            amountController.selection = TextSelection.fromPosition(
-                TextPosition(offset: amountController.text.length));
-            var amount = myStock.amount;
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
               return Container(

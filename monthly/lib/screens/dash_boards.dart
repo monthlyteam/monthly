@@ -198,10 +198,9 @@ class _DashBoardsState extends State<DashBoards> {
       if (avg <= 1.0) {
         if (avg.round() == 0) {
           cnt--;
-          avgPoint = pow(10, cnt);
-        } else {
-          cnt--;
           avgPoint = 5 * pow(10, cnt);
+        } else {
+          avgPoint = pow(10, cnt);
         }
         if (avgPoint * 2 >=
             context.read<Stock>().monthlyDividends.reduce(max)) {
