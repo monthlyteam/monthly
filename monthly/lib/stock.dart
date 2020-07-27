@@ -226,14 +226,15 @@ class Stock with ChangeNotifier {
     });
     try {
       var response = await http.post(
-        'http://13.125.225.138:5000/kakao/',
+        'http://13.125.225.138:5000/kakao',
         headers: {"content-Type": "application/json"},
         body: json,
         encoding: Encoding.getByName("utf-8"),
       );
+      print('response.body: ${response.body}');
       print('statuscode: ${response.statusCode}');
     } catch (e) {
-      print(e);
+      print('e:$e');
     }
   }
 
