@@ -22,6 +22,9 @@ class _StockListState extends State<StockList> {
           .read<Stock>()
           .stockList
           .indexWhere((item) => item.ticker == information);
+      print("indexes: $index");
+      print("stockList: ${context.read<Stock>().stockList}");
+
       MyStock myStock = context.read<Stock>().stockList[index];
       final avgController =
           TextEditingController(text: "${myStock.avg.round()}");

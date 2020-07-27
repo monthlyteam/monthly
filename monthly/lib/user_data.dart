@@ -1,12 +1,21 @@
 class UserData {
+  bool isKakaoLogin = false;
   String profileImgUrl;
   String name;
-  int kakaoId;
+  String kakaoId;
   String tokenId;
 
   UserData(
       {this.profileImgUrl = '',
       this.name = '사용자',
-      this.kakaoId = 0,
+      this.kakaoId = '',
       this.tokenId});
+
+  String getId() {
+    if (isKakaoLogin) {
+      return kakaoId;
+    } else {
+      return tokenId;
+    }
+  }
 }

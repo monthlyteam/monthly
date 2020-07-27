@@ -49,6 +49,7 @@ Future<List<MyStock>> initStockData(String token, double dollar) async {
         exchange = 1;
       else
         exchange = dollar;
+
       print('dividendmonth: ${item['DividendMonth']}');
       stockList.add(MyStock(
           ticker: item['ticker'],
@@ -69,6 +70,7 @@ Future<List<MyStock>> initStockData(String token, double dollar) async {
     return stockList;
   } catch (e) {
     exit(0);
+    return null;
   }
 }
 

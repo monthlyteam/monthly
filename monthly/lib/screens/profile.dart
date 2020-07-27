@@ -14,7 +14,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool _isKakao = false;
-  bool _isKakaoLogin = false;
 
   @override
   void initState() {
@@ -49,6 +48,7 @@ class _ProfileState extends State<Profile> {
 
   void _isKakaoInstalled() async {
     final installed = await isKakaoTalkInstalled();
+    print('isKakaoInstalled: $installed');
     setState(() {
       _isKakao = installed;
     });
@@ -59,9 +59,6 @@ class _ProfileState extends State<Profile> {
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       _getUserKakaoName();
-      setState(() {
-        _isKakaoLogin = true;
-      });
       print('token : ${token.toString()} !');
     } catch (e) {
       print("accessToken Method Error : $e");
@@ -98,9 +95,7 @@ class _ProfileState extends State<Profile> {
   _unlink() async {
     try {
       var code = await UserApi.instance.unlink();
-      setState(() {
-        _isKakaoLogin = false;
-      });
+      context.read<Stock>().logoutKakao();
       print(code.toString());
     } catch (e) {
       print(e);
@@ -114,9 +109,7 @@ class _ProfileState extends State<Profile> {
           .read<Stock>()
           .addKakaoProfile(name: user.properties['nickname'], kakaoId: user.id);
     } catch (e) {
-      setState(() {
-        _isKakaoLogin = false;
-      });
+      context.read<Stock>().logoutKakao();
       print('UserData method Error : $e');
     }
   }
@@ -155,7 +148,7 @@ class _ProfileState extends State<Profile> {
                     color: kTextColor.withOpacity(0.7),
                     size: 110.0,
                   ),
-                  _isKakaoLogin
+                  context.watch<Stock>().userData.isKakaoLogin
                       ? Container(
                           width: 300,
                           height: 50,
@@ -296,7 +289,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                     ),
-                    _isKakaoLogin
+                    context.watch<Stock>().userData.isKakaoLogin
                         ? Material(
                             color: Colors.transparent,
                             child: InkWell(

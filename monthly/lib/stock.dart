@@ -89,13 +89,9 @@ class Stock with ChangeNotifier {
   }
 
   void deleteStock({String ticker}) {
-    print("delete before : ${_stockList.length}");
     _stockList.removeWhere((item) => item.ticker == ticker);
-    print("delete after : ${_stockList.length}");
     _httpStockPost(ticker, -1, -1);
-    print("calc before : $_monthlyDividends");
     _calcAndSet();
-    print("calc after : $_monthlyDividends");
 
     notifyListeners();
   }
@@ -109,18 +105,66 @@ class Stock with ChangeNotifier {
     notifyListeners();
   }
 
-  void addKakaoProfile({String profileImgUrl = '', String name, int kakaoId}) {
+  void addKakaoProfile(
+      {String profileImgUrl = '', String name, int kakaoId}) async {
     _userData.profileImgUrl = profileImgUrl;
     _userData.name = name;
-    _userData.kakaoId = kakaoId;
-    _httpKakaoPost(kakaoId);
+    _userData.kakaoId = kakaoId.toString();
+    _userData.isKakaoLogin = true;
+    await _httpKakaoPost(kakaoId.toString());
+    _stockDataInit(_userData.getId());
+
     notifyListeners();
   }
 
+  void logoutKakao() {
+    userData.kakaoId = '';
+    userData.profileImgUrl = '';
+    userData.name = '사용자';
+    userData.isKakaoLogin = false;
+    _stockDataInit(_userData.getId());
+
+    notifyListeners();
+  }
+
+  void _stockDataInit(String id) async {
+    try {
+      final response = await http.get('http://13.125.225.138:5000/data/$id');
+      var myData = json.decode(response.body);
+      double exchange = 1;
+      _stockList = [];
+      myData.forEach((item) {
+        if (item['ticker'].contains('.KS'))
+          exchange = 1;
+        else
+          exchange = dollar;
+
+        stockList.add(MyStock(
+            ticker: item['ticker'],
+            name: item['Name'],
+            amount: item['amount'],
+            avg: item['avgPrice'],
+            dividendMonth: item['DividendMonth'],
+            exDividends: item['ExList'],
+            nextDividend: item['NextAmount'].toDouble(),
+            yearlyDividend: item['YearlyDividend'].toDouble(),
+            divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
+            closingPrice: item['Price'],
+            frequency: item['Frequency'],
+            dividendDate: item['DividendDate'] ?? '',
+            logoURL: item['Logo'],
+            wonExchange: exchange));
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<MyStock> _getMyData(String ticker) async {
+    print('UserToken : ${_userData.getId()}');
     try {
       final response = await http
-          .get('http://13.125.225.138:5000/data/${_userData.tokenId}');
+          .get('http://13.125.225.138:5000/data/${_userData.getId()}');
       var myData = json.decode(response.body);
       print("adsf: $myData");
       int index = myData.indexWhere((item) => item['ticker'] == ticker);
@@ -156,7 +200,7 @@ class Stock with ChangeNotifier {
   Future<void> _httpStockPost(
       String ticker, double amount, double avgPrice) async {
     var json = jsonEncode({
-      'id': _userData.tokenId,
+      'id': _userData.getId(),
       'ticker': ticker,
       'amount': amount,
       'avgPrice': avgPrice,
@@ -175,14 +219,14 @@ class Stock with ChangeNotifier {
     }
   }
 
-  void _httpKakaoPost(int kakaoId) async {
+  Future<void> _httpKakaoPost(String kakaoId) async {
     var json = jsonEncode({
       'id': _userData.tokenId,
       'kakaoid': kakaoId,
     });
     try {
       var response = await http.post(
-        'http://13.125.225.138:5000/kakao',
+        'http://13.125.225.138:5000/kakao/',
         headers: {"content-Type": "application/json"},
         body: json,
         encoding: Encoding.getByName("utf-8"),
