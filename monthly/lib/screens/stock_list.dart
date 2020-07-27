@@ -259,7 +259,7 @@ class _StockListState extends State<StockList> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "평균 매입 단가",
+                                      "평균 매입 단가(￦)",
                                       style: TextStyle(
                                           color: kTextColor, fontSize: 12.0),
                                     ),
@@ -803,7 +803,9 @@ class _StockListState extends State<StockList> {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                "평균 매입 단가",
+                                                isEdit
+                                                    ? "평균 매입 단가(￦)"
+                                                    : "평균 매입 단가",
                                                 style: TextStyle(
                                                     color: kTextColor,
                                                     fontSize: 12.0),
