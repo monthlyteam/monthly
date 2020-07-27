@@ -6,7 +6,8 @@ class UserData {
   String tokenId;
 
   UserData(
-      {this.profileImgUrl = '',
+      {this.isKakaoLogin = false,
+      this.profileImgUrl = '',
       this.name = '사용자',
       this.kakaoId = '',
       this.tokenId});

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:monthly/user_data.dart';
 import 'home.dart';
 import 'package:provider/provider.dart';
 import 'stock.dart';
@@ -74,6 +75,20 @@ Future<List<MyStock>> initStockData(String token, double dollar) async {
   }
 }
 
+Future<UserData> initUserData(String token) async {
+  UserData userData = UserData(tokenId: token);
+  try {
+    User user = await UserApi.instance.me();
+    userData.isKakaoLogin = true;
+    userData.kakaoId = user.id.toString();
+    userData.name = user.properties['nickname'];
+    return userData;
+  } catch (e) {
+    print('No kakao login');
+    return userData;
+  }
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -82,7 +97,8 @@ Future<void> main() async {
 
   String token = await checkToken();
   double dollar = await getDollarData();
-  List<MyStock> stockList = await initStockData(token, dollar);
+  UserData userData = await initUserData(token);
+  List<MyStock> stockList = await initStockData(userData.getId(), dollar);
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
@@ -90,7 +106,7 @@ Future<void> main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(
-              create: (_) => Stock(token, dollar, stockList)),
+              create: (_) => Stock(userData, dollar, stockList)),
         ],
         child: MyApp(),
       ),

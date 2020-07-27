@@ -61,8 +61,8 @@ class Stock with ChangeNotifier {
             (Match m) => '${m[1]},');
   }
 
-  Stock(String token, double dollar, List<MyStock> stockList) {
-    _userData.tokenId = token;
+  Stock(UserData userData, double dollar, List<MyStock> stockList) {
+    _userData = userData;
     _dollar = dollar;
     _stockList = stockList;
     _calcAndSet();
@@ -112,22 +112,24 @@ class Stock with ChangeNotifier {
     _userData.kakaoId = kakaoId.toString();
     _userData.isKakaoLogin = true;
     await _httpKakaoPost(kakaoId.toString());
-    _stockDataInit(_userData.getId());
+    await _stockDataInit(_userData.getId());
+    _calcAndSet();
 
     notifyListeners();
   }
 
-  void logoutKakao() {
+  void logoutKakao() async {
     userData.kakaoId = '';
     userData.profileImgUrl = '';
     userData.name = '사용자';
     userData.isKakaoLogin = false;
-    _stockDataInit(_userData.getId());
+    await _stockDataInit(_userData.getId());
+    _calcAndSet();
 
     notifyListeners();
   }
 
-  void _stockDataInit(String id) async {
+  Future<void> _stockDataInit(String id) async {
     try {
       final response = await http.get('http://13.125.225.138:5000/data/$id');
       var myData = json.decode(response.body);
@@ -317,7 +319,7 @@ class Stock with ChangeNotifier {
             'images/C00.jpg'
           ]);
           _levelCard = _levelCard.reversed.toList();
-          notifyListeners();
+          //notifyListeners();
           break;
         }
         _levelCard.add(kMonthlyLevel[i]);
