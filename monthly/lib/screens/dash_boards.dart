@@ -622,6 +622,8 @@ class _DashBoardsState extends State<DashBoards> {
                                   : Container(),
                               context.watch<Stock>().totalEvaPrice != "0"
                                   ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Text(
                                           "평가 자산 비율",
@@ -629,6 +631,9 @@ class _DashBoardsState extends State<DashBoards> {
                                               fontWeight: FontWeight.bold,
                                               color: kTextColor,
                                               fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
                                         ),
                                         AspectRatio(
                                           aspectRatio: 1.1,
@@ -708,6 +713,9 @@ class _DashBoardsState extends State<DashBoards> {
                                               fontWeight: FontWeight.bold,
                                               color: kTextColor,
                                               fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
                                         ),
                                         AspectRatio(
                                           aspectRatio: 1.1,
