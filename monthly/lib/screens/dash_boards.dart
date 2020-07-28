@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:monthly/constants.dart';
@@ -5,6 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:monthly/screens/dash_boards_level.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
+import 'package:admob_flutter/admob_flutter.dart';
 
 import '../my_stock.dart';
 import '../stock.dart';
@@ -19,10 +22,14 @@ class _DashBoardsState extends State<DashBoards> {
   int piTouchedIndex = 0;
   int piDivTouchedIndex = 0;
   double avgPoint = 0;
+  String admobBannerId = '';
 
   @override
   void initState() {
     super.initState();
+    admobBannerId = Platform.isIOS
+        ? 'ca-app-pub-1325163385377987/9713437057'
+        : 'ca-app-pub-1325163385377987/3894134167';
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
@@ -697,7 +704,7 @@ class _DashBoardsState extends State<DashBoards> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 40.0,
+                                          height: 60.0,
                                         ),
                                       ],
                                     )
@@ -779,12 +786,19 @@ class _DashBoardsState extends State<DashBoards> {
                                             ),
                                           ),
                                         ),
+                                        SizedBox(
+                                          height: 40.0,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 20.0),
+                                          child: AdmobBanner(
+                                            adUnitId: admobBannerId,
+                                            adSize: AdmobBannerSize.FULL_BANNER,
+                                          ),
+                                        ),
                                       ],
                                     )
                                   : Container(),
-                              SizedBox(
-                                height: 80.0,
-                              ),
                             ],
                           )
                         : Container(),

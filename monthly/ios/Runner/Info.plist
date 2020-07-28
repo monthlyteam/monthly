@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+<key>GADApplicationIdentifier</key>
+<string>ca-app-pub-1325163385377987~2796674910</string>
+<key>io.flutter.embedded_views_preview</key>
+<true/>
+
 	<key>KAKAO_APP_KEY</key>
 	<string>dfc5584eeb7d68ba3b1eac6eeb72db96</string>
 	<key>CFBundleDevelopmentRegion</key>

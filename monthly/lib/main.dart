@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:monthly/user_data.dart';
@@ -99,6 +100,12 @@ Future<void> main() async {
   double dollar = await getDollarData();
   UserData userData = await initUserData(token);
   List<MyStock> stockList = await initStockData(userData.getId(), dollar);
+
+  String admobID = Platform.isIOS
+      ? 'ca-app-pub-1325163385377987~2796674910'
+      : 'ca-app-pub-1325163385377987~2220469154';
+
+  Admob.initialize(admobID);
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
