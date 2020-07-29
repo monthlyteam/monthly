@@ -240,9 +240,9 @@ class _DashBoardsState extends State<DashBoards> {
                   ),
                 ],
                 icon: Icon(
-                  Icons.more_vert,
-                  color: kTextColor,
-                  size: 24.0,
+                  Icons.help_outline,
+                  color: Colors.grey,
+                  size: 28.0,
                 ),
               ),
             ],
