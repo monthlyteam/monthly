@@ -116,7 +116,7 @@ class ProfileInfo extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 20),
                               child: Text(
-                                '"예상 배당금 차트는 배당 지급일이 아닌 배당락일 정보를 기준으로 계산되었습니다. 추후 주식 정보량을 늘려 계선하겠습니다."',
+                                '"예상 배당금 차트는 배당 지급일이 아닌 배당락일 정보를 기준으로 계산되었습니다. 추후 주식 정보량을 늘려 개선하겠습니다."',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18.0,
