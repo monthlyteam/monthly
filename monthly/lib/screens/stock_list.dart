@@ -448,7 +448,8 @@ class _StockListState extends State<StockList> {
         delegate: SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             MyStock myStock = context.watch<Stock>().stockList[index];
-            if (index == 4 || index != 0 && (index % 9) == 0) {
+            if (index != 0 &&
+                (index + 1) == context.watch<Stock>().stockList.length) {
               print("on");
               return Column(
                 children: <Widget>[
@@ -456,6 +457,7 @@ class _StockListState extends State<StockList> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Container(
+                      color: Colors.white,
                       child: AdmobBanner(
                         adUnitId: admobBannerId,
                         adSize: AdmobBannerSize.FULL_BANNER,
