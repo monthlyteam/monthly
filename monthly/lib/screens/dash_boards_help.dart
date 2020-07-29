@@ -26,6 +26,21 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
     height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        leading: SizedBox(
+          height: 28.0,
+          width: 28.0,
+          child: IconButton(
+            padding: EdgeInsets.all(0.0),
+            iconSize: 28.0,
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: kTextColor,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         titleSpacing: 0.0,
         centerTitle: true,
         actions: <Widget>[
