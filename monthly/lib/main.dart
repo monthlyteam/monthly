@@ -126,6 +126,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     print('${context.watch<Stock>().thisMonthDividend}');
     return MaterialApp(
+      builder: (context, child) {
+        return MediaQuery(
+          child: child,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        );
+      },
       debugShowCheckedModeBanner: false,
       title: 'Monthly',
       theme: ThemeData(

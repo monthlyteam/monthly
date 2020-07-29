@@ -790,6 +790,7 @@ class _DashBoardsState extends State<DashBoards> {
                                           height: 40.0,
                                         ),
                                         Container(
+                                          color: Colors.white,
                                           margin: EdgeInsets.only(bottom: 20.0),
                                           child: AdmobBanner(
                                             adUnitId: admobBannerId,
