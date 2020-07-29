@@ -27,6 +27,7 @@ dependencies:
   table_calendar: ^2.2.2
   url_launcher: ^5.5.0
   admob_flutter: "^0.3.4"
+  carousel_slider: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +40,7 @@ flutter:
   assets:
     - icons/
     - images/
+    - images/help/
 
   fonts:
     - family: NanumGothic
