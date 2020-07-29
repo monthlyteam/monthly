@@ -15,12 +15,33 @@ class DashBoardsHelp extends StatefulWidget {
 class _DashBoardsHelpState extends State<DashBoardsHelp> {
   CarouselController carController = CarouselController();
   double height;
-  String type;
+  String type, title;
   int len;
   List<int> imgList;
   _DashBoardsHelpState({this.type, this.len}) {
     imgList = new List<int>.generate(len, (i) => i + 1);
+    setTitle();
   }
+  void setTitle() {
+    switch (type) {
+      case "add":
+        title = "도움말(주식 추가)";
+        break;
+      case "edit":
+        title = "도움말(주식 수정)";
+        break;
+      case "cal":
+        title = "도움말(달력 이용)";
+        break;
+      case "kakao":
+        title = "도움말(데이터 백업)";
+        break;
+      default:
+        title = "도움말";
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -54,20 +75,25 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
                   case "add":
                     type = "add";
                     len = 7;
+                    title = "도움말(주식 추가)";
                     break;
                   case "edit":
                     type = "edit";
                     len = 5;
+                    title = "도움말(주식 수정)";
                     break;
                   case "cal":
                     type = "cal";
                     len = 3;
+                    title = "도움말(달력 이용)";
                     break;
                   case "kakao":
                     type = "kakao";
                     len = 3;
+                    title = "도움말(데이터 백업)";
                     break;
                   default:
+                    title = "도움말";
                     break;
                 }
               });
@@ -83,7 +109,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
               ),
               const PopupMenuItem<String>(
                 value: "cal",
-                child: Text('달력'),
+                child: Text('달력 이용'),
               ),
               const PopupMenuItem<String>(
                 value: "kakao",
@@ -101,9 +127,9 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Text(
-            "도움말",
+            title,
             style: TextStyle(
-                color: kTextColor, fontWeight: FontWeight.bold, fontSize: 27),
+                color: kTextColor, fontWeight: FontWeight.bold, fontSize: 24),
           ),
         ),
         backgroundColor: Colors.white,

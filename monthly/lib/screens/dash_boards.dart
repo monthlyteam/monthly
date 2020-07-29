@@ -290,7 +290,7 @@ class _DashBoardsState extends State<DashBoards> {
                   ),
                   const PopupMenuItem<String>(
                     value: "cal",
-                    child: Text('달력'),
+                    child: Text('달력 이용'),
                   ),
                   const PopupMenuItem<String>(
                     value: "kakao",
