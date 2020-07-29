@@ -13,6 +13,8 @@ class DashBoardsHelp extends StatefulWidget {
 }
 
 class _DashBoardsHelpState extends State<DashBoardsHelp> {
+  CarouselController carController = CarouselController();
+  double height;
   String type;
   int len;
   List<int> imgList;
@@ -21,6 +23,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
   }
   @override
   Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0.0,
@@ -31,6 +34,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
             padding: EdgeInsets.symmetric(horizontal: 25.0),
             onSelected: (String sel) {
               setState(() {
+                carController.jumpToPage(0);
                 switch (sel) {
                   case "add":
                     type = "add";
@@ -91,31 +95,30 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Builder(
-          builder: (context) {
-            final double height = MediaQuery.of(context).size.height;
-            return CarouselSlider(
-              options: CarouselOptions(
-                initialPage: 0,
-                height: height,
-                viewportFraction: 1.0,
-                enlargeCenterPage: false,
-                // autoPlay: false,
-              ),
-              items: imgList.map((i) {
-                return Container(
-                    child: Center(
-                        child: Padding(
+        child: Center(
+          child: CarouselSlider.builder(
+            carouselController: carController,
+            itemCount: len,
+            itemBuilder: (BuildContext context, int index) => Container(
+              child: Center(
+                child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Image.asset(
-                    'images/help/$type$i.png',
+                    'images/help/$type${index + 1}.png',
                     fit: BoxFit.cover,
                     height: height,
                   ),
-                )));
-              }).toList(),
-            );
-          },
+                ),
+              ),
+            ),
+            options: CarouselOptions(
+              initialPage: 0,
+              height: height,
+              viewportFraction: 1.0,
+              enlargeCenterPage: false,
+              // autoPlay: false,
+            ),
+          ),
         ),
       ),
     );
