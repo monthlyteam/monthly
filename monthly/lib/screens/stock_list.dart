@@ -1157,7 +1157,9 @@ class _StockListState extends State<StockList> {
                                 height: 12.0,
                               ),
                               Text(
-                                "연 배당금",
+                                myStock.frequency == -1
+                                    ? "연 배당금"
+                                    : "연 배당금 / 연 ${myStock.frequency}회",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 9.0),
                               ),
