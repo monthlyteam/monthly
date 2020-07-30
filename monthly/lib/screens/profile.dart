@@ -105,9 +105,11 @@ class _ProfileState extends State<Profile> {
   _getUserKakaoName() async {
     try {
       User user = await UserApi.instance.me();
-      context
-          .read<Stock>()
-          .addKakaoProfile(name: user.properties['nickname'], kakaoId: user.id);
+      print("user : ${user.properties}");
+      context.read<Stock>().addKakaoProfile(
+          name: user.properties['nickname'],
+          kakaoId: user.id,
+          profileImgUrl: user.properties['profile_image']);
     } catch (e) {
       context.read<Stock>().logoutKakao();
       print('UserData method Error : $e');
@@ -116,6 +118,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    print("url : ${context.watch<Stock>().userData.profileImgUrl}");
     return SafeArea(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -143,11 +146,35 @@ class _ProfileState extends State<Profile> {
                   SizedBox(
                     height: 40,
                   ),
-                  Icon(
-                    Icons.account_circle,
-                    color: kTextColor.withOpacity(0.7),
-                    size: 110.0,
-                  ),
+                  context.watch<Stock>().userData.profileImgUrl != ''
+                      ? Container(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(110.0),
+                            child: Image(
+                                fit: BoxFit.fitWidth,
+                                width: 110.0,
+                                height: 110.0,
+                                image: NetworkImage(context
+                                    .watch<Stock>()
+                                    .userData
+                                    .profileImgUrl)),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(0.0, 1.0),
+                                  color: Colors.grey,
+                                  blurRadius: 1.0)
+                            ],
+                          ),
+                        )
+                      : Icon(
+                          Icons.account_circle,
+                          color: kTextColor.withOpacity(0.7),
+                          size: 110.0,
+                        ),
                   context.watch<Stock>().userData.isKakaoLogin
                       ? Container(
                           width: 300,
