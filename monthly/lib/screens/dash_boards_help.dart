@@ -52,10 +52,10 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
           width: 28.0,
           child: IconButton(
             padding: EdgeInsets.all(0.0),
-            iconSize: 28.0,
             icon: Icon(
-              Icons.arrow_back_ios,
+              Icons.navigate_before,
               color: kTextColor,
+              size: 30,
             ),
             onPressed: () {
               Navigator.pop(context);
@@ -127,7 +127,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
         title: Text(
           title,
           style: TextStyle(
-              color: kTextColor, fontWeight: FontWeight.bold, fontSize: 24),
+              color: kTextColor, fontWeight: FontWeight.bold, fontSize: 20),
         ),
         backgroundColor: Colors.white,
       ),
