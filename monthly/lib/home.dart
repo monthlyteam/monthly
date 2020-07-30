@@ -21,6 +21,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.white));
     return Scaffold(
       backgroundColor: Colors.white,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
