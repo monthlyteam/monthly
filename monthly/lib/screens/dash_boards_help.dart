@@ -124,13 +124,10 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
           ),
         ],
         elevation: 0.0,
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Text(
-            title,
-            style: TextStyle(
-                color: kTextColor, fontWeight: FontWeight.bold, fontSize: 24),
-          ),
+        title: Text(
+          title,
+          style: TextStyle(
+              color: kTextColor, fontWeight: FontWeight.bold, fontSize: 24),
         ),
         backgroundColor: Colors.white,
       ),
