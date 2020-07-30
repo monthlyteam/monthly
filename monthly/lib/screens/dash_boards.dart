@@ -11,6 +11,7 @@ import 'package:admob_flutter/admob_flutter.dart';
 
 import '../my_stock.dart';
 import '../stock.dart';
+import 'dash_boards_help.dart';
 
 class DashBoards extends StatefulWidget {
   @override
@@ -231,18 +232,75 @@ class _DashBoardsState extends State<DashBoards> {
                 offset: Offset(0.0, 50.0),
                 padding: EdgeInsets.symmetric(horizontal: 25.0),
                 onSelected: (String sel) {
-                  setState(() {});
+                  setState(() {
+                    switch (sel) {
+                      case "add":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashBoardsHelp(
+                                    type: "add",
+                                    len: 7,
+                                  )),
+                        );
+                        break;
+                      case "edit":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashBoardsHelp(
+                                    type: "edit",
+                                    len: 5,
+                                  )),
+                        );
+                        break;
+                      case "cal":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashBoardsHelp(
+                                    type: "cal",
+                                    len: 3,
+                                  )),
+                        );
+                        break;
+                      case "kakao":
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashBoardsHelp(
+                                    type: "kakao",
+                                    len: 3,
+                                  )),
+                        );
+                        break;
+                      default:
+                        break;
+                    }
+                  });
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   const PopupMenuItem<String>(
-                    value: "detail",
-                    child: Text('detail'),
+                    value: "add",
+                    child: Text('주식 추가'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: "edit",
+                    child: Text('주식 수정'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: "cal",
+                    child: Text('달력 이용'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: "kakao",
+                    child: Text('데이터 백업'),
                   ),
                 ],
                 icon: Icon(
-                  Icons.more_vert,
-                  color: kTextColor,
-                  size: 24.0,
+                  Icons.help_outline,
+                  color: Colors.grey,
+                  size: 28.0,
                 ),
               ),
             ],

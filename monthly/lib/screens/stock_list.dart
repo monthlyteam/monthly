@@ -1116,7 +1116,9 @@ class _StockListState extends State<StockList> {
                         height: 12.0,
                       ),
                       Text(
-                        "연 배당금",
+                        myStock.frequency == -1
+                            ? "연 배당금"
+                            : "연 배당금 / 연 ${myStock.frequency}회",
                         style: TextStyle(color: Colors.white, fontSize: 9.0),
                       ),
                       Text(
@@ -1173,15 +1175,3 @@ class _StockListState extends State<StockList> {
     );
   }
 }
-/*
-Widget _myListView(BuildContext context) {
-  return ListView.builder(
-    padding: EdgeInsets.all(20.0),
-    itemCount: myStocks.length,
-    itemBuilder: (context, index) {
-      return
-    },
-  );
-}
-
- */
