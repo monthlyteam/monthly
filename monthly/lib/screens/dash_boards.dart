@@ -24,6 +24,7 @@ class _DashBoardsState extends State<DashBoards> {
   int piDivTouchedIndex = 0;
   double avgPoint = 0;
   String admobBannerId = '';
+  var bannder;
 
   @override
   void initState() {
@@ -31,6 +32,10 @@ class _DashBoardsState extends State<DashBoards> {
     admobBannerId = Platform.isIOS
         ? 'ca-app-pub-1325163385377987/9713437057'
         : 'ca-app-pub-1325163385377987/3894134167';
+    bannder = AdmobBanner(
+      adUnitId: admobBannerId,
+      adSize: AdmobBannerSize.FULL_BANNER,
+    );
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
@@ -235,52 +240,50 @@ class _DashBoardsState extends State<DashBoards> {
                 offset: Offset(0.0, 50.0),
                 padding: EdgeInsets.symmetric(horizontal: 25.0),
                 onSelected: (String sel) {
-                  setState(() {
-                    switch (sel) {
-                      case "add":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashBoardsHelp(
-                                    type: "add",
-                                    len: 7,
-                                  )),
-                        );
-                        break;
-                      case "edit":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashBoardsHelp(
-                                    type: "edit",
-                                    len: 5,
-                                  )),
-                        );
-                        break;
-                      case "cal":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashBoardsHelp(
-                                    type: "cal",
-                                    len: 3,
-                                  )),
-                        );
-                        break;
-                      case "kakao":
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashBoardsHelp(
-                                    type: "kakao",
-                                    len: 3,
-                                  )),
-                        );
-                        break;
-                      default:
-                        break;
-                    }
-                  });
+                  switch (sel) {
+                    case "add":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DashBoardsHelp(
+                                  type: "add",
+                                  len: 7,
+                                )),
+                      );
+                      break;
+                    case "edit":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DashBoardsHelp(
+                                  type: "edit",
+                                  len: 5,
+                                )),
+                      );
+                      break;
+                    case "cal":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DashBoardsHelp(
+                                  type: "cal",
+                                  len: 3,
+                                )),
+                      );
+                      break;
+                    case "kakao":
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DashBoardsHelp(
+                                  type: "kakao",
+                                  len: 3,
+                                )),
+                      );
+                      break;
+                    default:
+                      break;
+                  }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   const PopupMenuItem<String>(
@@ -853,10 +856,7 @@ class _DashBoardsState extends State<DashBoards> {
                                         Container(
                                           color: Colors.white,
                                           margin: EdgeInsets.only(bottom: 20.0),
-                                          child: AdmobBanner(
-                                            adUnitId: admobBannerId,
-                                            adSize: AdmobBannerSize.FULL_BANNER,
-                                          ),
+                                          child: bannder,
                                         ),
                                       ],
                                     )
