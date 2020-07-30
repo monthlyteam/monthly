@@ -154,6 +154,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
               height: height,
               viewportFraction: 1.0,
               enlargeCenterPage: false,
+              enableInfiniteScroll: false,
               // autoPlay: false,
             ),
           ),
