@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'screens/calendar.dart';
@@ -161,6 +163,9 @@ class _HomeState extends State<Home> {
         default:
       }
     });
+    if (flag == true) {
+      exit(0);
+    }
     return Future(() => flag);
   }
 

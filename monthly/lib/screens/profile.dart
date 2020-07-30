@@ -345,6 +345,7 @@ class _ProfileState extends State<Profile> {
                                           FlatButton(
                                             onPressed: () {
                                               _unlink();
+                                              Navigator.of(bContext).pop();
                                             },
                                             child: Text("예"),
                                           )
