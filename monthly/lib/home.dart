@@ -166,7 +166,7 @@ class _HomeState extends State<Home> {
     if (flag == true) {
       exit(0);
     }
-    return Future(() => flag);
+    return Future(() => false);
   }
 
   void _onTap(int val, BuildContext context) {
