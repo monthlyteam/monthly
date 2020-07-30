@@ -207,6 +207,9 @@ class _DashBoardsState extends State<DashBoards> {
         if (avg.round() == 0) {
           cnt--;
           avgPoint = 5 * pow(10, cnt);
+          if (avg < 0.25) {
+            avgPoint = pow(10, cnt);
+          }
         } else {
           avgPoint = pow(10, cnt);
         }
