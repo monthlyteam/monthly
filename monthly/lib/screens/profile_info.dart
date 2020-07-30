@@ -94,10 +94,10 @@ class ProfileInfo extends StatelessWidget {
                               child: Text(
                                 '"달러 환율은 실시간 매매기준율을 사용 하며, 증권사 환율과 다를 수 있습니다."',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    height: 1.4,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  height: 1.4,
+                                ),
                               ),
                             ),
                             Padding(
@@ -106,10 +106,10 @@ class ProfileInfo extends StatelessWidget {
                               child: Text(
                                 '"부정확한 주식(특히 한국 주식 관련) 정보가 있을 수 있습니다. 해당 문제는 메일 문의 주시면 빠른 시일 안에 해결하겠습니다."',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    height: 1.4,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  height: 1.4,
+                                ),
                               ),
                             ),
                             Padding(
@@ -118,22 +118,22 @@ class ProfileInfo extends StatelessWidget {
                               child: Text(
                                 '"예상 배당금 차트는 배당 지급일이 아닌 배당락일 정보를 기준으로 계산되었습니다. 추후 주식 정보량을 늘려 개선하겠습니다."',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    height: 1.4,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  height: 1.4,
+                                ),
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 20),
                               child: Text(
-                                '"기타 문의  ( youngthly@gmail.com )"',
+                                '"기타 문의 :  youngthly@gmail.com "',
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    height: 1.4,
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  height: 1.4,
+                                ),
                               ),
                             ),
                           ],
@@ -147,10 +147,10 @@ class ProfileInfo extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 30,
                     ),
-                    FlatButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -164,12 +164,11 @@ class ProfileInfo extends StatelessWidget {
                             "License Information",
                             style: TextStyle(
                                 color: kTextColor.withOpacity(0.6),
-                                fontWeight: FontWeight.bold,
                                 fontSize: 17),
                           ),
                           Icon(
                             Icons.navigate_next,
-                            color: kTextColor.withOpacity(0.6),
+                            color: kTextColor.withOpacity(0.4),
                             size: 25.0,
                           ),
                         ],

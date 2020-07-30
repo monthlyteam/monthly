@@ -39,7 +39,8 @@ class ProfileInfoLicense extends StatelessWidget {
                 delegate: SliverChildListDelegate([
               Padding(
                 padding: const EdgeInsets.all(25.0),
-                child: Text('''
+                child: Text(
+                  '''
 yahoo_fin
 MIT License
 
@@ -301,7 +302,9 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
-   limitations under the License.'''),
+   limitations under the License.''',
+                  style: TextStyle(fontSize: 10),
+                ),
               )
             ]))
           ],

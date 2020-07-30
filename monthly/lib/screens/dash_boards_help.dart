@@ -47,6 +47,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
     height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         leading: SizedBox(
           height: 28.0,
           width: 28.0,
@@ -101,25 +102,25 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               const PopupMenuItem<String>(
                 value: "add",
-                child: Text('주식 추가'),
+                child: Text('주식 추가 방법'),
               ),
               const PopupMenuItem<String>(
                 value: "edit",
-                child: Text('주식 수정'),
+                child: Text('주식 수정법 방법'),
               ),
               const PopupMenuItem<String>(
                 value: "cal",
-                child: Text('달력 이용'),
+                child: Text('달력 이용 방법'),
               ),
               const PopupMenuItem<String>(
                 value: "kakao",
-                child: Text('데이터 백업'),
+                child: Text('데이터 백업 방법'),
               ),
             ],
             icon: Icon(
               Icons.help_outline,
-              color: Colors.grey,
-              size: 28.0,
+              color: Colors.black.withOpacity(0.3),
+              size: 24.0,
             ),
           ),
         ],
