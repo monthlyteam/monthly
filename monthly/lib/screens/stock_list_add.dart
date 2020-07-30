@@ -64,22 +64,22 @@ class _StockListAddState extends State<StockListAdd> {
               width: 24.0,
               child: IconButton(
                 padding: EdgeInsets.all(0.0),
-                iconSize: 24.0,
+                iconSize: 20.0,
                 icon: Icon(
                   Icons.search,
-                  color: kTextColor,
+                  color: kTextColor.withOpacity(0.8),
                 ),
                 onPressed: () {},
               ),
             ),
             SizedBox(
-              width: 12.0,
+              width: 10.0,
             ),
             Flexible(
               child: RichText(
                 overflow: TextOverflow.ellipsis,
                 text: TextSpan(
-                  text: '${data[index]['ticker']} ${data[index]['name']}',
+                  text: '${data[index]['ticker']} - ${data[index]['name']}',
                   style: TextStyle(
                       fontSize: 12.0,
                       color: kTextColor,
@@ -109,13 +109,13 @@ class _StockListAddState extends State<StockListAdd> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
-                        height: 24.0,
-                        width: 24.0,
+                        height: 30.0,
+                        width: 30.0,
                         child: IconButton(
                           padding: EdgeInsets.all(0.0),
-                          iconSize: 24.0,
+                          iconSize: 30.0,
                           icon: Icon(
-                            Icons.arrow_back_ios,
+                            Icons.navigate_before,
                             color: kTextColor,
                           ),
                           onPressed: () {
@@ -152,10 +152,10 @@ class _StockListAddState extends State<StockListAdd> {
                                       width: 22.0,
                                       child: IconButton(
                                         padding: EdgeInsets.all(0.0),
-                                        iconSize: 22.0,
+                                        iconSize: 20.0,
                                         icon: Icon(
                                           Icons.clear,
-                                          color: kTextColor,
+                                          color: kTextColor.withOpacity(0.7),
                                         ),
                                         onPressed: () {
                                           _controller.clear();
@@ -174,7 +174,7 @@ class _StockListAddState extends State<StockListAdd> {
                   ),
                 ),
                 Divider(
-                  color: kTextColor,
+                  color: kTextColor.withOpacity(0.3),
                 ),
                 Expanded(
                   child: ListView.builder(
