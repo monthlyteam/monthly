@@ -321,7 +321,39 @@ class _ProfileState extends State<Profile> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                _unlink();
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext bContext) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          "카카오 로그아웃",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: kTextColor),
+                                        ),
+                                        content: Text(
+                                          "${context.read<Stock>().userData.name}님의 계정에서 로그아웃 하시겠습니까?",
+                                          style: TextStyle(color: kTextColor),
+                                        ),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            onPressed: () {
+                                              Navigator.of(bContext).pop();
+                                            },
+                                            child: Text("아니요"),
+                                          ),
+                                          FlatButton(
+                                            onPressed: () {
+                                              _unlink();
+                                            },
+                                            child: Text("예"),
+                                          )
+                                        ],
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                      );
+                                    });
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
