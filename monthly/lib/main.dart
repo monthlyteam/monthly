@@ -83,6 +83,7 @@ Future<UserData> initUserData(String token) async {
     userData.isKakaoLogin = true;
     userData.kakaoId = user.id.toString();
     userData.name = user.properties['nickname'];
+    userData.profileImgUrl = user.properties['profile_image'];
     return userData;
   } catch (e) {
     print('No kakao login');

@@ -107,7 +107,7 @@ class Stock with ChangeNotifier {
 
   void addKakaoProfile(
       {String profileImgUrl = '', String name, int kakaoId}) async {
-    _userData.profileImgUrl = profileImgUrl;
+    _userData.profileImgUrl = profileImgUrl != null ? profileImgUrl : "";
     _userData.name = name;
     _userData.kakaoId = kakaoId.toString();
     _userData.isKakaoLogin = true;
