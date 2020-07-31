@@ -326,13 +326,13 @@ class _ProfileState extends State<Profile> {
                                     builder: (BuildContext bContext) {
                                       return AlertDialog(
                                         title: Text(
-                                          "카카오 로그아웃",
+                                          "로그아웃",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: kTextColor),
                                         ),
                                         content: Text(
-                                          "${context.read<Stock>().userData.name}님의 계정에서 로그아웃 하시겠습니까?",
+                                          "${context.read<Stock>().userData.name}님의 계정에서\n로그아웃 하시겠습니까?",
                                           style: TextStyle(color: kTextColor),
                                         ),
                                         actions: <Widget>[
