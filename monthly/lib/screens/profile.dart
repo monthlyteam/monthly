@@ -151,7 +151,7 @@ class _ProfileState extends State<Profile> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(110.0),
                             child: Image(
-                                fit: BoxFit.fitWidth,
+                                fit: BoxFit.cover,
                                 width: 110.0,
                                 height: 110.0,
                                 image: NetworkImage(context
