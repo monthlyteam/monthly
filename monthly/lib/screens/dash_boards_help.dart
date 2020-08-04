@@ -106,7 +106,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
               ),
               const PopupMenuItem<String>(
                 value: "edit",
-                child: Text('주식 수정법 방법'),
+                child: Text('주식 수정 방법'),
               ),
               const PopupMenuItem<String>(
                 value: "cal",
