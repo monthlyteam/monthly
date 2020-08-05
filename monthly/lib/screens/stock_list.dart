@@ -15,6 +15,7 @@ class StockList extends StatefulWidget {
 
 class _StockListState extends State<StockList> {
   String admobBannerId = '';
+  var banner;
 
   @override
   void initState() {
@@ -22,6 +23,14 @@ class _StockListState extends State<StockList> {
         ? 'ca-app-pub-1325163385377987/9713437057'
         : 'ca-app-pub-1325163385377987/3894134167';
     super.initState();
+    getBanner();
+  }
+
+  void getBanner() {
+    banner = AdmobBanner(
+      adUnitId: admobBannerId,
+      adSize: AdmobBannerSize.FULL_BANNER,
+    );
   }
 
   void moveToSecondPage() async {
@@ -31,6 +40,7 @@ class _StockListState extends State<StockList> {
     );
     if (information == "-1") {
     } else if (information != null) {
+      getBanner();
       var index = context
           .read<Stock>()
           .stockList
@@ -458,10 +468,7 @@ class _StockListState extends State<StockList> {
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Container(
                       color: Colors.white,
-                      child: AdmobBanner(
-                        adUnitId: admobBannerId,
-                        adSize: AdmobBannerSize.FULL_BANNER,
-                      ),
+                      child: banner,
                     ),
                   ),
                 ],

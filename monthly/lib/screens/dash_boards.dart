@@ -24,7 +24,7 @@ class _DashBoardsState extends State<DashBoards> {
   int piDivTouchedIndex = 0;
   double avgPoint = 0;
   String admobBannerId = '';
-  var bannder;
+  var banner;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _DashBoardsState extends State<DashBoards> {
     admobBannerId = Platform.isIOS
         ? 'ca-app-pub-1325163385377987/9713437057'
         : 'ca-app-pub-1325163385377987/3894134167';
-    bannder = AdmobBanner(
+    banner = AdmobBanner(
       adUnitId: admobBannerId,
       adSize: AdmobBannerSize.FULL_BANNER,
     );
@@ -856,7 +856,7 @@ class _DashBoardsState extends State<DashBoards> {
                                         Container(
                                           color: Colors.white,
                                           margin: EdgeInsets.only(bottom: 20.0),
-                                          child: bannder,
+                                          child: banner,
                                         ),
                                       ],
                                     )
