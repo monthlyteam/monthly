@@ -9,7 +9,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  flutter_svg: ^0.17.1
+  flutter_svg: ^0.18.0
   fl_chart: ^0.10.1
   intl: ^0.16.1
   http: ^0.12.2
