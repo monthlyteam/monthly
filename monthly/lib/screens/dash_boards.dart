@@ -298,10 +298,11 @@ class _DashBoardsState extends State<DashBoards> {
                     value: "cal",
                     child: Text('달력 이용 방법'),
                   ),
-                  const PopupMenuItem<String>(
-                    value: "kakao",
-                    child: Text('데이터 백업 방법'),
-                  ),
+                  // TODO: KAKAO DISABLED
+                  // const PopupMenuItem<String>(
+                  //   value: "kakao",
+                  //   child: Text('데이터 백업 방법'),
+                  // ),
                 ],
                 icon: Icon(
                   Icons.help_outline,

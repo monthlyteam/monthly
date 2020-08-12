@@ -175,63 +175,71 @@ class _ProfileState extends State<Profile> {
                           color: kTextColor.withOpacity(0.7),
                           size: 110.0,
                         ),
-                  context.watch<Stock>().userData.isKakaoLogin
-                      ? Container(
-                          width: 300,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "안녕하세요 ",
-                                style: TextStyle(
-                                    color: kTextColor.withOpacity(0.7),
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14),
-                              ),
-                              Text(
-                                "${context.watch<Stock>().userData.name}",
-                                style: TextStyle(
-                                    color: kTextColor.withOpacity(0.7),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
-                              Text(
-                                "님!",
-                                style: TextStyle(
-                                    color: kTextColor.withOpacity(0.7),
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        )
-                      : FlatButton(
-                          onPressed: () {
-                            _isKakao ? _loginInstalled() : _loginUninstalled();
-                          },
-                          child: Container(
-                            width: 300,
-                            height: 50,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "카카오 아이디로 먼슬리 로그인!",
-                                  style: TextStyle(
-                                      color: kTextColor.withOpacity(0.7),
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14),
-                                ),
-                                Icon(
-                                  Icons.navigate_next,
-                                  color: kTextColor.withOpacity(0.7),
-                                  size: 25.0,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                  // TODO: Kakao login disabled. Apple login required
+                  Text(
+                    "로그인 기능 공사중!",
+                    style: TextStyle(
+                        color: kTextColor.withOpacity(0.7),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14),
+                  ),
+                  // context.watch<Stock>().userData.isKakaoLogin
+                  //     ? Container(
+                  //         width: 300,
+                  //         height: 50,
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.center,
+                  //           children: <Widget>[
+                  //             Text(
+                  //               "안녕하세요 ",
+                  //               style: TextStyle(
+                  //                   color: kTextColor.withOpacity(0.7),
+                  //                   fontWeight: FontWeight.w700,
+                  //                   fontSize: 14),
+                  //             ),
+                  //             Text(
+                  //               "${context.watch<Stock>().userData.name}",
+                  //               style: TextStyle(
+                  //                   color: kTextColor.withOpacity(0.7),
+                  //                   fontWeight: FontWeight.bold,
+                  //                   fontSize: 17),
+                  //             ),
+                  //             Text(
+                  //               "님!",
+                  //               style: TextStyle(
+                  //                   color: kTextColor.withOpacity(0.7),
+                  //                   fontWeight: FontWeight.w700,
+                  //                   fontSize: 14),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       )
+                  //     : FlatButton(
+                  //         onPressed: () {
+                  //           _isKakao ? _loginInstalled() : _loginUninstalled();
+                  //         },
+                  //         child: Container(
+                  //           width: 300,
+                  //           height: 50,
+                  //           child: Row(
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: <Widget>[
+                  //               Text(
+                  //                 "카카오 아이디로 먼슬리 로그인!",
+                  //                 style: TextStyle(
+                  //                     color: kTextColor.withOpacity(0.7),
+                  //                     fontWeight: FontWeight.w700,
+                  //                     fontSize: 14),
+                  //               ),
+                  //               Icon(
+                  //                 Icons.navigate_next,
+                  //                 color: kTextColor.withOpacity(0.7),
+                  //                 size: 25.0,
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
                 ],
               ),
               height: 250.0,
