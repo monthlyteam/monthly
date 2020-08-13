@@ -130,6 +130,7 @@ class _StockListAddState extends State<StockListAdd> {
                         child: Container(
                           height: 36.0,
                           child: TextField(
+                              autofocus: true,
                               cursorColor: kTextColor,
                               controller: _controller,
                               style: TextStyle(

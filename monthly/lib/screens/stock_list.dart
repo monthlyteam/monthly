@@ -445,7 +445,26 @@ class _StockListState extends State<StockList> {
             floating: true,
             backgroundColor: Colors.white,
           ),
-          _getSlivers(context)
+          context.watch<Stock>().stockList.length == 0
+              ? SliverFillRemaining(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image(image: AssetImage('images/grey_Icon.png')),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        '검색을 통해 주식 종목을 입력해 주세요',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xffDCDCDC),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
+              : _getSlivers(context),
         ],
       ),
     );
