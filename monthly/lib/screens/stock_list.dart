@@ -447,6 +447,7 @@ class _StockListState extends State<StockList> {
           ),
           context.watch<Stock>().stockList.length == 0
               ? SliverFillRemaining(
+                  hasScrollBody: false,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
