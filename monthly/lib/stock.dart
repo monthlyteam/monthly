@@ -168,7 +168,7 @@ class Stock with ChangeNotifier {
       final response = await http
           .get('http://13.125.225.138:5000/data/${_userData.getId()}');
       var myData = json.decode(response.body);
-      print("adsf: $myData");
+      print("adsf: $myData ${response.statusCode}");
       int index = myData.indexWhere((item) => item['ticker'] == ticker);
       var dF = myData[index];
 
@@ -194,7 +194,7 @@ class Stock with ChangeNotifier {
           logoURL: dF['Logo'],
           wonExchange: exchange);
     } catch (e) {
-      print(e);
+      print("e::$e");
       return null;
     }
   }

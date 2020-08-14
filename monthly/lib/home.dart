@@ -95,11 +95,12 @@ class _HomeState extends State<Home> {
           ),
           new BottomNavigationBarItem(
             icon: new SvgPicture.asset(
-              'icons/person.svg',
+              //TODO: Profile to Setting
+              'icons/settings.svg',
               height: 24.0,
               color: _selectedIndex == 3 ? Colors.red : Colors.grey[600],
             ),
-            title: Text("Profile"),
+            title: Text("Settings"),
           ),
         ],
         type: BottomNavigationBarType.fixed,

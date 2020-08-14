@@ -129,7 +129,8 @@ class _ProfileState extends State<Profile> {
             title: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Text(
-                "내 프로필",
+                //TODO: Profile to Setting
+                "설정",
                 style: TextStyle(
                     color: kTextColor,
                     fontWeight: FontWeight.bold,
@@ -170,14 +171,21 @@ class _ProfileState extends State<Profile> {
                             ],
                           ),
                         )
-                      : Icon(
-                          Icons.account_circle,
-                          color: kTextColor.withOpacity(0.7),
-                          size: 110.0,
-                        ),
+                      :
+
+                      // TODO: Kakao login disabled. Apple login required
+                      Container(
+                          child: Image(
+                              image: AssetImage('images/default_logo.png'))),
+
+//                  Icon(
+//                          Icons.account_circle,
+//                          color: kTextColor.withOpacity(0.7),
+//                          size: 110.0,
+//                        ),
                   // TODO: Kakao login disabled. Apple login required
                   Text(
-                    "로그인 기능 공사중!",
+                    "배당금 부터 월급까지\n\n- 먼슬리 ver 1.0.1 -",
                     style: TextStyle(
                         color: kTextColor.withOpacity(0.7),
                         fontWeight: FontWeight.w700,
