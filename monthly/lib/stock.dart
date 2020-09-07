@@ -136,7 +136,7 @@ class Stock with ChangeNotifier {
       double exchange = 1;
       _stockList = [];
       myData.forEach((item) {
-        if (item['ticker'].contains('.KS'))
+        if (item['ticker'].contains('.KS') || item['ticker'].contains('.KQ'))
           exchange = 1;
         else
           exchange = dollar;
@@ -173,7 +173,7 @@ class Stock with ChangeNotifier {
       var dF = myData[index];
 
       double exchange = 0;
-      if (dF['ticker'].contains('.KS'))
+      if (dF['ticker'].contains('.KS') || dF['ticker'].contains('.KQ'))
         exchange = 1;
       else
         exchange = dollar;

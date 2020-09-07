@@ -42,9 +42,11 @@ class _DashBoardsState extends State<DashBoards> {
         final isTouched = i == barTouchedIndex;
         final barColor = isTouched ? kMainColor : Color(0xfff2d49b);
         final barWidth = isTouched ? 12.0 : 10.0;
-        final List<int> showTooltips = [isTouched ? 0 : 1];
         final double monthDividends =
             context.watch<Stock>().monthlyDividends[i];
+        final List<int> showTooltips = [
+          isTouched && monthDividends != 0 ? 0 : 1
+        ];
         return BarChartGroupData(
           x: i,
           barRods: [
