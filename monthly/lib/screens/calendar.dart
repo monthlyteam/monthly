@@ -259,26 +259,69 @@ class _CalenderState extends State<Calender> with TickerProviderStateMixin {
   }
 
   Widget _buildEventsMarker(DateTime date, List events) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        shape: BoxShape.rectangle,
-        color: _calendarController.isSelected(date)
-            ? Color(0xff145A6A)
-            : Color(0xff248EA6),
-      ),
-      width: 16.0,
-      height: 16.0,
-      child: Center(
-        child: Text(
-          '${events.length}',
-          style: TextStyle().copyWith(
-            color: Colors.white,
-            fontSize: 12.0,
-          ),
-        ),
-      ),
+    int exDividendCnt = 0;
+    int payDayCnt = 0;
+    for (final event in events) {
+      if (event[0] == 0) {
+        exDividendCnt++;
+      } else {
+        payDayCnt++;
+      }
+    }
+    print("$date : ${events[0][0]}");
+    print("ex :$exDividendCnt, pa : $payDayCnt");
+    return Row(
+      children: [
+        payDayCnt > 0
+            ? AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  shape: BoxShape.rectangle,
+                  color: _calendarController.isSelected(date)
+                      ? Color(0xffA73E58)
+                      : Color(0xffF25B7F),
+                ),
+                width: 16.0,
+                height: 16.0,
+                child: Center(
+                  child: Text(
+                    '$payDayCnt',
+                    style: TextStyle().copyWith(
+                      color: Colors.white,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+        exDividendCnt > 0
+            ? Padding(
+                padding: const EdgeInsets.only(left: 1.0),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    shape: BoxShape.rectangle,
+                    color: _calendarController.isSelected(date)
+                        ? Color(0xff145A6A)
+                        : Color(0xff248EA6),
+                  ),
+                  width: 16.0,
+                  height: 16.0,
+                  child: Center(
+                    child: Text(
+                      '$exDividendCnt',
+                      style: TextStyle().copyWith(
+                        color: Colors.white,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+      ],
     );
   }
 }
