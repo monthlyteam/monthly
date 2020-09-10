@@ -55,7 +55,8 @@ class _StockListState extends State<StockList> {
         try {
           isEdit = true;
           MyStock myStock = context.read<Stock>().stockList[index];
-          if (myStock.ticker.contains(".KS")) {
+          if (myStock.ticker.contains(".KS") ||
+              myStock.ticker.contains(".KQ")) {
             _showDialog(myStock, "kor");
           }
           _showModal(myStock, context, myStock.amount.round() == 0);
