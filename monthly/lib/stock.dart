@@ -15,7 +15,7 @@ class Stock with ChangeNotifier {
       'images/C20.jpg',
     ],
   ];
-  double _dollar = 1000.0; //원-달러 확율
+  double _dollar = 1000.0; //원-달러 환율
   UserData _userData = UserData();
   List<MyStock> _stockList = List<MyStock>();
   List<double> _monthlyDividends = List.filled(12, 0.0);
@@ -25,7 +25,12 @@ class Stock with ChangeNotifier {
   double _totalEvaPrice = 0.0;
   double _totalEvaProfit = 0.0;
 
+  bool _isStockListShowDollar = false; //표시 통화 설정 (True > 달러, False > 원)
+  bool _isInputAvgDollar = false; // 미국 증시 매입 통화 설정 (True > 달러, False > 원)
+
   //getter
+  bool get isStockListShowDollar => _isStockListShowDollar;
+  bool get isInputAvgDollar => _isInputAvgDollar;
   double get dollar => _dollar;
   Map<DateTime, List> get calEvents => _calEvents;
   int get level => _level;
