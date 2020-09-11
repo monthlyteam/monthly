@@ -790,6 +790,7 @@ class _StockListState extends State<StockList> {
         context: context,
         builder: (BuildContext bContext) {
           return AlertDialog(
+            insetPadding: EdgeInsets.all(8.0),
             title: myStock != null
                 ? Text(
                     "${myStock.name}",
