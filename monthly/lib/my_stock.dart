@@ -47,8 +47,8 @@ class MyStock {
   MyStock(
       {this.ticker,
       this.name,
-      this.amount,
-      this.avg,
+      amount,
+      avg,
       this.dividendMonth,
       this.exDividends,
       nextDividend,
@@ -63,17 +63,7 @@ class MyStock {
     _yearlyDividend = yearlyDividend;
     _closingPrice = closingPrice;
 
-    _evaPrice = _closingPrice * amount;
-    _evaProfit = (_evaPrice) - ((amount * avg) / wonExchange);
-    evaProfitPercent = (_evaProfit / ((amount * avg) / wonExchange)) * 100;
-    _dividend = _yearlyDividend * amount;
-
-    if (_evaProfit > 0.0)
-      this.color = kUPColor;
-    else if (_evaProfit < 0.0)
-      this.color = kDownColor;
-    else
-      this.color = Colors.blueGrey;
+    editValue(avg: avg, amount: amount);
   }
 
   void editValue({double avg, double amount}) {
