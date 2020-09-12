@@ -29,6 +29,10 @@ class MyStock {
   double evaProfitPercent; //평가손익 퍼센트
 
   //getter
+  double dAvg({bool isInputAvgDollar = false}) {
+    return isInputAvgDollar ? avg : avg / wonExchange;
+  }
+
   double get evaPrice => _evaPrice; //배당락일 : 금액
   double get nextDividend => _nextDividend;
   double get dividend => _dividend;
@@ -37,6 +41,10 @@ class MyStock {
   double get evaProfit => _evaProfit;
 
   //Won Exchange getter
+  double wAvg({bool isInputAvgDollar = false}) {
+    return isInputAvgDollar ? avg * wonExchange : avg;
+  }
+
   double get wEvaPrice => _evaPrice * wonExchange;
   double get wNextDividend => _nextDividend * wonExchange;
   double get wDividend => _dividend * wonExchange;
@@ -58,20 +66,24 @@ class MyStock {
       this.frequency,
       this.dividendDate,
       this.logoURL,
-      this.wonExchange}) {
+      this.wonExchange,
+      isInputAvgDollar}) {
     _nextDividend = nextDividend;
     _yearlyDividend = yearlyDividend;
     _closingPrice = closingPrice;
 
-    editValue(avg: avg, amount: amount);
+    editValue(avg: avg, amount: amount, isInputAvgDollar: isInputAvgDollar);
   }
 
-  void editValue({double avg, double amount}) {
+  void editValue({double avg, double amount, bool isInputAvgDollar}) {
     this.avg = avg;
     this.amount = amount;
     _evaPrice = _closingPrice * amount;
-    _evaProfit = (_evaPrice) - ((amount * avg) / wonExchange);
-    evaProfitPercent = (_evaProfit / ((amount * avg) / wonExchange)) * 100;
+    _evaProfit =
+        (_evaPrice) - ((amount * avg) / (isInputAvgDollar ? 1 : wonExchange));
+    evaProfitPercent =
+        (_evaProfit / ((amount * avg) / (isInputAvgDollar ? 1 : wonExchange))) *
+            100;
     _dividend = _yearlyDividend * amount;
 
     if (_evaProfit > 0.0)

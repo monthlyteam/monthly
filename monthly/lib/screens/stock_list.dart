@@ -315,7 +315,9 @@ class _StockListState extends State<StockList> {
   }
 
   void _showModal(MyStock myStock, BuildContext context, bool isAdd) {
-    avgController = TextEditingController(text: "${myStock.avg.round()}");
+    avgController = TextEditingController(
+        text:
+            "${myStock.wAvg(isInputAvgDollar: context.read<Stock>().isInputAvgDollar).round()}");
     avgController.selection = TextSelection.fromPosition(
         TextPosition(offset: avgController.text.length));
     amountController = TextEditingController(text: "${myStock.amount.round()}");
@@ -553,7 +555,7 @@ class _StockListState extends State<StockList> {
                                                   FocusScope.of(context)
                                                       .nextFocus()))
                                       : Text(
-                                          "￦${myStock.avg.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                          "￦${myStock.wAvg(isInputAvgDollar: context.read<Stock>().isInputAvgDollar).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                           style: TextStyle(
                                               color: kTextColor,
                                               fontSize: 16.0,

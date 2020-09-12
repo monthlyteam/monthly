@@ -103,10 +103,27 @@ class Stock with ChangeNotifier {
 
   void modifyStock({String ticker, double avg, double amount}) {
     int index = _stockList.indexWhere((item) => item.ticker == ticker);
-    _stockList[index].editValue(avg: avg, amount: amount);
+    _stockList[index].editValue(
+        avg: avg, amount: amount, isInputAvgDollar: _isInputAvgDollar);
     _httpStockPost(ticker, amount, avg);
     _calcAndSet();
 
+    notifyListeners();
+  }
+
+  void setIsStockListShowDollar(bool set) {
+    _isStockListShowDollar = set;
+    notifyListeners();
+  }
+
+  void setIsInputAvgDollar(bool set) {
+    _isInputAvgDollar = set;
+    stockList.forEach((element) {
+      element.editValue(
+          avg: element.avg,
+          amount: element.amount,
+          isInputAvgDollar: _isInputAvgDollar);
+    });
     notifyListeners();
   }
 
@@ -160,7 +177,8 @@ class Stock with ChangeNotifier {
             frequency: item['Frequency'],
             dividendDate: item['DividendDate'] ?? '',
             logoURL: item['Logo'],
-            wonExchange: exchange));
+            wonExchange: exchange,
+            isInputAvgDollar: _isInputAvgDollar));
       });
     } catch (e) {
       print(e);
@@ -168,12 +186,10 @@ class Stock with ChangeNotifier {
   }
 
   Future<MyStock> _getMyData(String ticker) async {
-    print('UserToken : ${_userData.getId()}');
     try {
       final response = await http
           .get('http://13.125.225.138:5000/data/${_userData.getId()}');
       var myData = json.decode(response.body);
-      print("adsf: $myData");
       int index = myData.indexWhere((item) => item['ticker'] == ticker);
       var dF = myData[index];
 
@@ -197,7 +213,8 @@ class Stock with ChangeNotifier {
           frequency: dF['Frequency'],
           dividendDate: dF['DividendDate'] ?? '',
           logoURL: dF['Logo'],
-          wonExchange: exchange);
+          wonExchange: exchange,
+          isInputAvgDollar: _isInputAvgDollar);
     } catch (e) {
       print(e);
       return null;
@@ -238,8 +255,6 @@ class Stock with ChangeNotifier {
         body: json,
         encoding: Encoding.getByName("utf-8"),
       );
-      print('response.body: ${response.body}');
-      print('statuscode: ${response.statusCode}');
     } catch (e) {
       print('e:$e');
     }
@@ -259,7 +274,8 @@ class Stock with ChangeNotifier {
     _totalEvaPrice = 0;
 
     _stockList.forEach((item) {
-      _totalInvestPrice += item.amount * item.avg;
+      _totalInvestPrice +=
+          item.amount * item.wAvg(isInputAvgDollar: _isInputAvgDollar);
       _totalEvaPrice += item.amount * item.wClosingPrice;
     });
 
@@ -313,7 +329,6 @@ class Stock with ChangeNotifier {
       _levelCard = _levelCard + kMonthlyLevel;
     } else {
       for (int i = 19; i >= 0; i--) {
-        print('i:$i');
         if (avgDiv < kMonthlyLevel[i][0]) {
           _level = i + 1;
           int nextDiv = kMonthlyLevel[i][0];
@@ -324,7 +339,6 @@ class Stock with ChangeNotifier {
             'images/C00.jpg'
           ]);
           _levelCard = _levelCard.reversed.toList();
-          //notifyListeners();
           break;
         }
         _levelCard.add(kMonthlyLevel[i]);
