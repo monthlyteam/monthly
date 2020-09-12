@@ -13,11 +13,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'my_stock.dart';
 import 'package:flutter/services.dart';
 
-Future<String> checkToken() async {
+Future<String> checkToken(SharedPreferences prefs) async {
   try {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString("token");
-    print('token:$token');
     if (token == null) {
       final response = await http.get('http://13.125.225.138:5000/token');
       print('response: ${response.body}');
@@ -40,7 +38,8 @@ Future<double> getDollarData() async {
   }
 }
 
-Future<List<MyStock>> initStockData(String token, double dollar) async {
+Future<List<MyStock>> initStockData(
+    String token, double dollar, bool isInputAvgDollar) async {
   try {
     final response = await http.get('http://13.125.225.138:5000/data/$token');
     var myData = json.decode(response.body);
@@ -67,7 +66,8 @@ Future<List<MyStock>> initStockData(String token, double dollar) async {
           frequency: item['Frequency'],
           dividendDate: item['DividendDate'] ?? '',
           logoURL: item['Logo'],
-          wonExchange: exchange));
+          wonExchange: exchange,
+          isInputAvgDollar: isInputAvgDollar));
     });
     return stockList;
   } catch (e) {
@@ -97,10 +97,14 @@ Future<void> main() async {
   KakaoContext.clientId = "dfc5584eeb7d68ba3b1eac6eeb72db96";
   KakaoContext.javascriptClientId = "681b9f88d5034e80c2d669f839a5bac1";
 
-  String token = await checkToken();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isInputAvgDollar = prefs.getBool('input') ?? false;
+  bool isStockListShowDollar = prefs.getBool('show') ?? false;
+  String token = await checkToken(prefs);
   double dollar = await getDollarData();
   UserData userData = await initUserData(token);
-  List<MyStock> stockList = await initStockData(userData.getId(), dollar);
+  List<MyStock> stockList =
+      await initStockData(userData.getId(), dollar, isInputAvgDollar);
 
   String admobID = Platform.isIOS
       ? 'ca-app-pub-1325163385377987~2796674910'
@@ -114,7 +118,8 @@ Future<void> main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(
-              create: (_) => Stock(userData, dollar, stockList)),
+              create: (_) => Stock(userData, dollar, stockList,
+                  isInputAvgDollar, isStockListShowDollar, prefs)),
         ],
         child: MyApp(),
       ),

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:monthly/constants.dart';
 import 'package:monthly/my_stock.dart';
 import 'package:monthly/user_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Stock with ChangeNotifier {
+  SharedPreferences _prefs;
   int _level = 19; //monthly level(level.1 is Top)
   List<List<dynamic>> _levelCard = [
     [
@@ -66,10 +68,19 @@ class Stock with ChangeNotifier {
             (Match m) => '${m[1]},');
   }
 
-  Stock(UserData userData, double dollar, List<MyStock> stockList) {
+  Stock(
+      UserData userData,
+      double dollar,
+      List<MyStock> stockList,
+      bool isInputAvgDollar,
+      bool isStockListShowDollar,
+      SharedPreferences prefs) {
     _userData = userData;
     _dollar = dollar;
     _stockList = stockList;
+    _isInputAvgDollar = isInputAvgDollar;
+    _isStockListShowDollar = isStockListShowDollar;
+    _prefs = prefs;
     _calcAndSet();
 
     notifyListeners();
@@ -113,11 +124,13 @@ class Stock with ChangeNotifier {
 
   void setIsStockListShowDollar(bool set) {
     _isStockListShowDollar = set;
+    _prefs.setBool('show', _isStockListShowDollar);
     notifyListeners();
   }
 
   void setIsInputAvgDollar(bool set) {
     _isInputAvgDollar = set;
+    _prefs.setBool('input', _isInputAvgDollar);
     stockList.forEach((element) {
       element.editValue(
           avg: element.avg,
