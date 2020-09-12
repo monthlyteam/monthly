@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:monthly/my_stock.dart';
 import 'package:provider/provider.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import '../constants.dart';
 import '../stock.dart';
 import 'stock_list_add.dart';
@@ -55,12 +56,14 @@ class _StockListState extends State<StockList> {
       } else {
         try {
           isEdit = true;
+          bool isUSA = true;
           MyStock myStock = context.read<Stock>().stockList[index];
           if (myStock.ticker.contains(".KS") ||
               myStock.ticker.contains(".KQ")) {
             _showDialog(myStock, "kor");
+            isUSA = false;
           }
-          _showModal(myStock, context, myStock.amount.round() == 0);
+          _showModal(myStock, isUSA, context, myStock.amount.round() == 0);
         } catch (e) {
           print(e);
         }
@@ -224,9 +227,30 @@ class _StockListState extends State<StockList> {
       if (i == 0) {
         if (isUSA) {
           return Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
-            child: Text("미국 주식",
-                style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
+            padding: EdgeInsets.only(bottom: 8.0, right: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("미국 주식",
+                    style:
+                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
+                ToggleSwitch(
+                  minWidth: 28.0,
+                  minHeight: 21.0,
+                  fontSize: 11.0,
+                  initialLabelIndex:
+                      context.watch<Stock>().isStockListShowDollar ? 0 : 1,
+                  activeBgColor: Color(0xff84BFA4),
+                  activeFgColor: Colors.white,
+                  inactiveBgColor: Colors.grey,
+                  inactiveFgColor: Colors.white,
+                  labels: ['\$', '￦'],
+                  onToggle: (index) {
+                    context.read<Stock>().setIsStockListShowDollar(index == 0);
+                  },
+                ),
+              ],
+            ),
           );
         } else {
           return Padding(
@@ -237,48 +261,18 @@ class _StockListState extends State<StockList> {
         }
       } else {
         MyStock mStock = tempStockList[i];
-        return gestureDetector(mStock, context);
+        return gestureDetector(mStock, isUSA, context);
       }
     });
   }
 
-  SliverPadding _getSlivers(BuildContext context) {
-    return SliverPadding(
-      padding: EdgeInsets.all(25.0),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            MyStock myStock = context.watch<Stock>().stockList[index];
-            if (index != 0 &&
-                (index + 1) == context.watch<Stock>().stockList.length) {
-              print("on");
-              return Column(
-                children: <Widget>[
-                  gestureDetector(myStock, context),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Container(
-                      color: Colors.white,
-                      child: banner,
-                    ),
-                  ),
-                ],
-              );
-            } else {
-              return gestureDetector(myStock, context);
-            }
-          },
-          childCount: context.watch<Stock>().stockList.length,
-        ),
-      ),
-    );
-  }
-
-  GestureDetector gestureDetector(MyStock myStock, BuildContext context) {
+  GestureDetector gestureDetector(
+      MyStock myStock, bool isUSA, BuildContext context) {
+    bool isDollar = isUSA && context.watch<Stock>().isStockListShowDollar;
     return GestureDetector(
       onTap: () {
         isEdit = false;
-        _showModal(myStock, context, false);
+        _showModal(myStock, isUSA, context, false);
       },
       child: Card(
           shape:
@@ -328,7 +322,9 @@ class _StockListState extends State<StockList> {
                       Text(
                         myStock.frequency == -1
                             ? "￦0"
-                            : "￦${myStock.wDividend.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                            : isDollar
+                                ? "\$${format(myStock.dividend, 2)}"
+                                : "￦${format(myStock.wDividend, 1)}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Colors.white,
@@ -348,7 +344,9 @@ class _StockListState extends State<StockList> {
                         style: TextStyle(color: Colors.white, fontSize: 9.0),
                       ),
                       Text(
-                        "￦${myStock.wEvaPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                        isDollar
+                            ? "\$${format(myStock.evaPrice, 2)}"
+                            : "￦${format(myStock.wEvaPrice, 1)}",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Colors.white,
@@ -379,10 +377,14 @@ class _StockListState extends State<StockList> {
     );
   }
 
-  void _showModal(MyStock myStock, BuildContext context, bool isAdd) {
+  void _showModal(
+      MyStock myStock, bool isUSA, BuildContext context, bool isAdd) {
+    bool isDollar = isUSA && context.read<Stock>().isStockListShowDollar;
+    bool inputDollar = isUSA && context.read<Stock>().isInputAvgDollar;
     avgController = TextEditingController(
-        text:
-            "${myStock.wAvg(isInputAvgDollar: context.read<Stock>().isInputAvgDollar).round()}");
+        text: inputDollar
+            ? "${myStock.dAvg(isInputAvgDollar: true)}"
+            : "${myStock.wAvg(isInputAvgDollar: false).round()}");
     avgController.selection = TextSelection.fromPosition(
         TextPosition(offset: avgController.text.length));
     amountController = TextEditingController(text: "${myStock.amount.round()}");
@@ -557,7 +559,9 @@ class _StockListState extends State<StockList> {
                                         color: kTextColor, fontSize: 12.0),
                                   ),
                                   Text(
-                                    "￦${(myStock.wClosingPrice * amount).toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                    isDollar
+                                        ? "\$${format(myStock.evaPrice, 2)}"
+                                        : "￦${format(myStock.wEvaPrice, 1)}",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: kTextColor,
@@ -577,7 +581,9 @@ class _StockListState extends State<StockList> {
                                   Text(
                                     myStock.frequency == -1
                                         ? "￦0"
-                                        : "￦${(myStock.wYearlyDividend * amount).toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                        : isDollar
+                                            ? "\$${format(myStock.yearlyDividend * amount, 2)}"
+                                            : "￦${format(myStock.wYearlyDividend * amount, 1)}",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: kTextColor,
@@ -593,7 +599,11 @@ class _StockListState extends State<StockList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    isEdit ? "평균 매입 단가(￦)" : "평균 매입 단가",
+                                    isEdit
+                                        ? (inputDollar
+                                            ? "평균 매입 단가(\$)"
+                                            : "평균 매입 단가(￦)")
+                                        : "평균 매입 단가",
                                     style: TextStyle(
                                         color: kTextColor, fontSize: 12.0),
                                   ),
@@ -620,7 +630,9 @@ class _StockListState extends State<StockList> {
                                                   FocusScope.of(context)
                                                       .nextFocus()))
                                       : Text(
-                                          "￦${myStock.wAvg(isInputAvgDollar: context.watch<Stock>().isInputAvgDollar).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                          isDollar
+                                              ? "\$${format(myStock.dAvg(isInputAvgDollar: context.watch<Stock>().isInputAvgDollar), 2)}"
+                                              : "￦${format(myStock.wAvg(isInputAvgDollar: context.watch<Stock>().isInputAvgDollar), 1)}",
                                           style: TextStyle(
                                               color: kTextColor,
                                               fontSize: 16.0,
@@ -707,7 +719,9 @@ class _StockListState extends State<StockList> {
                                               fontSize: 12.0),
                                         ),
                                         Text(
-                                          "￦${myStock.wClosingPrice.toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                          isDollar
+                                              ? "\$${format(myStock.closingPrice, 2)}"
+                                              : "￦${format(myStock.wClosingPrice, 1)}",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16.0,
@@ -771,7 +785,9 @@ class _StockListState extends State<StockList> {
                                             ),
                                             Flexible(
                                               child: Text(
-                                                "￦${myStock.wEvaProfit.abs().toStringAsFixed(1).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                                isDollar
+                                                    ? "\$${format(myStock.evaProfit.abs(), 2)}"
+                                                    : "￦${format(myStock.wEvaProfit.abs(), 1)}",
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -913,5 +929,10 @@ class _StockListState extends State<StockList> {
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
           );
         });
+  }
+
+  String format(double num, int fixed) {
+    return num.toStringAsFixed(fixed).replaceAllMapped(
+        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
   }
 }
