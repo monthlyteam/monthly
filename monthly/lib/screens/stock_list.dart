@@ -18,6 +18,7 @@ class _StockListState extends State<StockList> {
   String admobBannerId = '';
   var banner;
   bool isEdit = false;
+  bool _isUSADraw = false;
 
   @override
   void initState() {
@@ -171,10 +172,74 @@ class _StockListState extends State<StockList> {
                     ],
                   ),
                 )
-              : _getSlivers(context),
+              : SliverPadding(
+                  padding: EdgeInsets.all(25.0),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate([
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: getStockList(true),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: getStockList(false),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          color: Colors.white,
+                          child: banner,
+                        ),
+                      ),
+                    ]),
+                  ),
+                )
         ],
       ),
     );
+  }
+
+  List<Widget> getStockList(bool isUSA) {
+    List<MyStock> tempStockList = List<MyStock>();
+    for (final stock in context.watch<Stock>().stockList) {
+      if (stock.ticker.contains(".KS") || stock.ticker.contains(".KQ")) {
+        if (!isUSA) {
+          tempStockList.add(stock);
+        }
+      } else {
+        if (isUSA) {
+          _isUSADraw = true;
+          tempStockList.add(stock);
+        }
+      }
+    }
+    if (tempStockList.length > 0) {
+      tempStockList.insert(0, null);
+    } else {
+      if (isUSA) {
+        _isUSADraw = false;
+      }
+    }
+    return List.generate(tempStockList.length, (i) {
+      if (i == 0) {
+        if (isUSA) {
+          return Padding(
+            padding: EdgeInsets.only(bottom: 8.0),
+            child: Text("미국 주식",
+                style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
+          );
+        } else {
+          return Padding(
+            padding: EdgeInsets.only(top: _isUSADraw ? 20.0 : 0.0, bottom: 8.0),
+            child: Text("한국 주식",
+                style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
+          );
+        }
+      } else {
+        MyStock mStock = tempStockList[i];
+        return gestureDetector(mStock, context);
+      }
+    });
   }
 
   SliverPadding _getSlivers(BuildContext context) {
@@ -555,7 +620,7 @@ class _StockListState extends State<StockList> {
                                                   FocusScope.of(context)
                                                       .nextFocus()))
                                       : Text(
-                                          "￦${myStock.wAvg(isInputAvgDollar: context.read<Stock>().isInputAvgDollar).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
+                                          "￦${myStock.wAvg(isInputAvgDollar: context.watch<Stock>().isInputAvgDollar).toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}",
                                           style: TextStyle(
                                               color: kTextColor,
                                               fontSize: 16.0,
