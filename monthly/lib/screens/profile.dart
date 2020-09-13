@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:monthly/constants.dart';
+import 'package:monthly/screens/apple_login.dart';
 import 'package:monthly/stock.dart';
 import 'profile_info.dart';
 import 'package:kakao_flutter_sdk/all.dart';
@@ -244,6 +245,44 @@ class _ProfileState extends State<Profile> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: <Widget>[
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AppleLogin()),
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(12.0),
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Icon(
+                                Icons.terrain,
+                                color: Colors.white,
+                                size: 22,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Fucking Apple",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     Material(
                       color: Colors.transparent,
                       child: InkWell(
