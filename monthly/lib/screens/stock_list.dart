@@ -289,7 +289,7 @@ class _StockListState extends State<StockList> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "티커 / 종목명",
+                        isUSA ? "티커 / 종목명" : "종목명 / 티커",
                         style: TextStyle(color: Colors.white, fontSize: 9.0),
                       ),
                       Row(
@@ -298,9 +298,13 @@ class _StockListState extends State<StockList> {
                             child: RichText(
                               overflow: TextOverflow.ellipsis,
                               text: TextSpan(
-                                text: "${myStock.ticker}" +
-                                    " " +
-                                    "${myStock.name}",
+                                text: isUSA
+                                    ? ("${myStock.ticker}" +
+                                        " " +
+                                        "${myStock.name}")
+                                    : ("${myStock.name}" +
+                                        " " +
+                                        "${myStock.ticker}"),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -469,21 +473,21 @@ class _StockListState extends State<StockList> {
                                           style: TextStyle(
                                               color: Color(0xff2c2c2c),
                                               fontWeight: FontWeight.w800,
-                                              fontSize: 25.0),
+                                              fontSize: 20.0),
                                         ),
                                         Container(
-                                          height: 20.0,
                                           child: Row(
                                             children: <Widget>[
                                               Flexible(
                                                 child: RichText(
+                                                  maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   text: TextSpan(
                                                     text: "${myStock.name}",
                                                     style: TextStyle(
                                                         color: kTextColor,
-                                                        fontSize: 16.0,
+                                                        fontSize: 14.0,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
