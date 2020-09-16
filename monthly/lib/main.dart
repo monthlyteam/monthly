@@ -51,7 +51,6 @@ Future<List<MyStock>> initStockData(
       else
         exchange = dollar;
 
-      print('dividendmonth: ${item['DividendMonth']}');
       stockList.add(MyStock(
           ticker: item['ticker'],
           name: item['Name'],
@@ -76,18 +75,25 @@ Future<List<MyStock>> initStockData(
   }
 }
 
-Future<UserData> initUserData(String token) async {
+Future<UserData> initUserData(String token, SharedPreferences prefs) async {
   UserData userData = UserData(tokenId: token);
-  try {
-    User user = await UserApi.instance.me();
-    userData.isKakaoLogin = true;
-    userData.kakaoId = user.id.toString();
-    userData.name = user.properties['nickname'];
-    userData.profileImgUrl = user.properties['profile_image'];
-    return userData;
-  } catch (e) {
-    print('No kakao login');
-    return userData;
+  if (prefs.containsKey("appleName")) {
+    userData.isSnsLogin = true;
+    userData.snsId = prefs.getString('appleToken');
+    userData.name = prefs.getString('appleName');
+    userData.profileImgUrl = '';
+  } else {
+    try {
+      User user = await UserApi.instance.me();
+      userData.isSnsLogin = true;
+      userData.snsId = user.id.toString();
+      userData.name = user.properties['nickname'];
+      userData.profileImgUrl = user.properties['profile_image'];
+      return userData;
+    } catch (e) {
+      print('No kakao login');
+      return userData;
+    }
   }
 }
 
@@ -102,7 +108,7 @@ Future<void> main() async {
   bool isStockListShowDollar = prefs.getBool('show') ?? false;
   String token = await checkToken(prefs);
   double dollar = await getDollarData();
-  UserData userData = await initUserData(token);
+  UserData userData = await initUserData(token, prefs);
   List<MyStock> stockList =
       await initStockData(userData.getId(), dollar, isInputAvgDollar);
 

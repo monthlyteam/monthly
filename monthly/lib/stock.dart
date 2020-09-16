@@ -141,23 +141,44 @@ class Stock with ChangeNotifier {
   }
 
   void addKakaoProfile(
-      {String profileImgUrl = '', String name, int kakaoId}) async {
+      {String profileImgUrl = '', String name, int snsId}) async {
     _userData.profileImgUrl = profileImgUrl != null ? profileImgUrl : "";
     _userData.name = name;
-    _userData.kakaoId = kakaoId.toString();
-    _userData.isKakaoLogin = true;
-    await _httpKakaoPost(kakaoId.toString());
+    _userData.snsId = snsId.toString();
+    _userData.isSnsLogin = true;
+    await _httpKakaoPost(snsId.toString());
     await _stockDataInit(_userData.getId());
     _calcAndSet();
 
     notifyListeners();
   }
 
-  void logoutKakao() async {
-    userData.kakaoId = '';
+  void addAppleProfile(
+      {String profileImgUrl = '', String name, String snsId}) async {
+    _userData.profileImgUrl = profileImgUrl != null ? profileImgUrl : "";
+    _userData.name = name;
+    _userData.snsId = snsId;
+    _userData.isSnsLogin = true;
+    _prefs.setString("appleName", name);
+    _prefs.setString("appleToken", snsId);
+    await _httpKakaoPost(snsId.toString());
+    await _stockDataInit(_userData.getId());
+    _calcAndSet();
+
+    notifyListeners();
+  }
+
+  void logoutProfile() async {
+    userData.snsId = '';
     userData.profileImgUrl = '';
     userData.name = '사용자';
-    userData.isKakaoLogin = false;
+    userData.isSnsLogin = false;
+
+    if (_prefs.containsKey("appleName")) {
+      _prefs.remove("appleName");
+      _prefs.remove("appleToken");
+    }
+
     await _stockDataInit(_userData.getId());
     _calcAndSet();
 
@@ -256,10 +277,10 @@ class Stock with ChangeNotifier {
     }
   }
 
-  Future<void> _httpKakaoPost(String kakaoId) async {
+  Future<void> _httpKakaoPost(String snsId) async {
     var json = jsonEncode({
       'id': _userData.tokenId,
-      'kakaoid': kakaoId,
+      'snsId': snsId,
     });
     try {
       var response = await http.post(

@@ -1,12 +1,18 @@
+import 'dart:io';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'profile_info.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:monthly/constants.dart';
-import 'package:monthly/screens/apple_login.dart';
 import 'package:monthly/stock.dart';
-import 'profile_info.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:http/http.dart' as http;
 
 class Profile extends StatefulWidget {
   @override
@@ -94,12 +100,17 @@ class _ProfileState extends State<Profile> {
   }
 
   _unlink() async {
-    try {
-      var code = await UserApi.instance.unlink();
-      context.read<Stock>().logoutKakao();
-      print(code.toString());
-    } catch (e) {
-      print(e);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("appleName")) {
+      context.read<Stock>().logoutProfile();
+    } else {
+      try {
+        var code = await UserApi.instance.unlink();
+        context.read<Stock>().logoutProfile();
+        print(code.toString());
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -109,12 +120,55 @@ class _ProfileState extends State<Profile> {
       print("user : ${user.properties}");
       context.read<Stock>().addKakaoProfile(
           name: user.properties['nickname'],
-          kakaoId: user.id,
+          snsId: user.id,
           profileImgUrl: user.properties['profile_image']);
     } catch (e) {
-      context.read<Stock>().logoutKakao();
+      context.read<Stock>().logoutProfile();
       print('UserData method Error : $e');
     }
+  }
+
+  void _appleLogin() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      webAuthenticationOptions: WebAuthenticationOptions(
+        clientId: 'com.monthly.monthly',
+        redirectUri: Uri.parse(
+          'https://messy-flicker-onion.glitch.me/callbacks/sign_in_with_apple',
+        ),
+      ),
+    );
+
+    print("Apple cred: ${credential.authorizationCode}");
+
+    // This is the endpoint that will convert an authorization code obtained
+    // via Sign in with Apple into a session in your system
+    final signInWithAppleEndpoint = Uri(
+      scheme: 'https',
+      host: 'messy-flicker-onion.glitch.me',
+      path: '/sign_in_with_apple',
+      queryParameters: <String, String>{
+        'code': credential.authorizationCode,
+        'firstName': credential.givenName,
+        'lastName': credential.familyName,
+        'useBundleId': Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+        if (credential.state != null) 'state': credential.state,
+      },
+    );
+
+    final session = await http.Client().post(
+      signInWithAppleEndpoint,
+    );
+
+    print("Apple session : $session");
+    context.read<Stock>().addAppleProfile(
+          name:
+              "${credential.familyName ?? ""}${credential.givenName ?? "투자자"}",
+          snsId: credential.authorizationCode,
+        );
   }
 
   @override
@@ -176,7 +230,7 @@ class _ProfileState extends State<Profile> {
                           color: kTextColor.withOpacity(0.7),
                           size: 110.0,
                         ),
-                  context.watch<Stock>().userData.isKakaoLogin
+                  context.watch<Stock>().userData.isSnsLogin
                       ? Container(
                           width: 300,
                           height: 50,
@@ -209,7 +263,61 @@ class _ProfileState extends State<Profile> {
                         )
                       : FlatButton(
                           onPressed: () {
-                            _isKakao ? _loginInstalled() : _loginUninstalled();
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext bContext) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "로그인",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: kTextColor),
+                                    ),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          InkWell(
+                                              onTap: () {
+                                                Navigator.of(bContext).pop();
+
+                                                _isKakao
+                                                    ? _loginInstalled()
+                                                    : _loginUninstalled();
+                                              },
+                                              child: Image.asset(
+                                                  'images/kakao_login_medium_narrow.png')),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Platform.isIOS
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(bContext)
+                                                        .pop();
+
+                                                    _appleLogin();
+                                                  },
+                                                  child: Image.asset(
+                                                      'images/apple_login.png'))
+                                              : SizedBox(
+                                                  height: 10,
+                                                ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(bContext).pop();
+                                        },
+                                        child: Text("뒤로가기"),
+                                      ),
+                                    ],
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0))),
+                                  );
+                                });
                           },
                           child: Container(
                             width: 300,
@@ -218,7 +326,7 @@ class _ProfileState extends State<Profile> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  "카카오 아이디로 먼슬리 로그인!",
+                                  "먼슬리 로그인!",
                                   style: TextStyle(
                                       color: kTextColor.withOpacity(0.7),
                                       fontWeight: FontWeight.w700,
@@ -245,183 +353,76 @@ class _ProfileState extends State<Profile> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: <Widget>[
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AppleLogin()),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(12.0),
-                          child: Row(
-                            children: <Widget>[
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Icon(
-                                Icons.terrain,
-                                color: Colors.white,
-                                size: 22,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                "Fucking Apple",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                    ProfileButton(
+                      text: "정보",
+                      icon: Icon(
+                        Icons.info,
+                        color: Colors.white,
+                        size: 22,
                       ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfileInfo()),
+                        );
+                      },
                     ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfileInfo()),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(12.0),
-                          child: Row(
-                            children: <Widget>[
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Icon(
-                                Icons.info,
-                                color: Colors.white,
-                                size: 22,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                "정보",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                    ProfileButton(
+                      text: "문의메일",
+                      icon: Icon(
+                        Icons.mail,
+                        color: Colors.white,
+                        size: 22,
                       ),
+                      onTap: () {
+                        _launchURL();
+                      },
                     ),
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          _launchURL();
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(12.0),
-                          child: Row(
-                            children: <Widget>[
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Icon(
-                                Icons.mail,
-                                color: Colors.white,
-                                size: 22,
-                              ),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              Text(
-                                "문의메일",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    context.watch<Stock>().userData.isKakaoLogin
-                        ? Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext bContext) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          "로그아웃",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: kTextColor),
-                                        ),
-                                        content: Text(
-                                          "${context.read<Stock>().userData.name}님의 계정에서\n로그아웃 하시겠습니까?",
-                                          style: TextStyle(color: kTextColor),
-                                        ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            onPressed: () {
-                                              Navigator.of(bContext).pop();
-                                            },
-                                            child: Text("아니요"),
-                                          ),
-                                          FlatButton(
-                                            onPressed: () {
-                                              _unlink();
-                                              Navigator.of(bContext).pop();
-                                            },
-                                            child: Text("예"),
-                                          )
-                                        ],
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0))),
-                                      );
-                                    });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.all(12.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    SvgPicture.asset(
-                                      'icons/logout.svg',
-                                      height: 20.0,
-                                      color: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Text(
-                                      "로그아웃",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                    context.watch<Stock>().userData.isSnsLogin
+                        ? ProfileButton(
+                            text: "로그아웃",
+                            icon: SvgPicture.asset(
+                              'icons/logout.svg',
+                              height: 20.0,
+                              color: Colors.white,
                             ),
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext bContext) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        "로그아웃",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: kTextColor),
+                                      ),
+                                      content: Text(
+                                        "${context.read<Stock>().userData.name}님의 계정에서\n로그아웃 하시겠습니까?",
+                                        style: TextStyle(color: kTextColor),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(bContext).pop();
+                                          },
+                                          child: Text("아니요"),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            _unlink();
+                                            Navigator.of(bContext).pop();
+                                          },
+                                          child: Text("예"),
+                                        )
+                                      ],
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                    );
+                                  });
+                            },
                           )
                         : Container(),
                   ],
@@ -437,6 +438,46 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ProfileButton extends StatelessWidget {
+  final String text;
+  final Widget icon;
+  final Function onTap;
+
+  ProfileButton({Key key, this.text, this.icon, this.onTap}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: this.onTap,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(12.0),
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 15,
+              ),
+              this.icon,
+              SizedBox(
+                width: 15,
+              ),
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
