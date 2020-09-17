@@ -564,8 +564,8 @@ class _StockListState extends State<StockList> {
                                   ),
                                   Text(
                                     isDollar
-                                        ? "\$${format(myStock.evaPrice, 2)}"
-                                        : "￦${format(myStock.wEvaPrice, 1)}",
+                                        ? "\$${format(myStock.closingPrice * amount, 2)}"
+                                        : "￦${format(myStock.wClosingPrice * amount, 1)}",
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: kTextColor,
