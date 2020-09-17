@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:monthly/screens/profile_modify_input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'profile_info.dart';
@@ -379,6 +380,58 @@ class _ProfileState extends State<Profile> {
                         _launchURL();
                       },
                     ),
+                    ProfileButton(
+                      text: "미국주식 매입 통화 설정",
+                      icon: Icon(
+                        Icons.monetization_on,
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                      tailText:
+                          "${context.watch<Stock>().isInputAvgDollar ? "달러" : "원화"}",
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext bContext) {
+                              return AlertDialog(
+                                title: Text(
+                                  "미국주식 매입 통화 설정",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kTextColor),
+                                ),
+                                content: Text(
+                                  "입력 통화를 ${context.read<Stock>().isInputAvgDollar ? "달러에서 원화" : "원화에서 달러"}로 변경하시겠습니까? \n\n변경시 평군 매입단가를 전부 다시 입력하셔야 합니다.",
+                                  style: TextStyle(color: kTextColor),
+                                ),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(bContext).pop();
+                                    },
+                                    child: Text("아니요"),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(bContext).pop();
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfileModifyInput()),
+                                      );
+                                    },
+                                    child: Text("예"),
+                                  )
+                                ],
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                              );
+                            });
+                      },
+                    ),
                     context.watch<Stock>().userData.isSnsLogin
                         ? ProfileButton(
                             text: "로그아웃",
@@ -447,8 +500,10 @@ class ProfileButton extends StatelessWidget {
   final String text;
   final Widget icon;
   final Function onTap;
+  final String tailText;
 
-  ProfileButton({Key key, this.text, this.icon, this.onTap}) : super(key: key);
+  ProfileButton({Key key, this.text, this.icon, this.onTap, this.tailText = ""})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -460,20 +515,36 @@ class ProfileButton extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(12.0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(
-                width: 15,
+              Row(
+                children: [
+                  SizedBox(
+                    width: 15,
+                  ),
+                  this.icon,
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              this.icon,
-              SizedBox(
-                width: 15,
-              ),
-              Text(
-                text,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
+              Row(
+                children: [
+                  Text(
+                    "$tailText",
+                    style: TextStyle(color: Colors.white.withOpacity(0.6)),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                ],
               ),
             ],
           ),
