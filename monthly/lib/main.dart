@@ -89,12 +89,11 @@ Future<UserData> initUserData(String token, SharedPreferences prefs) async {
       userData.snsId = user.id.toString();
       userData.name = user.properties['nickname'];
       userData.profileImgUrl = user.properties['profile_image'];
-      return userData;
     } catch (e) {
       print('No kakao login');
-      return userData;
     }
   }
+  return userData;
 }
 
 Future<void> main() async {

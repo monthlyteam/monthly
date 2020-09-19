@@ -283,7 +283,7 @@ class Stock with ChangeNotifier {
       'snsId': snsId,
     });
     try {
-      var response = await http.post(
+      await http.post(
         'http://13.125.225.138:5000/kakao',
         headers: {"content-Type": "application/json"},
         body: json,
