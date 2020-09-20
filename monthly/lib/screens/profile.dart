@@ -143,7 +143,11 @@ class _ProfileState extends State<Profile> {
       ),
     );
 
-    print("Apple cred: ${credential.authorizationCode}");
+    context.read<Stock>().addAppleProfile(
+          name:
+              "${credential.familyName ?? ""}${credential.givenName ?? "투자자"}",
+          snsId: credential.userIdentifier,
+        );
 
     // This is the endpoint that will convert an authorization code obtained
     // via Sign in with Apple into a session in your system
@@ -164,12 +168,7 @@ class _ProfileState extends State<Profile> {
       signInWithAppleEndpoint,
     );
 
-    print("Apple session : $session");
-    context.read<Stock>().addAppleProfile(
-          name:
-              "${credential.familyName ?? ""}${credential.givenName ?? "투자자"}",
-          snsId: credential.authorizationCode,
-        );
+    print("Apple session : ${session.statusCode}");
   }
 
   @override
@@ -393,6 +392,48 @@ class _ProfileState extends State<Profile> {
                         showDialog(
                             context: context,
                             builder: (BuildContext bContext) {
+                              for (final stock
+                                  in context.read<Stock>().stockList)
+                                if (!(stock.ticker.contains(".KS") ||
+                                    stock.ticker.contains(".KQ"))) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      "미국주식 매입 통화 설정",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: kTextColor),
+                                    ),
+                                    content: Text(
+                                      "입력 통화를 ${context.read<Stock>().isInputAvgDollar ? "달러에서 원화" : "원화에서 달러"}로 변경하시겠습니까? \n\n변경시 평군 매입단가를 전부 다시 입력하셔야 합니다.",
+                                      style: TextStyle(color: kTextColor),
+                                    ),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(bContext).pop();
+                                        },
+                                        child: Text("아니요"),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(bContext).pop();
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfileModifyInput()),
+                                          );
+                                        },
+                                        child: Text("예"),
+                                      )
+                                    ],
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0))),
+                                  );
+                                }
+
                               return AlertDialog(
                                 title: Text(
                                   "미국주식 매입 통화 설정",
@@ -401,7 +442,7 @@ class _ProfileState extends State<Profile> {
                                       color: kTextColor),
                                 ),
                                 content: Text(
-                                  "입력 통화를 ${context.read<Stock>().isInputAvgDollar ? "달러에서 원화" : "원화에서 달러"}로 변경하시겠습니까? \n\n변경시 평군 매입단가를 전부 다시 입력하셔야 합니다.",
+                                  "입력 통화를 ${context.read<Stock>().isInputAvgDollar ? "달러에서 원화" : "원화에서 달러"}로 변경하시겠습니까?",
                                   style: TextStyle(color: kTextColor),
                                 ),
                                 actions: <Widget>[
@@ -413,14 +454,12 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   FlatButton(
                                     onPressed: () {
-                                      Navigator.of(bContext).pop();
+                                      context.read<Stock>().setIsInputAvgDollar(
+                                          !(context
+                                              .read<Stock>()
+                                              .isInputAvgDollar));
 
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProfileModifyInput()),
-                                      );
+                                      Navigator.of(bContext).pop();
                                     },
                                     child: Text("예"),
                                   )
