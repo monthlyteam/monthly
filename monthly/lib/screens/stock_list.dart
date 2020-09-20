@@ -235,9 +235,9 @@ class _StockListState extends State<StockList> {
                     style:
                         TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
                 ToggleSwitch(
-                  minWidth: 28.0,
-                  minHeight: 21.0,
-                  fontSize: 11.0,
+                  minWidth: 35.0,
+                  minHeight: 23.0,
+                  fontSize: 13.0,
                   initialLabelIndex:
                       context.watch<Stock>().isStockListShowDollar ? 0 : 1,
                   activeBgColor: Color(0xff84BFA4),

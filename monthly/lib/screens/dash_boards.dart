@@ -36,6 +36,38 @@ class _DashBoardsState extends State<DashBoards> {
       adUnitId: admobBannerId,
       adSize: AdmobBannerSize.FULL_BANNER,
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (context.read<Stock>().notionVersion != "1.0.4") {
+        showDialog(
+            context: context,
+            builder: (BuildContext bContext) {
+              return AlertDialog(
+                insetPadding: EdgeInsets.all(8.0),
+                title: Text(
+                  "먼슬리 공지 사항",
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: kTextColor),
+                ),
+                content: Text(
+                  "미국 주식에 대한 평균 매입 단가 입력을 원화에서 달러로 변경 할 수 있습니다. 프로필 페이지 - 미국주식 매입 통화 설정을 통해 원화를 달러로, 달러를 원화로 변경할  있습니다!",
+                  style: TextStyle(color: kTextColor),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(bContext).pop();
+                    },
+                    child: Text("확인"),
+                  )
+                ],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              );
+            });
+
+        context.read<Stock>().setNotionVersion("1.0.4");
+      }
+    });
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
