@@ -46,7 +46,7 @@ Future<List<MyStock>> initStockData(
     double exchange = 1;
     List<MyStock> stockList = [];
     myData.forEach((item) {
-      if (item['ticker'].contains('.KS'))
+      if (item['ticker'].contains('.KS') || item['ticker'].contains('.KQ'))
         exchange = 1;
       else
         exchange = dollar;
