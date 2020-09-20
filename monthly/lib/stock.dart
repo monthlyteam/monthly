@@ -29,10 +29,12 @@ class Stock with ChangeNotifier {
 
   bool _isStockListShowDollar = false; //표시 통화 설정 (True > 달러, False > 원)
   bool _isInputAvgDollar = false; // 미국 증시 매입 통화 설정 (True > 달러, False > 원)
+  String _notionVersion = "";
 
   //getter
   bool get isStockListShowDollar => _isStockListShowDollar;
   bool get isInputAvgDollar => _isInputAvgDollar;
+  String get notionVersion => _notionVersion;
   double get dollar => _dollar;
   Map<DateTime, List> get calEvents => _calEvents;
   int get level => _level;
@@ -74,12 +76,14 @@ class Stock with ChangeNotifier {
       List<MyStock> stockList,
       bool isInputAvgDollar,
       bool isStockListShowDollar,
+      String notionVersion,
       SharedPreferences prefs) {
     _userData = userData;
     _dollar = dollar;
     _stockList = stockList;
     _isInputAvgDollar = isInputAvgDollar;
     _isStockListShowDollar = isStockListShowDollar;
+    _notionVersion = notionVersion;
     _prefs = prefs;
     _calcAndSet();
 
@@ -138,6 +142,12 @@ class Stock with ChangeNotifier {
           isInputAvgDollar: _isInputAvgDollar);
     });
     notifyListeners();
+  }
+
+  void setNotionVersion(String notionVersion) {
+    _notionVersion = notionVersion;
+    _prefs.setString("notion", _notionVersion);
+//    print("provider notion : $_notionVersion");
   }
 
   void addKakaoProfile(

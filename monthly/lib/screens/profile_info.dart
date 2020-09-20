@@ -92,6 +92,30 @@ class ProfileInfo extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 20),
                               child: Text(
+                                '"먼슬리 앱은 투자 권유를 하지 않으며, 주식거래를 목적으로 하지 않습니다."',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              child: Text(
+                                '"실제 투자의 책임은 사용자 본인에게 있으며, 서비스 제공자인 먼슬리 앱은 어떠한 책임도 지지 않습니다."',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              child: Text(
                                 '"달러 환율은 실시간 매매기준율을 사용 하며, 증권사 환율과 다를 수 있습니다."',
                                 style: TextStyle(
                                   color: Colors.white,

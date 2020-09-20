@@ -105,6 +105,7 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isInputAvgDollar = prefs.getBool('input') ?? false;
   bool isStockListShowDollar = prefs.getBool('show') ?? false;
+  String notionVersion = prefs.getString("notion") ?? "";
   String token = await checkToken(prefs);
   double dollar = await getDollarData();
   UserData userData = await initUserData(token, prefs);
@@ -123,8 +124,14 @@ Future<void> main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(
-              create: (_) => Stock(userData, dollar, stockList,
-                  isInputAvgDollar, isStockListShowDollar, prefs)),
+              create: (_) => Stock(
+                  userData,
+                  dollar,
+                  stockList,
+                  isInputAvgDollar,
+                  isStockListShowDollar,
+                  notionVersion,
+                  prefs)),
         ],
         child: MyApp(),
       ),

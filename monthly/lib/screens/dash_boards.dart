@@ -36,6 +36,37 @@ class _DashBoardsState extends State<DashBoards> {
       adUnitId: admobBannerId,
       adSize: AdmobBannerSize.FULL_BANNER,
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (context.read<Stock>().notionVersion != "1.0.4") {
+        showDialog(
+            context: context,
+            builder: (BuildContext bContext) {
+              return AlertDialog(
+                insetPadding: EdgeInsets.all(8.0),
+                title: Text(
+                  "공지 사항",
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: kTextColor),
+                ),
+                content: Text(
+                  "미국, 한국 주식 나눔, 미국 주식 매입 통화 설정 가능, 미국 주식 보는 통화 달러, 원 설정 가능. 기타 버그 수정됨, 개발자는 게임하러감",
+                  style: TextStyle(color: kTextColor),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      context.read<Stock>().setNotionVersion("1.0.3");
+                      Navigator.of(bContext).pop();
+                    },
+                    child: Text("알겠습니다."),
+                  )
+                ],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              );
+            });
+      }
+    });
   }
 
   List<BarChartGroupData> showingGroups() => List.generate(12, (i) {
