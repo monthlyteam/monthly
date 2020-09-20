@@ -44,27 +44,28 @@ class _DashBoardsState extends State<DashBoards> {
               return AlertDialog(
                 insetPadding: EdgeInsets.all(8.0),
                 title: Text(
-                  "공지 사항",
+                  "먼슬리 공지 사항",
                   style:
                       TextStyle(fontWeight: FontWeight.bold, color: kTextColor),
                 ),
                 content: Text(
-                  "미국, 한국 주식 나눔, 미국 주식 매입 통화 설정 가능, 미국 주식 보는 통화 달러, 원 설정 가능. 기타 버그 수정됨, 개발자는 게임하러감",
+                  "미국 주식에 대한 평균 매입 단가 입력을 원화에서 달러로 변경 할 수 있습니다. 프로필 페이지 - 미국주식 매입 통화 설정을 통해 원화를 달러로, 달러를 원화로 변경할  있습니다!",
                   style: TextStyle(color: kTextColor),
                 ),
                 actions: <Widget>[
                   FlatButton(
                     onPressed: () {
-                      context.read<Stock>().setNotionVersion("1.0.3");
                       Navigator.of(bContext).pop();
                     },
-                    child: Text("알겠습니다."),
+                    child: Text("확인"),
                   )
                 ],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
               );
             });
+
+        context.read<Stock>().setNotionVersion("1.0.4");
       }
     });
   }
