@@ -142,7 +142,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('${context.watch<Stock>().thisMonthDividend}');
     return MaterialApp(
       builder: (context, child) {
         return MediaQuery(

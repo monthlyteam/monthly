@@ -290,7 +290,7 @@ class Stock with ChangeNotifier {
   Future<void> _httpKakaoPost(String snsId) async {
     var json = jsonEncode({
       'id': _userData.tokenId,
-      'snsId': snsId,
+      'kakaoid': snsId,
     });
     try {
       await http.post(
