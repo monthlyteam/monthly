@@ -311,7 +311,7 @@ class _DashBoardsState extends State<DashBoards> {
                         MaterialPageRoute(
                             builder: (context) => DashBoardsHelp(
                                   type: "kakao",
-                                  len: 3,
+                                  len: 2,
                                 )),
                       );
                       break;

@@ -90,7 +90,7 @@ class _DashBoardsHelpState extends State<DashBoardsHelp> {
                     break;
                   case "kakao":
                     type = "kakao";
-                    len = 3;
+                    len = 2;
                     title = "도움말(데이터 백업)";
                     break;
                   default:

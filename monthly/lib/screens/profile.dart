@@ -276,29 +276,52 @@ class _ProfileState extends State<Profile> {
                                     content: SingleChildScrollView(
                                       child: Column(
                                         children: [
-                                          InkWell(
-                                              onTap: () {
-                                                Navigator.of(bContext).pop();
+                                          Stack(
+                                            children: <Widget>[
+                                              Image.asset(
+                                                  'images/kakao_login_medium_narrow.png'),
+                                              Positioned.fill(
+                                                child: Material(
+                                                  color: Colors.transparent,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(bContext)
+                                                          .pop();
 
-                                                _isKakao
-                                                    ? _loginInstalled()
-                                                    : _loginUninstalled();
-                                              },
-                                              child: Image.asset(
-                                                  'images/kakao_login_medium_narrow.png')),
+                                                      _isKakao
+                                                          ? _loginInstalled()
+                                                          : _loginUninstalled();
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                           SizedBox(
                                             height: 20,
                                           ),
                                           Platform.isIOS
-                                              ? InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(bContext)
-                                                        .pop();
+                                              ? Stack(
+                                                  children: <Widget>[
+                                                    Image.asset(
+                                                        'images/apple_login.png'),
+                                                    Positioned.fill(
+                                                      child: Material(
+                                                        color:
+                                                            Colors.transparent,
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    bContext)
+                                                                .pop();
 
-                                                    _appleLogin();
-                                                  },
-                                                  child: Image.asset(
-                                                      'images/apple_login.png'))
+                                                            _appleLogin();
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
                                               : SizedBox(
                                                   height: 10,
                                                 ),
