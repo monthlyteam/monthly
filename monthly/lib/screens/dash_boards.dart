@@ -455,16 +455,18 @@ class _DashBoardsState extends State<DashBoards> {
                                 ),
                               ],
                             ),
-                            Container(
-                              width: 175,
-                              child: Text(
-                                "￦${context.watch<Stock>().thisMonthDividend}",
-                                textAlign: TextAlign.end,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white,
-                                    fontSize: 20.0),
+                            Expanded(
+                              child: Container(
+                                width: 175,
+                                child: Text(
+                                  "￦${context.watch<Stock>().thisMonthDividend}",
+                                  textAlign: TextAlign.end,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w800,
+                                      color: Colors.white,
+                                      fontSize: 20.0),
+                                ),
                               ),
                             ),
                           ],
