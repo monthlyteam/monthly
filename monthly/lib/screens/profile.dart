@@ -457,6 +457,7 @@ class _ProfileState extends State<Profile> {
                                   );
                                 }
 
+                              //미국 종목이 하나도 없으면
                               return AlertDialog(
                                 title: Text(
                                   "미국주식 매입 통화 설정",
