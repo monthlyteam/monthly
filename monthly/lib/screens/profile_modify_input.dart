@@ -154,13 +154,13 @@ class _ProfileModifyInputState extends State<ProfileModifyInput> {
 
                                         for (int i = 0;
                                             i < controllers.length;
-                                            i++)
-                                          tempStockList[i].editValue(
+                                            i++) {
+                                          context.read<Stock>().modifyStock(
+                                              ticker: tempStockList[i].ticker,
                                               avg: double.parse(
                                                   controllers[i].text),
-                                              amount: tempStockList[i].amount,
-                                              isInputAvgDollar:
-                                                  (!isInputAvgDollar));
+                                              amount: tempStockList[i].amount);
+                                        }
 
                                         Navigator.pop(context);
                                       },

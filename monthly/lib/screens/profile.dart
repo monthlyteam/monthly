@@ -33,7 +33,8 @@ class _ProfileState extends State<Profile> {
     final Uri params = Uri(
       scheme: 'mailto',
       path: 'youngthly@gmail.com',
-      query: 'subject=먼슬리 문의 메일 &body=문의 내용을 아래에 써서 보내주시면 최대한 빠르게 응답하겠습니다!\n >',
+      query:
+          'subject=먼슬리 문의 메일 &body=버전:${context.read<Stock>().notionVersion}, 문의 내용을 아래에 써서 보내주시면 최대한 빠르게 응답하겠습니다!\n >',
     );
 
     var url = params.toString();
@@ -457,6 +458,7 @@ class _ProfileState extends State<Profile> {
                                   );
                                 }
 
+                              //미국 종목이 하나도 없으면
                               return AlertDialog(
                                 title: Text(
                                   "미국주식 매입 통화 설정",

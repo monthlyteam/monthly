@@ -132,15 +132,33 @@ class Stock with ChangeNotifier {
     notifyListeners();
   }
 
-  void setIsInputAvgDollar(bool set) {
+  void setIsInputAvgDollar(bool set) async {
+    var json = jsonEncode({
+      'id': userData.getId(),
+      'currency': set ? 1 : 0,
+    });
+
+    try {
+      await http.post(
+        'http://13.125.225.138:5000/currency',
+        headers: {"content-Type": "application/json"},
+        body: json,
+        encoding: Encoding.getByName("utf-8"),
+      );
+    } catch (e) {
+      print('e:$e');
+      return;
+    }
+
     _isInputAvgDollar = set;
-    _prefs.setBool('input', _isInputAvgDollar);
+
     stockList.forEach((element) {
       element.editValue(
           avg: element.avg,
           amount: element.amount,
           isInputAvgDollar: _isInputAvgDollar);
     });
+
     notifyListeners();
   }
 
