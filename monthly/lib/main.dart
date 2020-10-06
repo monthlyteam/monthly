@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:monthly/home_error.dart';
 import 'package:monthly/user_data.dart';
 import 'home.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,10 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'my_stock.dart';
 import 'package:flutter/services.dart';
+
+String errorText = "";
+String statusCode = "";
+String errorId = "";
 
 Future<String> checkToken(SharedPreferences prefs) async {
   try {
@@ -42,6 +47,7 @@ Future<List<MyStock>> initStockData(
     String token, double dollar, bool isInputAvgDollar) async {
   try {
     final response = await http.get('http://13.125.225.138:5000/data/$token');
+    statusCode = response.statusCode.toString();
     var myData = json.decode(response.body);
     double exchange = 1;
     List<MyStock> stockList = [];
@@ -70,7 +76,8 @@ Future<List<MyStock>> initStockData(
     });
     return stockList;
   } catch (e) {
-    exit(0);
+    errorText = e.toString();
+    errorId = token;
     return null;
   }
 }
@@ -122,7 +129,7 @@ Future<void> main() async {
         encoding: Encoding.getByName("utf-8"),
       );
       isInputAvgDollar = response.body == 'true' ? true : false;
-      print("InputAvgDollar TEST: $isInputAvgDollar");
+      prefs.remove('input');
     } catch (e) {
       print('e1:$e');
     }
@@ -138,12 +145,11 @@ Future<void> main() async {
         body: json,
         encoding: Encoding.getByName("utf-8"),
       );
+      prefs.remove('input');
     } catch (e) {
       print('e2:$e');
     }
   }
-
-  prefs.remove('input');
 
   List<MyStock> stockList =
       await initStockData(userData.getId(), dollar, isInputAvgDollar);
@@ -154,25 +160,34 @@ Future<void> main() async {
 
   Admob.initialize(admobID);
 
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-              create: (_) => Stock(
-                  userData,
-                  dollar,
-                  stockList,
-                  isInputAvgDollar,
-                  isStockListShowDollar,
-                  notionVersion,
-                  prefs)),
-        ],
-        child: MyApp(),
-      ),
-    );
-  });
+  if (stockList != null) {
+    SystemChrome.setPreferredOrientations(
+            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+        .then((_) {
+      runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+                create: (_) => Stock(
+                    userData,
+                    dollar,
+                    stockList,
+                    isInputAvgDollar,
+                    isStockListShowDollar,
+                    notionVersion,
+                    prefs)),
+          ],
+          child: MyApp(),
+        ),
+      );
+    });
+  } else {
+    SystemChrome.setPreferredOrientations(
+            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+        .then((_) {
+      runApp(ErrApp());
+    });
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -191,6 +206,30 @@ class MyApp extends StatelessWidget {
         fontFamily: 'NanumGothic',
       ),
       home: Home(),
+    );
+  }
+}
+
+class ErrApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      builder: (context, child) {
+        return MediaQuery(
+          child: child,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        );
+      },
+      debugShowCheckedModeBanner: false,
+      title: 'Monthly',
+      theme: ThemeData(
+        fontFamily: 'NanumGothic',
+      ),
+      home: HomeError(
+        id: errorId,
+        errorText: errorText,
+        statusCode: statusCode,
+      ),
     );
   }
 }
