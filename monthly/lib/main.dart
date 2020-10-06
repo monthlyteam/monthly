@@ -103,12 +103,48 @@ Future<void> main() async {
   KakaoContext.javascriptClientId = "681b9f88d5034e80c2d669f839a5bac1";
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isInputAvgDollar = prefs.getBool('input') ?? false;
-  bool isStockListShowDollar = prefs.getBool('show') ?? false;
-  String notionVersion = prefs.getString("notion") ?? "";
   String token = await checkToken(prefs);
+  String notionVersion = prefs.getString("notion") ?? "";
   double dollar = await getDollarData();
   UserData userData = await initUserData(token, prefs);
+
+  bool isStockListShowDollar = prefs.getBool('show') ?? false;
+  bool isInputAvgDollar = prefs.getBool('input');
+  if (isInputAvgDollar == null) {
+    var json = jsonEncode({
+      'id': userData.getId(),
+    });
+    try {
+      final response = await http.post(
+        'http://13.125.225.138:5000/currency',
+        headers: {"content-Type": "application/json"},
+        body: json,
+        encoding: Encoding.getByName("utf-8"),
+      );
+      isInputAvgDollar = response.body == 'true' ? true : false;
+      print("InputAvgDollar TEST: $isInputAvgDollar");
+    } catch (e) {
+      print('e1:$e');
+    }
+  } else {
+    var json = jsonEncode({
+      'id': userData.getId(),
+      'currency': isInputAvgDollar ? 1 : 0,
+    });
+    try {
+      await http.post(
+        'http://13.125.225.138:5000/currency',
+        headers: {"content-Type": "application/json"},
+        body: json,
+        encoding: Encoding.getByName("utf-8"),
+      );
+    } catch (e) {
+      print('e2:$e');
+    }
+  }
+
+  prefs.remove('input');
+
   List<MyStock> stockList =
       await initStockData(userData.getId(), dollar, isInputAvgDollar);
 

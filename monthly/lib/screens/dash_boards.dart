@@ -37,7 +37,8 @@ class _DashBoardsState extends State<DashBoards> {
       adSize: AdmobBannerSize.FULL_BANNER,
     );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (context.read<Stock>().notionVersion != "1.0.4") {
+      if (context.read<Stock>().notionVersion == "1.0.4") {
+        //1.0.5에서 1.0.4 입력 통화 꼬임 문제 있는 사람 확인 & 조치를 위한 구문
         showDialog(
             context: context,
             builder: (BuildContext bContext) {
@@ -49,24 +50,41 @@ class _DashBoardsState extends State<DashBoards> {
                       TextStyle(fontWeight: FontWeight.bold, color: kTextColor),
                 ),
                 content: Text(
-                  "미국 주식에 대한 평균 매입 단가 입력을 원화에서 달러로 변경 할 수 있습니다. 프로필 페이지 - 미국주식 매입 통화 설정을 통해 원화를 달러로, 달러를 원화로 변경할  있습니다!",
+                  "미국주식 매입 통화 설정을 하신적이 있나요?\n현재 설정 중인 입력 통화 단위를 선택해주세요.\n\n선택한 값을 통해 분석되며, 추후 변경은 내 프로필 - 미국주식 매입 통화 설정을 통해 변경해주세요.",
                   style: TextStyle(color: kTextColor),
                 ),
                 actions: <Widget>[
                   FlatButton(
                     onPressed: () {
                       Navigator.of(bContext).pop();
+
+                      context.read<Stock>().setIsInputAvgDollar(false);
                     },
-                    child: Text("확인"),
-                  )
+                    child: Text("원화(￦)"),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(bContext).pop();
+
+                      context.read<Stock>().setIsInputAvgDollar(true);
+                    },
+                    child: Text("달러(\$)"),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.of(bContext).pop();
+
+                      context.read<Stock>().setIsInputAvgDollar(false);
+                    },
+                    child: Text("설정안함"),
+                  ),
                 ],
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
               );
             });
-
-        context.read<Stock>().setNotionVersion("1.0.4");
       }
+      context.read<Stock>().setNotionVersion("1.0.5");
     });
   }
 
