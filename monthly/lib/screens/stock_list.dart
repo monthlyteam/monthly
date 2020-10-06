@@ -603,36 +603,49 @@ class _StockListState extends State<StockList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    isEdit
-                                        ? (inputDollar
-                                            ? "평균 매입 단가(\$)"
-                                            : "평균 매입 단가(￦)")
-                                        : "평균 매입 단가",
+                                    "평균 매입 단가",
                                     style: TextStyle(
                                         color: kTextColor, fontSize: 12.0),
                                   ),
                                   isEdit
-                                      ? Container(
-                                          padding: EdgeInsets.all(2.0),
-                                          height: 24.0,
-                                          child: TextField(
-                                              maxLength: 10,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              decoration: InputDecoration(
-                                                  counterText: ""),
-                                              keyboardType: TextInputType
-                                                  .numberWithOptions(
-                                                      decimal: true),
-                                              controller: avgController,
-                                              autofocus: true,
+                                      ? Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              inputDollar ? "\$" : "￦",
                                               style: TextStyle(
                                                   color: kTextColor,
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.bold),
-                                              onSubmitted: (_) =>
-                                                  FocusScope.of(context)
-                                                      .nextFocus()))
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                  padding: EdgeInsets.all(2.0),
+                                                  height: 24.0,
+                                                  child: TextField(
+                                                      maxLength: 10,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      decoration:
+                                                          InputDecoration(
+                                                              counterText: ""),
+                                                      keyboardType: TextInputType
+                                                          .numberWithOptions(
+                                                              decimal: true),
+                                                      controller: avgController,
+                                                      autofocus: true,
+                                                      style: TextStyle(
+                                                          color: kTextColor,
+                                                          fontSize: 16.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      onSubmitted: (_) =>
+                                                          FocusScope.of(context)
+                                                              .nextFocus())),
+                                            ),
+                                          ],
+                                        )
                                       : Text(
                                           isDollar
                                               ? "\$${format(myStock.dAvg(isInputAvgDollar: context.watch<Stock>().isInputAvgDollar), 2)}"
