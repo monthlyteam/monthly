@@ -551,6 +551,7 @@ class _StockListState extends State<StockList> {
                         ), //Row of top
                         SizedBox(height: 20.0),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
                               flex: 1,
@@ -656,7 +657,7 @@ class _StockListState extends State<StockList> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                   SizedBox(
-                                    height: 20.0,
+                                    height: isEdit ? 13.0 : 20.0,
                                   ),
                                   Text(
                                     "보유수량",
