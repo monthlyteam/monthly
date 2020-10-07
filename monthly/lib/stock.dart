@@ -215,6 +215,18 @@ class Stock with ChangeNotifier {
 
   Future<void> _stockDataInit(String id) async {
     try {
+      //get isInputAvgDollar from server
+      var jsonPart = jsonEncode({
+        'id': id,
+      });
+      final res = await http.post(
+        'http://13.125.225.138:5000/currency',
+        headers: {"content-Type": "application/json"},
+        body: jsonPart,
+        encoding: Encoding.getByName("utf-8"),
+      );
+      _isInputAvgDollar = res.body == 'true' ? true : false;
+
       final response = await http.get('http://13.125.225.138:5000/data/$id');
       var myData = json.decode(response.body);
       double exchange = 1;
