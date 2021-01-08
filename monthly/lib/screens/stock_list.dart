@@ -65,7 +65,7 @@ class _StockListState extends State<StockList> {
           }
           _showModal(myStock, isUSA, context, myStock.amount.round() == 0);
         } catch (e) {
-          print(e);
+          print("stock_list.dart moveToSecondPage(): " + e);
         }
       }
     }

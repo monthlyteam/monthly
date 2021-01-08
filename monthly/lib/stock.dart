@@ -96,11 +96,13 @@ class Stock with ChangeNotifier {
         return true;
       }
     }
+
     await _httpStockPost(ticker, 0, 0);
     MyStock ms = await _getMyData(ticker);
-
-    if (ms == null) return false;
-
+    if (ms == null) {
+      _httpStockPost(ticker, -1, -1);
+      return false;
+    }
     _stockList.add(ms);
     _calcAndSet();
 
@@ -146,7 +148,7 @@ class Stock with ChangeNotifier {
         encoding: Encoding.getByName("utf-8"),
       );
     } catch (e) {
-      print('e:$e');
+      print('setIsInputAvgDollar e:$e');
       return;
     }
 
@@ -228,34 +230,40 @@ class Stock with ChangeNotifier {
       _isInputAvgDollar = res.body == 'true' ? true : false;
 
       final response = await http.get('http://13.125.225.138:5000/data/$id');
-      var myData = json.decode(response.body);
+      var myData = json.decode(response.body.replaceAll(" NaN", " null"));
+
       double exchange = 1;
       _stockList = [];
+
       myData.forEach((item) {
         if (item['ticker'].contains('.KS') || item['ticker'].contains('.KQ'))
           exchange = 1;
         else
           exchange = dollar;
 
-        stockList.add(MyStock(
-            ticker: item['ticker'],
-            name: item['Name'],
-            amount: item['amount'],
-            avg: item['avgPrice'],
-            dividendMonth: item['DividendMonth'],
-            exDividends: item['ExList'],
-            nextDividend: item['NextAmount'].toDouble(),
-            yearlyDividend: item['YearlyDividend'].toDouble(),
-            divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
-            closingPrice: item['Price'],
-            frequency: item['Frequency'],
-            dividendDate: item['DividendDate'] ?? '',
-            logoURL: item['Logo'],
-            wonExchange: exchange,
-            isInputAvgDollar: _isInputAvgDollar));
+        try {
+          stockList.add(MyStock(
+              ticker: item['ticker'],
+              name: item['Name'],
+              amount: item['amount'],
+              avg: item['avgPrice'],
+              dividendMonth: item['DividendMonth'],
+              exDividends: item['ExList'],
+              nextDividend: item['NextAmount'].toDouble(),
+              yearlyDividend: item['YearlyDividend'].toDouble(),
+              divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
+              closingPrice: item['Price'],
+              frequency: item['Frequency'],
+              dividendDate: item['DividendDate'] ?? '',
+              logoURL: item['Logo'],
+              wonExchange: exchange,
+              isInputAvgDollar: _isInputAvgDollar));
+        } catch (e) {
+          print(item['ticker'] + " - " + "Value Error");
+        }
       });
     } catch (e) {
-      print(e);
+      print("_stockDataInit : $e");
     }
   }
 
@@ -290,7 +298,7 @@ class Stock with ChangeNotifier {
           wonExchange: exchange,
           isInputAvgDollar: _isInputAvgDollar);
     } catch (e) {
-      print(e);
+      print("_getMyData : $e");
       return null;
     }
   }
@@ -313,7 +321,7 @@ class Stock with ChangeNotifier {
       );
       print('statusCode: ${response.statusCode}');
     } catch (e) {
-      print(e);
+      print("_httpStockPost : $e");
     }
   }
 

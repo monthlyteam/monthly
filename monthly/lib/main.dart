@@ -48,31 +48,37 @@ Future<List<MyStock>> initStockData(
   try {
     final response = await http.get('http://13.125.225.138:5000/data/$token');
     statusCode = response.statusCode.toString();
-    var myData = json.decode(response.body);
+    var myData = json.decode(response.body.replaceAll(" NaN", " null"));
+
     double exchange = 1;
     List<MyStock> stockList = [];
+
     myData.forEach((item) {
       if (item['ticker'].contains('.KS') || item['ticker'].contains('.KQ'))
         exchange = 1;
       else
         exchange = dollar;
 
-      stockList.add(MyStock(
-          ticker: item['ticker'],
-          name: item['Name'],
-          amount: item['amount'],
-          avg: item['avgPrice'],
-          dividendMonth: item['DividendMonth'],
-          exDividends: item['ExList'],
-          nextDividend: item['NextAmount'].toDouble(),
-          yearlyDividend: item['YearlyDividend'].toDouble(),
-          divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
-          closingPrice: item['Price'],
-          frequency: item['Frequency'],
-          dividendDate: item['DividendDate'] ?? '',
-          logoURL: item['Logo'],
-          wonExchange: exchange,
-          isInputAvgDollar: isInputAvgDollar));
+      try {
+        stockList.add(MyStock(
+            ticker: item['ticker'],
+            name: item['Name'],
+            amount: item['amount'],
+            avg: item['avgPrice'],
+            dividendMonth: item['DividendMonth'],
+            exDividends: item['ExList'],
+            nextDividend: item['NextAmount'].toDouble(),
+            yearlyDividend: item['YearlyDividend'].toDouble(),
+            divPercent: (item['DividendYield'] ?? 0.0) * 100.0,
+            closingPrice: item['Price'],
+            frequency: item['Frequency'],
+            dividendDate: item['DividendDate'] ?? '',
+            logoURL: item['Logo'],
+            wonExchange: exchange,
+            isInputAvgDollar: isInputAvgDollar));
+      } catch (e) {
+        print(item['ticker'] + " - " + "Value Error");
+      }
     });
     return stockList;
   } catch (e) {
